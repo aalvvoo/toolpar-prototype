@@ -1,0 +1,1045 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Toolpar — прототип</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+/* Toolpar DS → CSS. Имена переменных = переменные Figma (коллекция Color, Layout), классы .t-* = текстовые стили.
+   Сетка Desktop 1440: поля 60, 5 колонок по 240, гаттер 30. Сайт одной светлой темы, как в макетах. */
+:root{
+  color-scheme: light;
+  --bg-primary:#FFFFFF; --bg-secondary:#F7F7F7; --bg-tertiary:#F2F2F2;
+  --control-bg:#E9E9E9;
+  --text-primary:#000000; --text-secondary:#939393; --text-tertiary:#BABABA; --text-placeholder:#686868; --text-inverse:#FFFFFF;
+  --border-default:#E9E9E9; --border-strong:#000000;
+  --action-primary-default:#FFFC39; --action-primary-pressed:#FFFD7E;
+  --action-secondary-default:#F2F2F2; --action-secondary-hover:#E9E9E9;
+  --action-installment-default:#F14635; --action-installment-hover:#F4695B;
+  --badge-sale:#FFFC39; --badge-new:#3194FF;
+  --commerce-price-old:#939393;
+  --overlay-scrim:rgba(0,0,0,.88);
+  --layout-page-margin:60px; --layout-grid-gutter:30px; --layout-column-width:240px;
+  --layout-content:1320px; --nav-h:92px;
+  --font:"Inter",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:auto}
+body{margin:0;background:var(--bg-primary);color:var(--text-primary);font-family:var(--font);font-size:15px;line-height:1.3;-webkit-font-smoothing:antialiased;
+  padding-left:max(0px, env(safe-area-inset-left,0px));padding-right:max(0px, env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--bg-primary)}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+:focus-visible{outline:2px solid var(--text-primary);outline-offset:2px}
+.wrap{width:100%;max-width:calc(var(--layout-content) + 2*var(--layout-page-margin));margin:0 auto;padding-left:max(16px,var(--layout-page-margin),env(safe-area-inset-left,0px));padding-right:max(16px,var(--layout-page-margin),env(safe-area-inset-right,0px))}
+.page{min-width:0}
+/* Текстовые стили (Figma: Text Styles) */
+.t-display{font-size:44px;font-weight:700;line-height:1}
+.t-h1{font-size:32px;font-weight:700;line-height:1;text-wrap:balance}
+.t-h2{font-size:26px;font-weight:600;line-height:1.25}
+.t-h3{font-size:20px;font-weight:700;line-height:1.25}
+.t-h4{font-size:16px;font-weight:700;line-height:1.2}
+.t-body-text{font-size:15px;font-weight:500;line-height:1.5}
+.t-body-l{font-size:15px;font-weight:500;line-height:1.3}
+.t-body-l-strong{font-size:15px;font-weight:600;line-height:1.3}
+.t-body-m{font-size:14px;font-weight:400;line-height:1.3}
+.t-body-m-strong{font-size:14px;font-weight:600;line-height:1.3}
+.t-body-s{font-size:13px;font-weight:500;line-height:1.3}
+.t-body-s-strong{font-size:13px;font-weight:600;line-height:1.3}
+.t-body-s-bold{font-size:13px;font-weight:700;line-height:1.3}
+.t-caption{font-size:12px;font-weight:400;line-height:1.3}
+.t-caption-medium{font-size:12px;font-weight:500;line-height:1.3}
+.t-caption-strong{font-size:12px;font-weight:600;line-height:1.3}
+.t-price-xl{font-size:36px;font-weight:700;line-height:1.05;font-variant-numeric:tabular-nums}
+.t-price-l{font-size:21px;font-weight:700;line-height:1.05;font-variant-numeric:tabular-nums}
+.t-price-old{font-size:13px;font-weight:600;line-height:1.05;text-decoration:line-through;color:var(--commerce-price-old)}
+.t-price-old-l{font-size:18px;font-weight:600;line-height:1.05;text-decoration:line-through;color:var(--commerce-price-old)}
+.muted{color:var(--text-secondary)}
+.ico{width:24px;height:24px;flex:none;display:inline-block}
+.ico svg{width:100%;height:100%;display:block}
+.ico svg [stroke="black"]{stroke:currentColor}.ico svg [fill="black"]{fill:currentColor}
+
+/* UtilityNav */
+.utility{height:52px;display:flex;align-items:center;justify-content:space-between;padding-top:8px}
+.utility .left,.utility .right{display:flex;align-items:center;gap:24px}
+.utility .city{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600}
+.utility .city .ico,.footer .city .ico{width:16px;height:16px}.utility .city .chev,.footer .city .chev{width:12px;height:12px}
+.utility .phone{font-size:12px;font-weight:600}
+.utility .callback{font-size:12px;font-weight:500;text-decoration:underline;text-underline-offset:2px}
+.utility .right span{font-size:12px;font-weight:500}
+/* ShoppingNav (sticky) */
+.shopping{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:var(--bg-primary);transition:box-shadow .2s}
+.shopping.scrolled{box-shadow:inset 0 -1px 0 var(--border-default)}
+.shopping .row{height:var(--nav-h);display:flex;align-items:center;gap:24px}
+.logo{width:180px;height:56px;flex:none;display:block}
+.logo svg{width:100%;height:100%}
+.btn-catalog{height:48px;padding:0 20px;display:flex;align-items:center;gap:8px;background:var(--action-primary-default);font-size:14px;font-weight:600;flex:none}
+.btn-catalog:hover,.btn-catalog[aria-expanded="true"]{background:var(--action-primary-pressed)}
+.btn-catalog .ico{width:20px;height:20px}
+.search{flex:1;min-width:0;height:48px;background:var(--bg-tertiary);display:flex;align-items:center;gap:12px;padding:0 8px 0 16px}
+.search .ph{flex:1;color:var(--text-placeholder);font-size:14px;font-weight:500}
+.search .go{width:32px;height:32px;background:var(--control-bg);display:grid;place-items:center}
+.search .go .ico{width:18px;height:18px}
+.actions{display:flex;gap:4px;flex:none}
+.haction{width:64px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;font-weight:500;position:relative;cursor:default}
+.haction .badge-count{position:absolute;top:-6px;left:38px;min-width:16px;height:16px;padding:0 4px;background:var(--action-primary-default);font-size:10px;font-weight:700;display:grid;place-items:center;transition:transform .2s}
+.haction .badge-count.bump{transform:scale(1.35)}
+/* Catalog dropdown */
+.catalog{position:absolute;left:0;right:0;top:100%;background:var(--bg-primary);box-shadow:0 1px 0 var(--border-default),0 24px 48px rgba(0,0,0,.08);max-height:calc(100vh - var(--nav-h));overflow:auto}
+.catalog .cols{display:grid;grid-template-columns:repeat(5,var(--layout-column-width));gap:var(--layout-grid-gutter);padding:32px 0 48px}
+.catalog ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.mitem{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:5px 0;font-size:13px;font-weight:500;color:var(--text-primary);text-align:left;width:100%}
+.mitem .ico{width:14px;height:14px;color:var(--text-tertiary)}
+.cols.has-path .mitem{color:var(--text-tertiary)}
+.cols .mitem.active{color:var(--text-primary);font-weight:600}
+.cols .mitem.active .ico{color:var(--text-primary)}
+.mitem.live{cursor:pointer}.mitem.dead{cursor:default}
+.mitem.live:hover{color:var(--text-primary)}
+.col-leaf .mitem{color:var(--text-primary)!important;font-weight:500}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.0);z-index:30}
+
+/* Buttons */
+.btn{height:56px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:15px;font-weight:600;width:100%}
+.btn .ico{width:22px;height:22px}
+.btn-primary{background:var(--action-primary-default)}.btn-primary:hover,.btn-primary:active{background:var(--action-primary-pressed)}
+.btn-secondary{background:var(--action-secondary-default)}.btn-secondary:hover{background:var(--action-secondary-hover)}
+.btn-installment{background:var(--action-installment-default);color:var(--text-inverse)}.btn-installment:hover{background:var(--action-installment-hover)}
+.btn-installment .ico{color:var(--text-inverse)}
+.btn-sm{height:48px;padding:0 20px;width:auto;font-size:14px}
+.iconbtn{width:48px;height:48px;display:grid;place-items:center;color:var(--text-primary)}
+.iconbtn:hover{color:#8A8A8A}.iconbtn:disabled{color:#D1D1D1;cursor:default}
+.link{display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:600}
+.link .ico{width:16px;height:16px}
+
+/* SectionHeader */
+.sect{display:flex;flex-direction:column;gap:32px}
+.sect-head{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:48px}
+.sect-head .left{display:flex;align-items:baseline;gap:24px}
+.sect-head .arrows{display:flex}
+
+/* ProductCard */
+.pcard{width:var(--layout-column-width);flex:none;display:flex;flex-direction:column;background:var(--bg-primary);cursor:pointer;position:relative}
+.pcard .media{height:240px;position:relative}
+.pcard .media img{width:240px;height:220px;object-fit:contain;background:#fff}
+.badge{position:absolute;left:0;top:0;height:28px;padding:0 8px;display:flex;align-items:center;font-size:13px;font-weight:700;background:var(--badge-sale);color:var(--text-primary)}
+.badge.new{background:var(--badge-new);color:var(--text-inverse)}
+.badge.l{height:32px;font-size:15px;padding:0 10px}
+.pcard .info{display:flex;flex-direction:column;gap:12px}
+.bonus{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600}
+.bonus i{width:15px;height:15px;border-radius:50%;background:var(--action-primary-default);display:block}
+.price{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.pcard .title-wrap{padding:24px 20px 24px 0}
+.pcard .title{font-size:15px;font-weight:500;line-height:1.3;height:calc(3 * 1.3em);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.pcard .title b,.ptitle b{font-weight:800}
+.pcard .pfoot{height:48px;display:flex;align-items:center;justify-content:space-between}
+.delivery{display:flex;align-items:center;gap:8px}
+.delivery .lbl{display:flex;flex-direction:column;font-size:12px;line-height:1.2}
+.delivery .lbl span:first-child{color:var(--text-secondary);font-weight:500}
+.delivery .lbl span:last-child{font-weight:700}
+.add{width:48px;height:48px;background:var(--action-primary-default);display:grid;place-items:center;opacity:0;transition:opacity .15s}
+.add:hover{background:var(--action-primary-pressed)}
+.pcard:hover .add,.pcard:focus-within .add{opacity:1}
+.stepper{height:48px;width:100%;background:var(--bg-tertiary);display:flex;align-items:center;justify-content:space-between;padding:0 12px}
+.stepper button{width:24px;height:24px;display:grid;place-items:center}
+.stepper button .ico{width:16px;height:16px}
+.stepper .v{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}
+.stepper.big{height:56px}
+.oos{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700}
+.pcard.out{cursor:pointer}
+.row-scroll{display:flex;gap:var(--layout-grid-gutter);overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none}
+.row-scroll::-webkit-scrollbar{display:none}
+.row-scroll>*{scroll-snap-align:start}
+.grid5{display:grid;grid-template-columns:repeat(5,var(--layout-column-width));column-gap:var(--layout-grid-gutter);row-gap:48px}
+.grid4{display:grid;grid-template-columns:repeat(4,var(--layout-column-width));column-gap:var(--layout-grid-gutter);row-gap:48px}
+
+/* Home */
+.hero-wrap{position:relative;overflow:hidden}
+.car{display:flex;gap:30px;cursor:grab;user-select:none;touch-action:pan-y;will-change:transform;transition:transform .5s cubic-bezier(.22,.7,.2,1)}
+.car.dragging{cursor:grabbing;transition:none}
+.hero{flex:none;width:var(--layout-content);max-width:100%;aspect-ratio:1320/600;position:relative;background:#1b1b1b;overflow:hidden;color:var(--text-inverse)}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.hero-ui{position:absolute;inset:0;pointer-events:none;color:var(--text-inverse)}
+.hero-ui .btn,.hero-ui .m-btn{pointer-events:auto}
+.hfade,.hbtn{transition:opacity .22s ease,transform .22s ease}
+.hero-ui.swap .hfade,.hero-ui.swap .hbtn{opacity:0;transform:translateY(8px)}
+.hero-ui .content{position:absolute;left:74px;bottom:72px;display:flex;flex-direction:column;gap:40px}
+.hero-ui .text{display:flex;flex-direction:column;gap:28px;max-width:440px}
+.hero-ui .brand{font-size:32px;font-weight:600;line-height:1}
+.hero-ui .btn{width:auto;padding:0 32px;height:48px;font-size:15px;color:var(--text-primary);align-self:flex-start}
+.pagination{position:absolute;left:74px;bottom:44px;display:flex;gap:6px}
+.pagination i{width:8px;height:4px;background:#fff;display:block;transition:width .3s,background .3s}
+.pagination i.on{width:24px;background:var(--action-primary-default)}
+.about{display:grid;grid-template-columns:375px 915px;gap:30px}
+.about .txt{display:flex;flex-direction:column;justify-content:space-between;gap:24px}
+.stats{background:var(--action-primary-default);padding:40px;display:flex;flex-direction:column;gap:32px}
+.stats .row{display:flex;justify-content:space-between}
+.stat{display:flex;flex-direction:column;gap:8px}
+.stat b{font-size:44px;font-weight:700;line-height:1}
+.stat span{font-size:13px;font-weight:600;line-height:1.3}
+.promo{flex:none;width:915px;display:flex;flex-direction:column;gap:20px}
+.promo .media{aspect-ratio:915/416;background:var(--bg-tertiary);overflow:hidden}
+.promo .media img{width:100%;height:100%;object-fit:cover;pointer-events:none}
+.promo .txt{display:flex;flex-direction:column;gap:8px}
+.reels{display:grid;grid-template-columns:repeat(4,1fr);gap:30px}
+.reel{position:relative;aspect-ratio:9/16;background:#6b6b6b;overflow:hidden;cursor:pointer}
+.reel img,.reel video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.reel .shade{position:absolute;left:0;right:0;height:96px;pointer-events:none}
+.reel .shade.t{top:0;background:linear-gradient(rgba(0,0,0,.35),transparent)}
+.reel .shade.b{bottom:0;background:linear-gradient(transparent,rgba(0,0,0,.35))}
+.reel .play,.reel .open{position:absolute;color:#fff;width:24px;height:24px}
+.reel .play{left:16px;bottom:16px}.reel .open{right:16px;top:16px}
+.reel:hover::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.08)}
+.cta{background:var(--action-primary-default);aspect-ratio:9/16;padding:24px;display:flex;flex-direction:column;position:relative}
+.cta .ig{position:absolute;left:24px;bottom:24px;width:28px;height:28px}
+.brands{display:grid;grid-template-columns:repeat(5,1fr);gap:30px}
+.brand-tile{height:132px;display:grid;place-items:center;font-size:20px;font-weight:800;letter-spacing:.02em}
+.brand-tile img{max-width:176px;max-height:52px;transition:transform .2s ease}
+.brand-tile:hover img{transform:scale(1.08)}
+
+/* Footer */
+.footer{border-top:1px solid var(--border-default);margin-top:96px;padding-block:64px 48px}
+.footer .cols{display:grid;grid-template-columns:510px repeat(3,240px);gap:30px}
+.footer h6{margin:0 0 16px;font-size:13px;font-weight:500;color:var(--text-secondary)}
+.footer ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;font-size:13px;font-weight:600}
+.footer .bottom{display:flex;justify-content:space-between;align-items:flex-end;margin-top:64px}
+.footer .legal{display:flex;align-items:center;gap:24px;font-size:12px;font-weight:600}
+.footer .legal .muted{font-weight:500}
+
+/* Category */
+.crumbs{display:flex;flex-wrap:wrap;gap:4px;font-size:12px;font-weight:500;color:var(--text-secondary)}
+.crumbs button{color:var(--text-secondary)}.crumbs button:hover{color:var(--text-primary)}
+.cat-head{display:flex;flex-direction:column;gap:12px;margin-bottom:40px}
+.cat-main{display:grid;grid-template-columns:240px 1050px;gap:30px;align-items:start}
+.filters{display:flex;flex-direction:column}
+.fgroup{padding:24px 0;border-top:1px solid var(--border-default);display:flex;flex-direction:column;gap:16px}
+.fgroup:first-child{border-top:0;padding-top:0}
+.fhead{display:flex;justify-content:space-between;align-items:center;width:100%;font-size:14px;font-weight:600;text-align:left}
+.fhead .ico{width:16px;height:16px;transition:transform .2s}
+.fgroup.closed .fhead .ico{transform:rotate(180deg)}
+.fgroup.closed .fbody{display:none}
+.fbody{display:flex;flex-direction:column;gap:12px}
+.subcat{font-size:13px;font-weight:500;text-align:left;line-height:1.35}
+.subcat .n{color:var(--text-tertiary);margin-left:4px}
+.subcat.live:hover{text-decoration:underline}.subcat.dead{cursor:default}
+.more{font-size:12px;font-weight:500;color:var(--text-secondary);display:flex;align-items:center;gap:4px;align-self:flex-start}
+.more:hover{color:var(--text-primary)}
+.more .ico{transition:transform .2s}.more.open .ico{transform:rotate(180deg)}
+.more .ico{width:12px;height:12px}
+.check{display:flex;align-items:center;gap:12px;font-size:13px;font-weight:500;cursor:pointer;user-select:none}
+.check .box{width:20px;height:20px;flex:none;background:var(--bg-tertiary);display:grid;place-items:center;transition:background .15s}
+.check .box .ico{width:14px;height:14px;opacity:0}
+.check.on .box{background:var(--action-primary-default);color:var(--text-primary)}.check.on .box .ico{opacity:1}
+.check:hover .box{background:var(--control-bg)}.check.on:hover .box{background:var(--action-primary-pressed)}
+.pickup{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:13px;font-weight:600;cursor:pointer}
+.pickup u{text-underline-offset:2px}
+.range{display:flex;flex-direction:column;gap:12px}
+.range .vals{display:flex;justify-content:space-between;font-size:12px;font-weight:600}
+.range .rail{height:2px;background:var(--control-bg);position:relative;margin:10px 1px;touch-action:none;cursor:pointer}
+.range .fill{position:absolute;top:0;bottom:0;background:var(--text-primary)}
+.range .thumb{position:absolute;top:50%;width:20px;height:28px;transform:translate(-50%,-50%);cursor:ew-resize;touch-action:none}
+.range .thumb::before{content:"";position:absolute;left:9px;top:6px;width:2px;height:16px;background:var(--text-primary)}
+.range .thumb:focus-visible{outline:2px solid var(--text-primary)}
+.toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;position:relative}
+.sort{display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600}
+.sort .ico{width:16px;height:16px}
+.sortmenu{position:absolute;top:28px;left:0;background:var(--bg-primary);box-shadow:0 8px 32px rgba(0,0,0,.12);padding:8px 0;z-index:5;min-width:220px}
+.sortmenu button{display:flex;justify-content:space-between;align-items:center;width:100%;padding:10px 16px;font-size:13px;font-weight:500;text-align:left}
+.sortmenu button:hover{background:var(--bg-secondary)}
+.sortmenu .ico{width:16px;height:16px}
+
+/* Product page */
+.prod{display:grid;grid-template-columns:915px 375px;gap:30px;align-items:start}
+.gallery{display:flex;gap:24px;height:600px;position:relative}
+.gallery .thumbs{width:72px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.gallery .thumbs .tb{width:72px;height:72px;border:1px solid var(--border-default);padding:4px;background:#fff}
+.gallery .thumbs .tb.on{border:2px solid var(--border-strong)}
+.gallery .thumbs .tb img{width:100%;height:100%;object-fit:contain}
+.gallery .thumbs .iconbtn{width:24px;height:24px}
+.gallery .main{flex:1;position:relative;overflow:hidden;cursor:grab}
+.gallery .main .strip{display:flex;height:100%;transition:transform .35s ease}
+.gallery .main img{flex:none;width:100%;height:100%;object-fit:contain;pointer-events:none;user-select:none}
+.gallery .nav{position:absolute;top:50%;transform:translateY(-50%);opacity:0;transition:opacity .2s}
+.gallery .main:hover .nav{opacity:1}
+.gallery .nav.l{left:8px}.gallery .nav.r{right:8px}
+.gallery .badges{position:absolute;left:0;top:0;display:flex}
+.gallery .badges .badge{position:static}
+.content{display:flex;flex-direction:column;gap:64px;margin-top:64px}
+.content>section{width:780px;max-width:100%}
+.buy{position:sticky;top:calc(var(--nav-h) + 24px);display:flex;flex-direction:column;gap:20px;padding-bottom:24px}
+.buy .vgroup{gap:12px}
+.buy .vgroup .t-body-l-strong{line-height:1}
+.ptitle{font-size:26px;font-weight:600;line-height:1.25}
+.divider{height:1px;background:var(--border-default)}
+.vgroup{display:flex;flex-direction:column;gap:8px}
+.vopts{display:flex;flex-wrap:wrap;column-gap:24px}
+.chip{padding:0;font-size:13px;font-weight:600;line-height:1.3}
+.chip.unsel{color:var(--text-secondary)}.chip.unsel:hover{color:var(--text-primary)}
+.chip.na{color:var(--text-tertiary);text-decoration:line-through;cursor:default}
+.dopt{display:flex;gap:12px;align-items:flex-start}
+.dopt .t{display:flex;flex-direction:column;gap:4px}
+.city u{text-underline-offset:3px}
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tag{height:32px;padding:0 12px;display:flex;align-items:center;background:var(--bg-tertiary);font-size:12px;font-weight:500}
+.specs{width:510px;max-width:100%}
+.spec{display:grid;grid-template-columns:1fr 1fr;padding:12px 0;border-bottom:1px solid var(--border-default);font-size:13px}
+.spec span:first-child{color:var(--text-secondary);font-weight:500}.spec span:last-child{font-weight:600}
+.bullets{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.bullets li{display:flex;gap:12px;font-size:14px;font-weight:500;line-height:1.5}
+.bullets li::before{content:"";width:6px;height:6px;background:var(--text-primary);flex:none;margin-top:9px}
+.warranty{background:var(--bg-tertiary);padding:32px;display:flex;flex-direction:column;gap:32px}
+.warranty .row{display:flex;gap:30px}
+.warranty .row>div{width:220px;display:flex;flex-direction:column;gap:8px}
+.warranty b{font-size:44px;font-weight:700;line-height:1}
+.doc{display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border-default)}
+.doc .t{flex:1;display:flex;flex-direction:column;gap:4px}
+.reviews{display:grid;grid-template-columns:375px 780px;gap:165px}
+.rsum{display:flex;flex-direction:column;gap:32px}
+.stars{display:flex;gap:2px}.stars .ico{width:16px;height:16px}.stars .ico.off{color:var(--border-default)}
+.rbar{display:flex;align-items:center;gap:12px;font-size:14px;font-weight:600}
+.rbar .lab{width:28px;display:flex;align-items:center;gap:4px}.rbar .lab .ico{width:12px;height:12px}
+.rbar .track{flex:1;height:4px;background:var(--control-bg);position:relative}
+.rbar .track i{position:absolute;left:0;top:0;bottom:0;background:var(--text-primary)}
+.rbar .n{width:32px;text-align:right;color:var(--text-secondary);font-weight:400}
+.review{padding:32px 0;border-top:1px solid var(--border-default);display:flex;flex-direction:column;gap:4px}
+.review .h{display:flex;align-items:center;gap:12px}
+.review p{margin:12px 0 0}
+
+/* ReelViewer */
+.viewer{position:fixed;inset:0;z-index:100;background:var(--overlay-scrim);display:grid;place-items:center}
+.viewer .vid{position:relative;height:min(820px,calc(100vh - 80px));aspect-ratio:9/16;background:#3a3a3a;overflow:hidden}
+.viewer video{width:100%;height:100%;object-fit:cover;display:block}
+.viewer .prog{position:absolute;left:16px;right:16px;top:16px;height:2px;background:rgba(255,255,255,.35)}
+.viewer .prog i{position:absolute;left:0;top:0;bottom:0;background:#fff}
+.viewer .ctl{position:absolute;color:#fff}
+.viewer .close{position:fixed;top:32px;right:32px;color:#fff;width:32px;height:32px}
+.viewer .close .ico{width:32px;height:32px}
+.viewer .side{position:fixed;top:50%;transform:translateY(-50%);color:#fff;width:48px;height:48px;display:grid;place-items:center}
+.viewer .side .ico{width:32px;height:32px}
+.viewer .side:disabled{opacity:.3;cursor:default}
+.toast{position:fixed;left:50%;bottom:32px;transform:translateX(-50%) translateY(20px);background:var(--text-primary);color:var(--text-inverse);padding:14px 20px;font-size:13px;font-weight:600;opacity:0;transition:.25s;z-index:120;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.proto-note{position:fixed;left:16px;bottom:16px;z-index:90;background:var(--text-primary);color:var(--text-inverse);font-size:11px;font-weight:600;padding:6px 10px;opacity:.85}
+
+@media (min-width:768px){.page-scale{min-width:1440px}}
+html,body{overflow-x:clip}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+/* ===== Mobile (Toolpar DS — режим Mobile: поля 16, гаттер 12, H1 22, кнопки 44/48) ===== */
+.m{min-height:100vh;background:var(--bg-primary);padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
+.m-head{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:var(--bg-primary);box-shadow:inset 0 -1px 0 var(--border-default)}
+.m-hrow{height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 4px 0 16px}
+.m-logo{width:96px;height:30px;display:block}.m-logo svg{width:100%;height:100%}
+.m-right{display:flex;align-items:center}
+.m-city{display:flex;align-items:center;gap:4px;font-size:12px;font-weight:600;padding:0 8px;height:44px}
+.m-city .ico{width:16px;height:16px}.m-city .chev{width:12px;height:12px}
+.m-ib{width:44px;height:44px;display:grid;place-items:center;flex:none}.m-ib .ico{width:22px;height:22px}
+.m-searchrow{height:56px;display:flex;align-items:center;gap:8px;padding:0 8px 0 16px}
+.m-field{flex:1;min-width:0;height:40px;background:var(--bg-tertiary);display:flex;align-items:center;gap:8px;padding:0 12px}
+.m-field .ico{width:18px;height:18px}
+.m-field input{border:0;background:none;flex:1;min-width:0;font:inherit;font-size:16px;outline:none;color:var(--text-primary)}
+.m-cancel{font-size:14px;font-weight:600;padding:0 6px;height:44px}
+.m-tab{position:fixed;left:0;right:0;bottom:0;z-index:45;background:var(--bg-primary);box-shadow:inset 0 1px 0 var(--border-default);display:flex;padding-bottom:env(safe-area-inset-bottom,0px);transition:transform .2s}
+.m-tabi{flex:1;height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:10px;font-weight:500;color:var(--text-secondary);position:relative;cursor:default}
+.m-tabi[data-home],.m-tabi[data-m]{cursor:pointer}
+.m-tabi.on{color:var(--text-primary)}
+.m-tabi .ico{width:24px;height:24px}
+.m-badge{position:absolute;top:5px;left:calc(50% + 5px);min-width:16px;height:16px;padding:0 4px;background:var(--action-primary-default);color:var(--text-primary);font-size:10px;font-weight:700;display:grid;place-items:center;font-style:normal;transition:transform .2s}
+.m-badge.bump{transform:scale(1.35)}
+.m-bbar{position:fixed;left:0;right:0;bottom:0;z-index:46;background:var(--bg-primary);box-shadow:inset 0 1px 0 var(--border-default);display:flex;align-items:center;gap:8px;padding:8px 16px calc(8px + env(safe-area-inset-bottom,0px));transform:translateY(110%);transition:transform .25s ease}
+.m.bar-on .m-bbar{transform:none}
+.m.bar-on .m-tab{transform:translateY(110%)}
+.m-bp{flex:1;min-width:0;display:flex;flex-direction:column}
+.m-bp b{font-size:17px;font-weight:700;line-height:1.1;white-space:nowrap}
+.m-bp s{font-size:13px;font-weight:600;color:var(--commerce-price-old)}
+.m-sq{width:48px;height:48px;display:grid;place-items:center;flex:none}
+.m-sq.r{background:var(--action-installment-default);color:var(--text-inverse)}
+.m-sq .ico{width:22px;height:22px}
+.m-bbar .m-btn,.m-bstep{width:168px;flex:none;height:48px}
+.m-bstep .stepper{height:48px}
+.m-btn{height:44px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:14px;font-weight:600;padding:0 20px}
+.m-btn .ico{width:20px;height:20px}
+.m-btn.y{background:var(--action-primary-default);color:var(--text-primary)}.m-btn.y:active{background:var(--action-primary-pressed)}
+.m-btn.r{background:var(--action-installment-default);color:var(--text-inverse)}
+.m-btn.g{background:var(--bg-tertiary);cursor:default}
+.m-btn.wide{width:100%;height:48px}
+.m-main.home{display:flex;flex-direction:column;gap:48px}
+.snap{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+.snap::-webkit-scrollbar{display:none}
+.snap>*{scroll-snap-align:start;flex:none}
+.m-herowrap{position:relative}
+.m-slide{width:100%;height:440px;position:relative;background:#1b1b1b;color:#fff;cursor:pointer}
+.m-slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.m-herowrap .hero-ui{background:linear-gradient(to top,rgba(0,0,0,.55) 0%,rgba(0,0,0,.35) 30%,rgba(0,0,0,0) 58%)}
+.m-hc{position:absolute;left:16px;right:16px;bottom:48px;display:flex;flex-direction:column;gap:20px}
+.m-hc .hfade{display:flex;flex-direction:column;gap:12px}
+.m-hb{font-size:18px;font-weight:600;line-height:1}
+.m-ht{font-size:28px;font-weight:700;line-height:1;max-width:300px;text-wrap:balance}
+.m-hc .m-btn{align-self:flex-start}
+.m-dots{position:absolute;left:16px;bottom:24px;display:flex;gap:6px;pointer-events:none}
+.m-dots i{width:8px;height:4px;background:#fff;transition:width .3s,background .3s}
+.m-dots i.on{width:24px;background:var(--action-primary-default)}
+.m-hs{display:flex;flex-direction:column;gap:16px}
+.m-sh{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 16px}
+.m-sh h2,.m-sec h2,.m-about h2{margin:0;font-size:22px;font-weight:700;line-height:1.05;text-wrap:balance}
+.m-link{display:inline-flex;align-items:center;gap:2px;font-size:13px;font-weight:600;white-space:nowrap;align-self:flex-start}
+.m-link .ico{width:16px;height:16px}
+.m-scroll{gap:12px;padding:0 16px;scroll-padding-left:16px}
+.m-scroll .pcard{width:148px}
+.m .pcard{width:auto;min-width:0}
+.m .m-scroll .pcard{width:calc((100vw - 44px) / 2)}
+.m-sbar{margin:16px 16px 0;height:2px;background:var(--border-default);position:relative;overflow:hidden}
+.m-sbar i{position:absolute;top:0;bottom:0;left:0;background:var(--text-primary);transition:width .2s}
+.m .pcard .media{height:156px}
+.m .pcard .media img{width:100%;height:156px}
+.m .pcard .info{padding-top:14px;gap:6px}
+.m .pcard .t-price-l{font-size:17px}
+.m .pcard .title-wrap{padding:8px 0 16px}
+.m .pcard .title{font-size:13px;line-height:17px;height:51px}
+.m .pcard .title-wrap{overflow:hidden}
+.m .pcard .price{gap:2px 6px}
+.m .pcard .pfoot{margin-top:auto}
+.m .pcard .t-price-old{font-size:12px}
+.m .pcard .pfoot{height:40px}
+.m .add{opacity:1;width:40px;height:40px}
+.m .add .ico{width:20px;height:20px}
+.m .delivery{gap:6px}.m .delivery .ico{width:16px;height:16px}
+.m .delivery .lbl{font-size:11px}
+.m .badge{height:24px;font-size:12px;padding:0 6px}
+.m .badge.l{height:26px;font-size:13px;padding:0 8px}
+.m .stepper{height:40px}
+.m .stepper.big{height:48px}
+.m .bonus{font-size:12px;gap:6px}.m .bonus i{width:12px;height:12px}
+.m .oos{font-size:12px}.m .oos .ico{width:16px;height:16px}
+.m-grid{display:grid;grid-template-columns:1fr 1fr;column-gap:12px;row-gap:32px;padding:0 16px}
+.m-grid>*{min-width:0}
+.m-about{padding:0 16px;display:flex;flex-direction:column;gap:16px}
+.m-about p{margin:0;font-size:15px;font-weight:500;line-height:1.5}
+.m-stats{background:var(--action-primary-default);padding:24px 20px;display:grid;grid-template-columns:1fr 1fr;gap:24px 16px}
+.m-stats b{font-size:22px;font-weight:700;display:block;margin-bottom:6px}
+.m-stats span{font-size:13px;font-weight:600;line-height:1.3}
+.m-stats .m-link{grid-column:1/-1}
+.m-promo{width:300px;display:flex;flex-direction:column;gap:12px}
+.m-promo .im{aspect-ratio:915/416;overflow:hidden;background:var(--bg-tertiary)}
+.m-promo .im img{width:100%;height:100%;object-fit:cover;pointer-events:none}
+.m-promo .e{font-size:12px;font-weight:500;color:var(--text-secondary)}
+.m-promo .t{font-size:17px;font-weight:700;line-height:1.25}
+.m-promo .s{font-size:13px;font-weight:500;color:var(--text-secondary);line-height:1.35}
+.m-scroll .reel{width:228px}
+.m-cta{width:228px;aspect-ratio:9/16;background:var(--action-primary-default);padding:16px;display:flex;flex-direction:column;gap:8px;position:relative}
+.m-cta b{font-size:17px;font-weight:700;line-height:1.1}
+.m-cta span{font-size:13px;font-weight:500}
+.m-cta .ig{position:absolute;left:16px;bottom:16px;width:28px;height:28px}
+.m-brands{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px}
+.m-brands div{height:88px;display:grid;place-items:center}
+.m-brands img{max-width:112px;max-height:32px}
+.m-wbtn{padding:0 16px}
+.m-foot{border-top:1px solid var(--border-default);padding-top:32px;margin-top:48px}
+.m-fc{padding:0 16px 16px;display:flex;flex-direction:column;gap:8px}
+.m-fc .m-city{padding:0;height:32px;align-self:flex-start}
+.m-fc b{font-size:17px;font-weight:700}
+.m-soc{display:flex;gap:20px;padding-top:8px}.m-soc .ico{width:24px;height:24px}
+.m-acc{height:56px;margin:0 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border-default);font-size:15px;font-weight:600}
+.m-acc .ico{width:20px;height:20px}
+.m-fb{padding:24px 16px;display:flex;flex-direction:column;gap:12px;font-size:12px;color:var(--text-secondary)}
+.m-fb .logo{width:116px;height:36px;color:var(--text-primary)}
+.m-pay{display:flex;gap:12px;align-items:center}
+.m-ch{height:56px;display:flex;align-items:center;gap:2px;padding:0 16px 0 4px;font-size:17px;font-weight:700}
+.m-list{list-style:none;margin:0;padding:8px 0 0}
+.m-li{width:100%;height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 12px 0 16px;font-size:15px;font-weight:500;border-bottom:1px solid var(--border-default);text-align:left}
+.m-li .ico{width:20px;height:20px;color:var(--text-secondary)}
+.m-li.all{font-weight:600}.m-li.all .ico{color:var(--text-primary)}
+.m-li.dead{cursor:default}
+.m-ph{padding:20px 0;display:flex;flex-direction:column;gap:10px}
+.m-back{display:inline-flex;align-items:center;gap:2px;font-size:13px;font-weight:500;color:var(--text-secondary);padding:0 16px 0 12px;height:32px;align-self:flex-start}
+.m-back .ico{width:16px;height:16px}
+.m-tt{display:flex;align-items:baseline;gap:8px;padding:0 16px;flex-wrap:wrap}
+.m-tt h1{font-size:22px;font-weight:700;margin:0;line-height:1.05}
+.m-tt span{font-size:13px;font-weight:500;color:var(--text-secondary)}
+.m-fbar{position:sticky;top:calc(56px + env(safe-area-inset-top,0px));z-index:30;background:var(--bg-primary);height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;box-shadow:inset 0 -1px 0 var(--border-default)}
+.m-fbar button{height:44px;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:600}
+.m-fbar b{background:var(--action-primary-default);font-size:12px;padding:1px 6px;line-height:16px}
+.m-fbar .ico{width:16px;height:16px}
+.m-chips{display:flex;gap:8px;overflow-x:auto;padding:12px 16px 0;scrollbar-width:none;align-items:center}
+.m-chips::-webkit-scrollbar{display:none}
+.m-chip{flex:none;height:36px;padding:0 8px 0 12px;background:var(--bg-tertiary);display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600}
+.m-chip .ico{width:16px;height:16px}
+.m-reset{flex:none;font-size:13px;font-weight:600;color:var(--text-secondary);text-decoration:underline;text-underline-offset:2px;padding:0 4px;height:36px}
+.m-catgrid{padding-top:28px}
+.m-more{display:flex;flex-direction:column;align-items:center;gap:12px;padding:32px 16px 0}
+.m-more .m-btn{width:100%}
+.m-more span{font-size:12px;color:var(--text-secondary)}
+.m-scrim{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:80}
+.m-sheet{position:fixed;left:0;right:0;bottom:0;z-index:81;background:var(--bg-primary);max-height:calc(100% - 60px - env(safe-area-inset-top,0px));display:flex;flex-direction:column}
+.m-sheet.full{height:calc(100% - 60px - env(safe-area-inset-top,0px))}
+.m-sheet.anim{animation:mUp .28s cubic-bezier(.2,.7,.2,1)}.m-scrim.anim{animation:mFade .2s}
+@keyframes mUp{from{transform:translateY(100%)}}@keyframes mFade{from{opacity:0}}
+.m-handle{width:36px;height:4px;background:var(--control-bg);margin:8px auto 0;flex:none}
+.m-shh{height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 4px 0 16px;font-size:17px;font-weight:700;flex:none}
+.m-shb{flex:1;overflow:auto;padding:0 16px 16px;overscroll-behavior:contain}
+.m-sheet:not(.has-btn) .m-shb{padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+.m-shf{padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));box-shadow:inset 0 1px 0 var(--border-default);flex:none}
+.m-srow{width:100%;height:52px;display:flex;justify-content:space-between;align-items:center;font-size:15px;font-weight:400;text-align:left}
+.m-srow .b{font-weight:600}.m-srow .ico{width:20px;height:20px}
+.m-filters .fgroup{padding:16px 0}
+.m-filters .fhead{font-size:15px;min-height:24px}
+.m-filters .check{min-height:36px;font-size:14px}
+.m-filters .more{min-height:32px}
+.m-pick{display:flex;justify-content:space-between;align-items:center;min-height:52px;font-size:15px;font-weight:600;cursor:pointer}
+.m-filters .range .thumb{width:36px;height:44px}
+.m-filters .range .thumb::before{left:17px;top:14px}
+.m-inst{display:flex;flex-direction:column;gap:16px}
+.m-sum{display:flex;align-items:baseline;gap:8px}
+.m-sum b{font-size:30px;font-weight:700;font-variant-numeric:tabular-nums}
+.m-sum span{color:var(--text-secondary);font-size:15px}
+.m-terms{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.m-terms button{height:44px;background:var(--bg-tertiary);font-size:14px;font-weight:600}
+.m-terms .on{background:var(--text-primary);color:var(--text-inverse)}
+.m-irow{display:flex;justify-content:space-between;gap:16px;font-size:14px}
+.m-irow span:first-child{color:var(--text-secondary)}.m-irow span:last-child{font-weight:600;text-align:right}
+.m-prod>.m-back{margin:20px 0 12px}
+.m-gal{position:relative;padding-bottom:20px}
+.m-gal .snap img{width:100%;height:290px;object-fit:contain;padding:0 16px;box-sizing:border-box;user-select:none}
+.m-gal .badge{position:absolute;left:16px;top:0}
+.m-gdots{display:flex;gap:6px;justify-content:center;margin-top:16px}
+.m-gdots i{width:6px;height:3px;background:var(--control-bg);transition:width .3s,background .3s}
+.m-gdots i.on{width:20px;background:var(--text-primary)}
+.m-buy{display:flex;flex-direction:column;gap:20px;padding:0 16px}
+.m-buy>.m-mods{margin-bottom:-20px}
+.m-brand{font-size:13px;font-weight:600}
+.m-title{font-size:18px;font-weight:600;line-height:1.25;margin:4px 0 0}
+.m-pb{display:flex;flex-direction:column;gap:8px;padding:4px 0}
+.m-price{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.m-price b{font-size:30px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.m-price s{font-size:16px;font-weight:600;color:var(--commerce-price-old)}
+.m-mods{display:flex;flex-direction:column}
+.m-vg{border-top:1px solid var(--border-default);padding:16px 0}
+.m-mods+.m-dlv{border-top:1px solid var(--border-default);padding-top:20px}
+.m-vg{display:flex;flex-direction:column;gap:2px}
+.m-vg .t{font-size:14px;font-weight:600}
+.m .vopts{column-gap:20px}
+.m .chip{padding:6px 0;font-size:14px}
+.m-dlv{display:flex;flex-direction:column;gap:14px}
+.m-cityl{font-size:14px;font-weight:600}.m-cityl u{text-underline-offset:3px}
+.m-do{display:flex;gap:12px;align-items:flex-start}.m-do .ico{width:20px;height:20px;color:var(--text-primary)}
+.m-do div{display:flex;flex-direction:column;gap:2px}.m-do b{font-size:14px;font-weight:600}.m-do span{font-size:13px;color:var(--text-secondary)}
+.m-acts{display:flex;flex-direction:column;gap:8px}
+.m-sec{padding:48px 16px 0;display:flex;flex-direction:column;gap:16px}
+.m-sec.flush{padding-left:0;padding-right:0}
+.m-txt{margin:0;font-size:15px;font-weight:500;line-height:1.5}
+.m-cap{font-size:12px;color:var(--text-secondary)}
+.m-spec{padding:10px 0;border-bottom:1px solid var(--border-default);display:flex;flex-direction:column;gap:2px}
+.m-spec span{font-size:12px;font-weight:500;color:var(--text-secondary)}.m-spec b{font-size:14px;font-weight:600}
+.m .bullets li{font-size:14px}
+.m-war{background:var(--bg-tertiary);padding:20px;display:flex;flex-direction:column;gap:16px}
+.m-war div{display:grid;grid-template-columns:72px 1fr;gap:16px;align-items:center}
+.m-war b{font-size:22px;font-weight:700}.m-war span{font-size:13px;font-weight:600;line-height:1.3}
+.m-doc{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border-default)}
+.m-doc .ico{width:20px;height:20px;color:var(--text-primary)}
+.m-doc div{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.m-doc b{font-size:14px;font-weight:600}.m-doc span{font-size:12px;color:var(--text-secondary)}
+.m-reelone{width:228px}
+.m-rs{display:flex;flex-direction:column;gap:16px;padding-bottom:8px}
+.m-avg{display:flex;align-items:center;gap:12px}.m-avg b{font-size:28px;font-weight:700;line-height:1}
+.m-bars{display:flex;flex-direction:column;gap:8px}
+.m .review{padding:24px 0}
+.m .review p{margin:8px 0 0}
+.m-viewer{position:fixed;inset:0;z-index:100;background:#000;touch-action:none}
+.m-viewer video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.m-vprog{position:absolute;left:16px;right:16px;top:calc(env(safe-area-inset-top,0px) + 10px);display:flex;gap:4px}
+.m-vprog i{flex:1;height:2px;background:rgba(255,255,255,.35);position:relative}
+.m-vprog i.done{background:#fff}
+.m-vprog b{position:absolute;left:0;top:0;bottom:0;width:0;background:#fff}
+.m-viewer .ctl{position:absolute;color:#fff;width:44px;height:44px;display:grid;place-items:center}
+.m-viewer .ctl .ico{width:24px;height:24px}
+.m-vx{right:6px;top:calc(env(safe-area-inset-top,0px) + 20px)}
+.m-vo{right:50px;top:calc(env(safe-area-inset-top,0px) + 20px)}
+.m-vp{left:6px;bottom:calc(env(safe-area-inset-bottom,0px) + 12px)}
+.m-vm{left:46px;bottom:calc(env(safe-area-inset-bottom,0px) + 12px)}
+.m-vh{position:absolute;right:16px;bottom:calc(env(safe-area-inset-bottom,0px) + 26px);color:rgba(255,255,255,.7);font-size:12px;font-weight:500}
+@media (max-width:767px){
+  .toast{bottom:calc(76px + env(safe-area-inset-bottom,0px));white-space:nowrap}
+  .proto-note{display:none}
+}
+</style>
+
+<div id="app"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="proto-note">Прототип · Desktop 1440</div>
+
+<script>
+const ICONS={
+"chevron-right":'<path d="M9 18L15 12L9 6" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+"chevron-left":'<path d="M15 18L9 12L15 6" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+"chevron-down":'<path d="M6 9L12 15L18 9" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+"chevron-up":'<path d="M18 15L12 9L6 15" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+"search":'<path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 21L16.7 16.7" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+"arrow-right":'<path d="M5 12H19" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 5L19 12L12 19" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+"map-pin":'<path d="M20 10C20 16 12 22 12 22C12 22 4 16 4 10C4 7.87827 4.84285 5.84344 6.34315 4.34315C7.84344 2.84285 9.87827 2 12 2C14.1217 2 16.1566 2.84285 17.6569 4.34315C19.1571 5.84344 20 7.87827 20 10Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+"layout-grid":'<path d="M9 3H4C3.44772 3 3 3.44772 3 4V9C3 9.55228 3.44772 10 4 10H9C9.55228 10 10 9.55228 10 9V4C10 3.44772 9.55228 3 9 3Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 3H15C14.4477 3 14 3.44772 14 4V9C14 9.55228 14.4477 10 15 10H20C20.5523 10 21 9.55228 21 9V4C21 3.44772 20.5523 3 20 3Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 14H15C14.4477 14 14 14.4477 14 15V20C14 20.5523 14.4477 21 15 21H20C20.5523 21 21 20.5523 21 20V15C21 14.4477 20.5523 14 20 14Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 14H4C3.44772 14 3 14.4477 3 15V20C3 20.5523 3.44772 21 4 21H9C9.55228 21 10 20.5523 10 20V15C10 14.4477 9.55228 14 9 14Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+"user":'<path d="M12 13C14.7614 13 17 10.7614 17 8C17 5.23858 14.7614 3 12 3C9.23858 3 7 5.23858 7 8C7 10.7614 9.23858 13 12 13Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 21C20 18.8783 19.1571 16.8434 17.6569 15.3431C16.1566 13.8429 14.1217 13 12 13C9.87827 13 7.84344 13.8429 6.34315 15.3431C4.84285 16.8434 4 18.8783 4 21" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+"package":'<path d="M21 8C21 7.65 20.91 7.3 20.73 7C20.56 6.7 20.3 6.45 20 6.27L13 2.27C12.7 2.09 12.35 2 12 2C11.65 2 11.3 2.09 11 2.27L4 6.27C3.7 6.45 3.44 6.7 3.27 7C3.09 7.3 3 7.65 3 8V16C3 16.35 3.09 16.7 3.27 17C3.44 17.3 3.7 17.55 4 17.73L11 21.73C11.3 21.91 11.65 22 12 22C12.35 22 12.7 21.91 13 21.73L20 17.73C20.3 17.55 20.56 17.3 20.73 17C20.91 16.7 21 16.35 21 16V8Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.3 7L12 12L20.7 7" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 22V12" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+"shopping-cart":'<path d="M8 22C8.55 22 9 21.55 9 21C9 20.45 8.55 20 8 20C7.45 20 7 20.45 7 21C7 21.55 7.45 22 8 22Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 22C19.55 22 20 21.55 20 21C20 20.45 19.55 20 19 20C18.45 20 18 20.45 18 21C18 21.55 18.45 22 19 22Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2.05 2.05H4.05L6.71 14.47C6.81 14.92 7.06 15.33 7.43 15.62C7.79 15.91 8.24 16.06 8.71 16.05H18.49C18.95 16.05 19.39 15.89 19.74 15.61C20.1 15.32 20.34 14.92 20.44 14.48L22.09 7.05H5.12" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+"bag":'<path d="M6 2L3 6V20C3 20.53 3.21 21.04 3.59 21.41C3.96 21.79 4.47 22 5 22H19C19.53 22 20.04 21.79 20.41 21.41C20.79 21.04 21 20.53 21 20V6L18 2H6Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 6H21" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 10C16 11.06 15.58 12.08 14.83 12.83C14.08 13.58 13.06 14 12 14C10.94 14 9.92 13.58 9.17 12.83C8.42 12.08 8 11.06 8 10" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+"calendar":'<path d="M19 4H5C3.9 4 3 4.9 3 6V20C3 21.1 3.9 22 5 22H19C20.1 22 21 21.1 21 20V6C21 4.9 20.1 4 19 4Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 2V6" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 2V6" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 10H21" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+"plus":'<path d="M5 12H19" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 5V19" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+"minus":'<path d="M5 12H19" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+"check":'<path d="M20 6L9 17L4 12" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+"x":'<path d="M18 6L6 18" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 6L18 18" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+"file-text":'<path d="M15 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V7L15 2Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 2V6C14 7.1 14.9 8 16 8H20" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 13H8" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 17H8" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 9H8" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+"download":'<path d="M21 15V19C21 20.1 20.1 21 19 21H5C3.9 21 3 20.1 3 19V15" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 10L12 15L17 10" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 15V3" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+"play":'<path d="M6 3L20 12L6 21V3Z" fill="black" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+"pause":'<path d="M7 4H10V20H7V4Z" fill="black" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 4H17V20H14V4Z" fill="black" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+"volume":'<path d="M11 5L6 9H2V15H6L11 19V5Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.5 8.5C16.42 9.43 16.93 10.69 16.93 12C16.93 13.31 16.42 14.57 15.5 15.5" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 5C20.83 6.87 21.86 9.38 21.86 12C21.86 14.62 20.83 17.13 19 19" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+"volume-off":'<path d="M11 5L6 9H2V15H6L11 19V5Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 9L16 15" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 9L22 15" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+"truck":'<path d="M14 18V6C14 4.9 13.1 4 12 4H4C2.9 4 2 4.9 2 6V17C2 17.55 2.45 18 3 18H5" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 18H9" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 18H21C21.55 18 22 17.55 22 17V13.35C22 13.12 21.92 12.91 21.78 12.73L18.3 8.38C18.11 8.14 17.82 8 17.52 8H14" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 20C18.1 20 19 19.1 19 18C19 16.9 18.1 16 17 16C15.9 16 15 16.9 15 18C15 19.1 15.9 20 17 20Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 20C8.1 20 9 19.1 9 18C9 16.9 8.1 16 7 16C5.9 16 5 16.9 5 18C5 19.1 5.9 20 7 20Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+"store":'<path d="M2 7L6.41 2.59C6.79 2.21 7.3 2 7.83 2H16.17C16.7 2 17.21 2.21 17.59 2.59L22 7" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 12V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V12" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 22V18C15 16.9 14.1 16 13 16H11C9.9 16 9 16.9 9 18V22" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 7H22" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 7V10C22 11.1 21.1 12 20 12C19.42 11.97 18.86 11.75 18.41 11.37C18.17 11.2 17.83 11.2 17.59 11.37C17.14 11.75 16.58 11.97 16 12C15.42 11.97 14.86 11.75 14.41 11.37C14.17 11.2 13.83 11.2 13.59 11.37C13.14 11.75 12.58 11.97 12 12C11.42 11.97 10.86 11.75 10.41 11.37C10.17 11.2 9.83 11.2 9.59 11.37C9.14 11.75 8.58 11.97 8 12C7.42 11.97 6.86 11.75 6.41 11.37C6.17 11.2 5.83 11.2 5.59 11.37C5.14 11.75 4.58 11.97 4 12C2.9 12 2 11.1 2 10V7" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+"star":'<path d="M12 2.5L14.94 8.76L21.8 9.54L16.7 14.22L18.08 21L12 17.6L5.92 21L7.3 14.22L2.2 9.54L9.06 8.76L12 2.5Z" fill="black"/>',
+"arrow-up-right":'<path d="M7 17L17 7M17 16V7H8" stroke="black" stroke-width="2" stroke-linecap="square"/>',
+"instagram":'<path d="M11.91 2.14C15.09 2.14 15.47 2.16 16.72 2.21C17.88 2.27 18.51 2.46 18.93 2.62C19.48 2.84 19.88 3.1 20.3 3.51C20.71 3.93 20.97 4.33 21.18 4.88C21.35 5.3 21.54 5.93 21.59 7.09C21.65 8.35 21.66 8.72 21.66 11.9C21.66 15.08 21.65 15.46 21.59 16.71C21.54 17.87 21.35 18.5 21.18 18.92C20.97 19.47 20.71 19.87 20.3 20.29C19.88 20.7 19.48 20.96 18.93 21.17C18.51 21.34 17.88 21.53 16.72 21.58C15.46 21.64 15.09 21.65 11.91 21.65C8.73 21.65 8.35 21.64 7.1 21.58C5.94 21.53 5.31 21.34 4.89 21.17C4.34 20.96 3.94 20.7 3.52 20.29C3.1 19.87 2.85 19.47 2.63 18.92C2.47 18.5 2.27 17.87 2.22 16.71C2.17 15.45 2.15 15.08 2.15 11.9C2.15 8.72 2.17 8.34 2.22 7.09C2.27 5.93 2.47 5.3 2.63 4.88C2.85 4.33 3.11 3.93 3.52 3.51C3.94 3.09 4.34 2.84 4.89 2.62C5.31 2.46 5.94 2.27 7.1 2.21C8.35 2.16 8.73 2.14 11.91 2.14ZM11.91 0C8.68 0 8.27 0.01 7 0.07C5.74 0.13 4.87 0.33 4.11 0.62C3.33 0.93 2.66 1.34 2 2C1.34 2.66 0.93 3.33 0.62 4.11C0.33 4.87 0.13 5.73 0.07 7C0.01 8.27 0 8.68 0 11.91C0 15.14 0.01 15.55 0.07 16.82C0.13 18.08 0.33 18.95 0.62 19.7C0.93 20.49 1.34 21.16 2 21.82C2.66 22.48 3.33 22.89 4.11 23.19C4.87 23.48 5.73 23.69 7 23.74C8.27 23.8 8.67 23.81 11.9 23.81C15.14 23.81 15.54 23.8 16.81 23.74C18.08 23.69 18.95 23.48 19.7 23.19C20.48 22.89 21.15 22.48 21.81 21.82C22.48 21.16 22.88 20.49 23.18 19.71C23.47 18.95 23.68 18.09 23.73 16.82C23.79 15.55 23.8 15.15 23.8 11.91C23.8 8.68 23.79 8.28 23.73 7.01C23.68 5.74 23.47 4.87 23.18 4.12C22.89 3.33 22.48 2.66 21.82 2C21.16 1.34 20.49 0.93 19.71 0.63C18.95 0.33 18.09 0.13 16.82 0.07C15.55 0.01 15.14 0 11.91 0Z" fill="black"/><path d="M11.91 5.79C8.53 5.79 5.79 8.53 5.79 11.91C5.79 15.29 8.53 18.03 11.91 18.03C15.29 18.03 18.03 15.29 18.03 11.91C18.03 8.53 15.29 5.79 11.91 5.79ZM11.91 15.88C9.72 15.88 7.94 14.1 7.94 11.91C7.94 9.72 9.72 7.94 11.91 7.94C14.1 7.94 15.88 9.72 15.88 11.91C15.88 14.1 14.1 15.88 11.91 15.88Z" fill="black"/><path d="M19.7 5.55C19.7 6.34 19.05 6.98 18.27 6.98C17.48 6.98 16.84 6.34 16.84 5.55C16.84 4.76 17.48 4.12 18.27 4.12C19.05 4.12 19.7 4.76 19.7 5.55Z" fill="black"/>',
+"youtube":'<path d="M23.68 7.47C23.68 7.47 23.45 5.82 22.73 5.1C21.82 4.15 20.8 4.14 20.33 4.09C16.99 3.84 11.97 3.84 11.97 3.84H11.96C11.96 3.84 6.93 3.84 3.59 4.09C3.12 4.14 2.1 4.15 1.19 5.1C0.47 5.82 0.24 7.47 0.24 7.47C0.24 7.47 0 9.41 0 11.35V13.16C0 15.09 0.24 17.03 0.24 17.03C0.24 17.03 0.47 18.68 1.19 19.41C2.1 20.36 3.29 20.33 3.83 20.43C5.74 20.61 11.96 20.67 11.96 20.67C11.96 20.67 16.99 20.66 20.33 20.42C20.8 20.36 21.82 20.36 22.73 19.41C23.45 18.68 23.68 17.03 23.68 17.03C23.68 17.03 23.92 15.1 23.92 13.16V11.35C23.92 9.41 23.68 7.47 23.68 7.47ZM9.49 15.36V8.64L15.95 12.01L9.49 15.36Z" fill="black"/>',
+"bank":'<path fill-rule="evenodd" clip-rule="evenodd" d="M12.55 12.85C14.69 13.18 14.98 14.45 15.16 15.63L15.31 16.67C15.51 17.99 15.94 20.75 15.94 22.19C15.94 22.55 15.91 22.82 15.85 22.97C15.75 23.21 15.47 23.43 15.09 23.62C14.15 23.85 13.17 23.97 12.16 23.97C12.05 23.97 11.95 23.97 11.84 23.97C11.44 23.85 11.13 23.66 10.97 23.39C10.48 22.59 10.45 20.82 10.44 18.74L10.43 17.88C10.42 15.68 10.4 13.78 11.2 13.1C11.51 12.84 11.95 12.76 12.55 12.85ZM7.87 17.64C8.33 17.61 8.63 19.9 8.69 21.63C8.74 22.84 8.61 23.33 8.41 23.51C8.18 23.44 7.95 23.35 7.73 23.26C7.58 22.99 7.47 22.57 7.4 22.02C7.18 20.28 7.37 17.67 7.87 17.64ZM19.53 21.05C19.5 21.21 19.46 21.33 19.41 21.44C19.01 21.76 18.59 22.05 18.15 22.31C18.01 22.34 17.89 22.32 17.83 22.22C17.25 21.2 17.03 18.01 17.59 17.73C18.32 17.37 19.63 20.5 19.53 21.05ZM11.99 0C18.52 0 23.82 5.17 23.97 11.6L23.97 11.93C23.96 14.83 22.89 17.49 21.13 19.55C21.07 19.52 20.95 19.41 20.74 19.1C20.52 18.78 18.64 15.88 18.64 12.55C18.64 11.9 19.58 10.88 20.41 9.99C21.03 9.32 21.62 8.68 21.84 8.18C22.11 7.54 21.92 7.09 21.61 6.94C21.34 6.8 20.92 6.9 20.63 7.42C20.15 8.26 20 8.41 19.3 8.97C18.61 9.53 17.52 10.1 17.52 9.37C17.52 8.97 18.13 8.08 18.43 7.45C18.74 6.82 18.41 6.36 17.77 6.36C16.53 6.36 15.7 7.95 15.7 8.5C15.7 9.04 15.97 9.12 15.97 9.76C15.97 10.41 14.6 11.24 13.32 11.24C12.08 11.24 11.36 10.99 11.06 10.28L10.94 9.93C10.63 9.04 10.42 8.39 10.03 7.72C9.83 7.36 9.52 7.11 9.25 6.89C8.9 6.62 8.71 6.37 8.68 6.18C8.64 5.99 8.62 5.64 9.22 4.83C9.83 4.02 9.91 3.41 9.61 3.1C9.5 2.99 9.31 2.92 9.08 2.92C8.65 2.92 8.07 3.14 7.46 3.76C6.52 4.72 7.05 5.63 7.05 6.04C7.05 6.44 6.88 6.67 6.32 7.21C5.75 7.76 5.55 8.23 5.49 10.12C5.46 11.1 5.29 11.66 5.14 12.15C5 12.59 4.88 13 4.87 13.59C4.86 14.25 4.97 14.67 5.1 15.16C5.22 15.61 5.36 16.13 5.44 16.99C5.58 18.33 5.53 19.46 5.28 20.61L5.22 20.9C5.15 21.19 5.09 21.44 5.01 21.53C1.98 19.37 0 15.86 0 11.88C0 5.32 5.37 0 11.99 0Z" fill="black"/>',
+};
+const LOGO='<svg viewBox="0 0 180 56" xmlns="http://www.w3.org/2000/svg"><path d="M81.79 4.78H91.22V41.52H81.79V4.78Z"/><path d="M81.79 32.83H96.02V41.52H81.79V32.83Z"/><path d="M65.19 42.29C62.72 42.29 60.45 41.74 58.38 40.65C56.32 39.57 54.68 38 53.46 35.96C52.24 33.89 51.63 31.47 51.63 28.71C51.63 25.86 52.22 23.39 53.41 21.32C54.6 19.21 56.23 17.59 58.29 16.47C60.36 15.35 62.65 14.78 65.19 14.78C67.75 14.78 70.07 15.35 72.13 16.47C74.2 17.59 75.82 19.21 77.01 21.32C78.23 23.39 78.84 25.86 78.84 28.71C78.84 31.47 78.23 33.89 77.01 35.96C75.79 38 74.13 39.57 72.04 40.65C69.97 41.74 67.69 42.29 65.19 42.29ZM65.19 33.82C66 33.82 66.71 33.61 67.3 33.2C67.89 32.76 68.35 32.15 68.66 31.37C69 30.59 69.18 29.67 69.18 28.61C69.18 27.52 69.02 26.59 68.71 25.81C68.39 24.99 67.93 24.36 67.3 23.92C66.71 23.48 66 23.25 65.19 23.25C64.37 23.25 63.67 23.48 63.08 23.92C62.48 24.36 62.03 24.99 61.72 25.81C61.4 26.59 61.25 27.52 61.25 28.61C61.25 29.67 61.4 30.59 61.72 31.37C62.06 32.15 62.53 32.76 63.12 33.2C63.72 33.61 64.41 33.82 65.19 33.82Z"/><path d="M36.24 42.29C33.77 42.29 31.5 41.74 29.44 40.65C27.37 39.57 25.73 38 24.51 35.96C23.29 33.89 22.68 31.47 22.68 28.71C22.68 25.86 23.28 23.39 24.46 21.32C25.65 19.21 27.28 17.59 29.34 16.47C31.41 15.35 33.71 14.78 36.24 14.78C38.81 14.78 41.12 15.35 43.19 16.47C45.25 17.59 46.88 19.21 48.07 21.32C49.29 23.39 49.9 25.86 49.9 28.71C49.9 31.47 49.29 33.89 48.07 35.96C46.85 38 45.19 39.57 43.09 40.65C41.03 41.74 38.74 42.29 36.24 42.29ZM36.24 33.82C37.06 33.82 37.76 33.61 38.35 33.2C38.95 32.76 39.4 32.15 39.71 31.37C40.06 30.59 40.23 29.67 40.23 28.61C40.23 27.52 40.07 26.59 39.76 25.81C39.45 24.99 38.98 24.36 38.35 23.92C37.76 23.48 37.06 23.25 36.24 23.25C35.43 23.25 34.72 23.48 34.13 23.92C33.54 24.36 33.08 24.99 32.77 25.81C32.46 26.59 32.3 27.52 32.3 28.61C32.3 29.67 32.46 30.59 32.77 31.37C33.11 32.15 33.58 32.76 34.18 33.2C34.77 33.61 35.46 33.82 36.24 33.82Z"/><path d="M14.22 42.34C11.12 42.34 8.73 41.39 7.04 39.48C5.35 37.54 4.5 34.96 4.5 31.73V8.36L13.94 6.47V30.3C13.94 31.56 14.22 32.47 14.78 33.05C15.34 33.63 16.19 33.92 17.31 33.92C18.1 33.92 18.77 33.83 19.33 33.66C19.93 33.46 20.46 33.21 20.93 32.9L20.97 32.85V40.4C20 41.05 19.02 41.52 18.02 41.83C17.02 42.17 15.75 42.34 14.22 42.34ZM0 15.55H20.93V23.77H0V15.55Z"/><path d="M161.47 15.55H170.9V25.19V25.86V41.52H161.47V15.55ZM170.29 25.76C170.48 21.88 171.15 19.14 172.31 17.54C173.46 15.91 175.03 15.09 177 15.09C177.62 15.09 178.19 15.18 178.69 15.35C179.19 15.52 179.63 15.74 180 16.01V25.35C179 24.7 177.73 24.38 176.2 24.38C174.45 24.38 173.12 24.94 172.21 26.06C171.34 27.18 170.9 28.83 170.9 31.01L170.29 25.76Z"/><path d="M101.01 15.55H110.25V22.18L109.69 21.01C109.94 19.95 110.42 18.95 111.14 18C111.89 17.05 112.85 16.28 114 15.7C115.16 15.09 116.44 14.78 117.85 14.78C119.92 14.78 121.73 15.35 123.29 16.47C124.86 17.59 126.08 19.17 126.95 21.21C127.83 23.25 128.27 25.58 128.27 28.2C128.27 30.99 127.81 33.46 126.91 35.6C126 37.71 124.73 39.36 123.11 40.55C121.48 41.71 119.62 42.29 117.52 42.29C115.52 42.29 113.78 41.78 112.31 40.76C110.88 39.7 109.91 38.36 109.41 36.73L110.44 35.45V51.22H101.01V15.55ZM114.38 33.87C115.22 33.87 115.96 33.65 116.58 33.2C117.24 32.76 117.74 32.15 118.09 31.37C118.43 30.55 118.6 29.63 118.6 28.61C118.6 27.56 118.43 26.64 118.09 25.86C117.74 25.04 117.24 24.41 116.58 23.97C115.96 23.49 115.24 23.25 114.43 23.25C113.61 23.25 112.89 23.48 112.27 23.92C111.64 24.36 111.16 24.99 110.81 25.81C110.47 26.62 110.3 27.57 110.3 28.66C110.3 29.72 110.47 30.64 110.81 31.42C111.16 32.2 111.64 32.81 112.27 33.26C112.89 33.66 113.6 33.87 114.38 33.87Z"/><path d="M96.02 15.54H110.24V24.23H96.02V15.54Z"/><path d="M140.79 14.78C142.2 14.79 143.48 15.09 144.64 15.7C145.8 16.28 146.75 17.05 147.5 18C147.86 18.47 148.15 18.95 148.39 19.44V15.55H157.64V41.52H148.21V38.86C147.71 39.57 147.09 40.2 146.33 40.76C144.86 41.78 143.12 42.29 141.12 42.29C139.03 42.29 137.16 41.71 135.54 40.55C133.91 39.36 132.64 37.71 131.74 35.6C130.83 33.46 130.38 30.99 130.38 28.2C130.38 25.59 130.81 23.26 131.69 21.21C132.57 19.17 133.79 17.59 135.35 16.47C136.91 15.35 138.73 14.78 140.79 14.78ZM144.22 23.26C143.41 23.26 142.69 23.49 142.06 23.97C141.4 24.41 140.9 25.04 140.56 25.86C140.21 26.64 140.04 27.56 140.04 28.61C140.04 29.63 140.21 30.55 140.56 31.37C140.9 32.15 141.4 32.76 142.06 33.21C142.69 33.65 143.42 33.87 144.27 33.87C145.05 33.87 145.75 33.66 146.38 33.26C147 32.81 147.49 32.2 147.83 31.42C148.18 30.64 148.35 29.72 148.35 28.66C148.35 27.58 148.18 26.62 147.83 25.81C147.49 24.99 147 24.36 146.38 23.92C145.75 23.48 145.03 23.26 144.22 23.26Z"/></svg>';
+const VISA='<svg width="54" height="18" viewBox="0 0 54 18"><path d="M35.16 0.03C31.33 0.03 27.91 2.07 27.91 5.83C27.91 10.15 33.98 10.45 33.98 12.62C33.98 13.53 32.96 14.35 31.22 14.35C28.75 14.35 26.9 13.21 26.9 13.21L26.11 17.01C26.11 17.01 28.24 17.97 31.06 17.97C35.25 17.97 38.55 15.83 38.55 12C38.55 7.44 32.45 7.15 32.45 5.14C32.45 4.42 33.29 3.64 35.02 3.64C36.98 3.64 38.58 4.47 38.58 4.47L39.36 0.8C39.36 0.8 37.62 0.03 35.16 0.03ZM0.12 0.3L0.03 0.86C0.03 0.86 1.64 1.16 3.09 1.77C4.96 2.46 5.09 2.86 5.41 4.11L8.84 17.69H13.43L20.52 0.3H15.93L11.38 12.12L9.52 2.11C9.35 0.96 8.49 0.3 7.43 0.3H0.12ZM22.36 0.3L18.76 17.69H23.14L26.72 0.3H22.36ZM46.76 0.3C45.7 0.3 45.14 0.88 44.73 1.9L38.32 17.69H42.91L43.8 15.06H49.39L49.93 17.69H53.97L50.44 0.3H46.76ZM47.35 5L48.71 11.52H45.07L47.35 5Z" fill="#8A8A8A"/></svg>';
+const MC='<svg width="40" height="24" viewBox="0 0 40 24"><path d="M25.25 3.06H15.17V20.94H25.25V3.06Z" fill="#A2A2A2"/><path d="M15.81 12C15.81 8.53 17.44 5.21 20.19 3.06C15.2 -0.82 7.94 0.03 4 4.99C0.1 9.92 0.96 17.05 5.98 20.94C10.18 24.19 16.03 24.19 20.22 20.94C17.44 18.79 15.81 15.47 15.81 12Z" fill="#8A8A8A"/><path d="M38.85 12C38.85 18.28 33.7 23.37 27.33 23.37C24.74 23.37 22.24 22.52 20.22 20.94C25.22 17.05 26.08 9.92 22.14 4.96C21.57 4.26 20.93 3.6 20.22 3.06C25.22 -0.82 32.48 0.03 36.38 4.99C37.98 6.98 38.85 9.44 38.85 12Z" fill="#B9B9B9"/></svg>';
+function ic(n,cls=''){return `<span class="ico ${cls}"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">${ICONS[n]||''}</svg></span>`}
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ---------- Конфигурация прототипа (что куда ведёт) ---------- */
+const HERO=[
+ {img:'img/banners/hero1.jpg',brand:'Black+Decker',title:'Ровный рез без лишних усилий',btn:'Выбрать лобзик',to:{v:'cat',id:'rezka'}},
+ {img:'img/banners/hero2.jpg',brand:'Bosch',title:'Мощь, которая помещается в руке',btn:'Смотреть гайковёрты',to:{v:'cat',id:'diski'}},
+ {img:'img/banners/hero3.jpg',brand:'Kärcher',title:'Чистый двор за одно утро',btn:'Подобрать мойку',to:{v:'cat',id:'rashodniki'}}];
+const PROMO=[
+ {img:'img/banners/promo1.jpg',e:'До 30 ноября',t:'−15% на бензопилы STIHL',s:'Готовим участок к зиме: пилы, цепи и масло для двухтактных двигателей по сниженным ценам'},
+ {img:'img/banners/promo2.jpg',e:'До 15 декабря',t:'Аккумулятор в подарок к дрели Makita',s:'Покупаете дрель-шуруповёрт серии LXT — аккумулятор 18V 3 Ач добавим бесплатно'},
+ {img:'img/banners/promo3.jpg',e:'Весь ноябрь',t:'Средства Kärcher: 2 по цене 1',s:'Шампуни и очистители для моек высокого давления и моющих пылесосов'}];
+const REELS_HOME=['reel1','reel2','reel3']; const REEL_PRODUCT='reel4';
+const INSTAGRAM='https://www.instagram.com/tssp.kz/';
+const BRANDS=['KÄRCHER','STALKER','BOSCH','makita','STIHL','UNI-T','BIHUI','BLACK+DECKER','QBRICK','DeWALT'];
+const CAT_ORDER=['rashodniki','rezka','diski','almaz','beton'];
+const MENU={c1:['Электроинструмент','Генераторы','Компрессоры','Сварка','Строительная техника','Станки','Уборочная техника','Садовая техника','Насосы и мотопомпы','Климат','Складская техника','Измерительный инструмент','Ручной инструмент','Электрика и свет','Лестницы и стремянки','Спецодежда и СИЗ','Автосервис','Для мастерской','Стройматериалы','Крепёж и метизы',['Расходники','rashodniki']],
+ rashodniki:['Сверление и бурение',['Резка и шлифовка','rezka'],'Биты и наборы','Всё для внутренней отделки','Мешки'],
+ rezka:[['Диски','diski'],'Шлифовальные чашки','Абразивные материалы','Круги для дрелей','Щетки для щеточных шлифмашин','Фрезы','Наборы фрез','Шарошки и борфрезы','Наборы шарошек и борфрез','Наборы насадок','Щетки и корщетки для деталей','Насадки для УШМ','Насадки для граверов','Пыльные полотна','Круги заточные','Насадки для полировальных машин','Полировальные насадки на дрель','Бруски и камни для заточки','Франкфурты для мозаичных машин'],
+ diski:[['Диски алмазные','almaz'],'Диски пильные','Диски отрезные абразивные','Диски шлифовальные','Лепестковые шлифовальные круги и диски','Алмазные гибкие шлифовальные диски','Отрезные диски по дереву'],
+ almaz:[['По бетону','beton'],'По свежеуложенному бетону','По слабоармированному бетону','По высокоармированному бетону','По бетонному строительному блоку','По кирпичу','По известково-песчаному кирпичу','По полнотелому кирпичу','По строительному раствору','По мягкому камню','По твёрдому камню','По мягкой керамической плитке','По твёрдой керамической плитке','По фиброцементным плитам','По газоблоку','По асфальту','По битуму','По стеклу','По рубероиду','По пластику','По стали','По пенобетону','По нержавеющей стали','По листовой стали','По чугуну','По алюминию','По цветным металлам','По металлическим трубам и профилю','По металлическим сэндвич-панелям','По мягкой древесине','По твёрдой древесине','По древесной плите']};
+
+/* ---------- Состояние ---------- */
+const S={more:{},price:{},heroI:0,promoI:0,view:'home',cat:null,cart:{},menuOpen:false,menuPath:[],filters:{},closed:{},sort:'по популярности',sortOpen:false,variant:{},gal:0,inst:false,specsAll:false,viewer:null};
+let C=null, IDMAP={};
+const cartCount=()=>Object.values(S.cart).reduce((a,b)=>a+b,0);
+const imgFor=c=>{const id=c[0]||IDMAP[c[1]+' '+c[2]];return id?`img/p/${id}.jpg`:''};
+const keyOf=c=>c[0]||(c[1]+' '+c[2]);
+
+/* ---------- Компоненты ---------- */
+function Delivery(t){const [a,b]=String(t).split('\n');return `<div class="delivery">${ic('calendar')}<div class="lbl"><span>${esc(a)}</span><span>${esc(b||'')}</span></div></div>`}
+function Stepper(k,big){return `<div class="stepper ${big?'big':''}" data-stop><button aria-label="Меньше" data-dec="${esc(k)}">${ic('minus')}</button><span class="v">${S.cart[k]}</span><button aria-label="Больше" data-inc="${esc(k)}">${ic('plus')}</button></div>`}
+function ProductCard(c){
+  const k=keyOf(c), out=c[8]==='out', inCart=S.cart[k]>0;
+  const badge=c[5]?`<span class="badge ${c[5]==='Новинка'?'new':''}">${esc(c[5])}</span>`:'';
+  let foot;
+  if(out) foot=`<div class="oos">${ic('x')}Нет в наличии</div>`;
+  else if(inCart) foot=Stepper(k);
+  else foot=`${Delivery(c[7])}<button class="add" aria-label="В корзину" data-add="${esc(k)}">${ic('shopping-cart')}</button>`;
+  return `<article class="pcard ${out?'out':''}" data-goprod tabindex="0">
+   <div class="media"><img loading="lazy" src="${imgFor(c)}" alt="${esc(c[1]+' '+c[2])}">${badge}</div>
+   <div class="info"><div class="bonus"><i></i>${esc(c[6])}</div><div class="price"><span class="t-price-l">${esc(c[3])}</span>${c[4]?`<span class="t-price-old">${esc(c[4])}</span>`:''}</div></div>
+   <div class="title-wrap"><div class="title"><b>${esc(c[1])}</b> ${esc(c[2])}</div></div>
+   <div class="pfoot">${foot}</div></article>`}
+function SectionHeader(title,{arrows,link,id}={}){
+  return `<div class="sect-head"><div class="left"><h2 class="t-h1" style="margin:0">${esc(title)}</h2>${link?`<span class="link">${esc(link)}${ic('chevron-right')}</span>`:''}</div>${arrows?`<div class="arrows"><button class="iconbtn" data-scroll="${id}" data-dir="-1" aria-label="Назад">${ic('chevron-left')}</button><button class="iconbtn" data-scroll="${id}" data-dir="1" aria-label="Вперёд">${ic('chevron-right')}</button></div>`:''}</div>`}
+function Carousel(id,cards){return `<div class="row-scroll" id="${id}">${cards.map(ProductCard).join('')}</div>`}
+function Reel(name){return `<div class="reel" data-reel="${name}" role="button" tabindex="0" aria-label="Смотреть видео"><img src="media/${name}.jpg" alt=""><span class="shade t"></span><span class="shade b"></span>${ic('play','play')}<a class="open" href="${INSTAGRAM}" target="_blank" rel="noopener" aria-label="Открыть в Instagram" data-stop>${ic('arrow-up-right')}</a></div>`}
+
+/* ---------- Хедер ---------- */
+function Header(){
+  return `<div class="wrap"><div class="utility"><div class="left"><span class="city">${ic('map-pin')}Алматы${ic('chevron-down','chev')}</span><span class="phone">+7 778 021 01 65</span><span class="callback">Заказать звонок</span></div><div class="right"><span>Контакты</span><span>Адреса магазинов</span><span>О компании</span><span>Покупателям</span><span>Сотрудничество</span></div></div></div>
+  <div class="shopping" id="shopping"><div class="wrap" style="position:relative"><div class="row">
+    <button class="logo" data-home aria-label="На главную">${LOGO}</button>
+    <button class="btn-catalog" id="btnCatalog" aria-expanded="${S.menuOpen}">${ic(S.menuOpen?'x':'layout-grid')}Каталог</button>
+    <div class="search">${ic('search')}<span class="ph">Поиск товаров</span><span class="go">${ic('arrow-right')}</span></div>
+    <div class="actions"><span class="haction">${ic('user')}Войти</span><span class="haction">${ic('package')}Заказы</span><span class="haction" id="cartIco">${ic('bag')}Корзина${cartCount()?`<span class="badge-count" id="cartBadge">${cartCount()}</span>`:''}</span></div>
+  </div></div>${S.menuOpen?CatalogMenu():''}</div>`}
+function CatalogMenu(){
+  const path=S.menuPath; const cols=[['c1',MENU.c1]];
+  path.forEach(p=>{ if(MENU[p]) cols.push([p,MENU[p]]); });
+  while(cols.length<5) cols.push(null);
+  return `<div class="catalog"><div class="wrap"><div class="cols ${path.length?'has-path':''}">${cols.map((col,i)=>{ if(!col) return '<div></div>';
+    const leaf=i===4; return `<ul class="${leaf?'col-leaf':''}">${col[1].map(it=>{ const [label,id]=Array.isArray(it)?it:[it,null]; const act=id&&path[i]===id;
+      return `<li><button class="mitem ${id?'live':'dead'} ${act?'active':''}" ${id?`data-menu="${id}" data-level="${i}"`:''} ${id?'':'tabindex="-1"'}>${esc(label)}${leaf?'':ic('chevron-right')}</button></li>`}).join('')}</ul>`}).join('')}</div></div></div>`}
+
+/* ---------- Футер ---------- */
+function Footer(){
+  const L=(t,a)=>`<div><h6>${t}</h6><ul>${a.map(x=>`<li>${x}</li>`).join('')}</ul></div>`;
+  return `<footer class="footer"><div class="wrap"><div class="cols">
+   <div style="display:flex;flex-direction:column;gap:16px"><span class="city t-caption-strong" style="display:flex;gap:6px;align-items:center">${ic('map-pin')}Алматы${ic('chevron-down','chev')}</span><span style="font-size:20px;font-weight:700">+7 778 021 01 65</span><span style="display:flex;gap:24px">${ic('instagram')}${ic('youtube')}</span></div>
+   ${L('О компании',['О нас','СМИ о нас','Реквизиты','Вакансии','Контакты','Адреса магазинов'])}${L('Покупателям',['Как сделать заказ','Доставка','Оплата','Обмен, возврат, гарантия','Система привилегий'])}
+   <div style="display:flex;flex-direction:column;gap:32px">${L('Сотрудничество',['Дилерам','Поставщикам','Арендодателям'])}${L('Поддержка',['Сервисный центр'])}</div></div>
+   <div class="bottom"><span class="logo" style="width:240px;height:75px">${LOGO}</span><div class="legal"><span>Сеть магазинов «TSSP» © 2003 – 2026</span><span class="muted">Публичная оферта</span><span class="muted">Политика конфиденциальности</span><span style="display:flex;gap:16px;align-items:center">${VISA}${MC}</span></div></div></div></footer>`}
+
+/* ---------- Главная ---------- */
+function Home(){
+  const h=C.home;
+  return `<div class="wrap" style="display:flex;flex-direction:column;gap:96px;padding-top:40px">
+  <div class="hero-wrap"><div class="car" id="heroTrack" style="transform:translateX(${-S.heroI*1350}px)">${HERO.map((b,i)=>`<div class="hero" data-hero="${i}"><img src="${b.img}" alt="" onerror="this.remove()"></div>`).join('')}</div>
+   <div class="hero-ui" id="heroUI" data-i="${S.heroI}"><div class="content"><div class="text hfade"><span class="brand hb">${esc(HERO[S.heroI].brand)}</span><span class="t-display ht">${esc(HERO[S.heroI].title)}</span></div><button class="btn btn-primary hbtn" data-heroto="">${esc(HERO[S.heroI].btn)}</button></div><div class="pagination">${HERO.map((_,j)=>`<i class="${j===S.heroI?'on':''}"></i>`).join('')}</div></div></div>
+  <section class="sect">${SectionHeader('Хиты продаж',{arrows:1,id:'hits'})}${Carousel('hits',h.hits)}</section>
+  <section class="about"><div class="txt"><h2 class="t-h1" style="margin:0">Рядом<br>с мастером</h2><p class="t-body-text" style="margin:0">Мы гордимся тем, что являемся частью ваших амбициозных проектов</p></div>
+   <div class="stats"><div class="row">${[['4.9','оценка от наших клиентов'],['20+','лет в индустрии'],['178','магазинов в Казахстане'],['>100 000','инструментов мировых брендов']].map(([a,b],i)=>`<div class="stat" style="width:${i<3?165:214}px"><b>${a}</b><span>${b}</span></div>`).join('')}</div><span class="link">Подробнее о нас${ic('chevron-right')}</span></div></section>
+  <section class="sect"><div class="sect-head"><div class="left"><h2 class="t-h1" style="margin:0">Акции</h2><span class="link">Все предложения${ic('chevron-right')}</span></div><div class="arrows"><button class="iconbtn" data-scroll="promoTrack" data-dir="-1" aria-label="Назад">${ic('chevron-left')}</button><button class="iconbtn" data-scroll="promoTrack" data-dir="1" aria-label="Вперёд">${ic('chevron-right')}</button></div></div>
+   <div class="car" id="promoTrack" style="transform:translateX(${-S.promoI*945}px)">${PROMO.map(p=>`<div class="promo"><div class="media"><img src="${p.img}" alt="" onerror="this.remove()"></div><div class="txt"><span class="t-body-s muted">${esc(p.e)}</span><span class="t-h2">${esc(p.t)}</span><span class="t-body-text muted">${esc(p.s)}</span></div></div>`).join('')}</div></section>
+  <section class="sect">${SectionHeader('Рассказываем об инструментах и не только')}<div class="reels">${REELS_HOME.map(Reel).join('')}<a class="cta" href="${INSTAGRAM}" target="_blank" rel="noopener"><span class="t-h1">Мы<br>в Instagram</span><span class="t-body-text" style="margin-top:12px">Больше 40 000 человек уже следят за нашей лентой</span>${ic('instagram','ig')}</a></div></section>
+  <section class="sect">${SectionHeader('Вам будет интересно')}<div class="grid5">${h.interest.map(ProductCard).join('')}</div></section>
+  <section class="sect" style="gap:40px"><div style="display:flex;flex-direction:column;align-items:center;gap:16px"><h2 class="t-h1" style="margin:0">50+ мировых брендов</h2><span class="link">Полный каталог${ic('chevron-right')}</span></div>
+   <div class="brands">${BRANDS.map((b,i)=>`<div class="brand-tile"><img src="img/brands/${i+1}.png" alt="${esc(b)}" onerror="this.replaceWith(document.createTextNode(this.alt))"></div>`).join('')}</div></section>
+  </div>`}
+
+/* ---------- Категория ---------- */
+function crumbs(id){ const chain=[]; let c=id; while(c){chain.unshift(c); c=C.categories[c].parent;}
+  return `<nav class="crumbs" aria-label="Хлебные крошки"><button data-home>главная</button><span>/</span>${chain.slice(0,-1).map(x=>`<button data-cat="${x}">${esc(C.categories[x].title.toLowerCase())}</button><span>/</span>`).join('')}</nav>`}
+function Check(id,label,extra=''){const on=S.filters[id];return `<label class="check ${on?'on':''}" data-check="${esc(id)}"><span class="box">${ic('check')}</span>${esc(label)}${extra}</label>`}
+const fmt=n=>String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,' ');
+const num=t=>Number(String(t).replace(/[^\d]/g,''));
+/* Демо-значения для «Ещё N» и фильтров без значений в макете */
+const MORE_BRANDS=['Makita','DeWALT','Metabo','HiKOKI','Kraftool','Hammer','Sturm','Patriot','Einhell','ALTECO'];
+const MORE_PURPOSE=['Кирпич облицовочный','Газоблок','Тротуарная плитка','Бордюрный камень','Керамогранит','Гранит','Мрамор','Черепица'];
+const EXTRA_VALUES={'Назначение':['Бетон','Железобетон','Кирпич','Камень твёрдый','Асфальт'],'Диаметр, мм':['115','125','150','180','230'],'Посадочный диаметр, мм':['22.2','22.23','25.4'],'Высота слоя, мм':['7','8','10','12'],'Макс. частота вращения, об/мин':['6 600','8 500','11 000','12 100','13 300']};
+function More(id,n,items){const open=S.more[id];return (open?items.join(''):'')+`<button class="more ${open?'open':''}" data-more="${esc(id)}">${open?'Свернуть':'Ещё '+n}${ic('chevron-down')}</button>`}
+function PriceRange(cat,c){const lo=num(c.price[0]),hi=num(c.price[1]);const [a,b]=S.price[cat]||[0,1];
+ return `<div class="range" data-range="${cat}" data-lo="${lo}" data-hi="${hi}"><div class="vals"><span data-v="0">от ${fmt(lo+(hi-lo)*a)} ₸</span><span data-v="1">до ${fmt(lo+(hi-lo)*b)} ₸</span></div><div class="rail"><span class="fill" style="left:${a*100}%;right:${(1-b)*100}%"></span><span class="thumb" data-th="0" tabindex="0" role="slider" aria-label="Цена от" style="left:${a*100}%"></span><span class="thumb" data-th="1" tabindex="0" role="slider" aria-label="Цена до" style="left:${b*100}%"></span></div></div>`}
+function FGroup(id,title,body,defClosed){const closed=S.closed[id]??defClosed;return `<div class="fgroup ${closed?'closed':''}"><button class="fhead" data-toggle="${esc(id)}" data-def="${defClosed?1:0}">${esc(title)}${ic('chevron-up')}</button><div class="fbody">${body}</div></div>`}
+function Category(id){
+  const c=C.categories[id];
+  const sub=c.sub.length?`<div class="fgroup"><span class="t-body-m-strong">Категория</span><div class="fbody">${c.sub.map(([t,n,to])=>`<button class="subcat ${to?'live':'dead'}" ${to?`data-cat="${to}"`:'tabindex="-1"'}>${esc(t)}<span class="n">(${n})</span></button>`).join('')}${c.subMore?More('sub:'+id,c.subMore,(MENU[id]||[]).slice(c.sub.length).map(x=>Array.isArray(x)?x[0]:x).map(t=>`<button class="subcat dead" tabindex="-1">${esc(t)}</button>`)):''}</div></div>`:'';
+  const pick=`<div class="fgroup"><label class="pickup" data-check="pickup"><span>Самовывоз сегодня<br>в <u>Алматы</u></span><span class="check ${S.filters.pickup?'on':''}" style="pointer-events:none"><span class="box">${ic('check')}</span></span></label></div>`;
+  const price=FGroup('price','Цена, ₸',PriceRange(id,c),false);
+  const brands=FGroup('brand','Бренд',c.brands.map(b=>Check('b:'+b,b)).join('')+More('brand:'+id,c.brandsMore,MORE_BRANDS.filter(b=>!c.brands.includes(b)).map(b=>Check('b:'+b,b))),false);
+  const extra=(c.extra||[]).map(([t,opts,open,more])=>{const o2=opts.length?opts:(EXTRA_VALUES[t]||[]); return FGroup('x:'+t,t,o2.map(o=>Check('x:'+t+':'+o,o)).join('')+(more?More('x:'+t+':'+id,more,MORE_PURPOSE.map(o=>Check('x:'+t+':'+o,o))):''),!open)}).join('');
+  const sorts=['по популярности','сначала дешевле','сначала дороже','новинки'];
+  return `<div class="wrap" style="padding-top:40px"><div class="cat-head">${crumbs(id)}<h1 class="t-h1" style="margin:0">${esc(c.title)}</h1></div>
+   <div class="cat-main"><aside class="filters">${sub}${pick}${price}${brands}${extra}</aside>
+   <div><div class="toolbar"><button class="sort" id="sortBtn" aria-expanded="${S.sortOpen}">${esc(S.sort)}${ic(S.sortOpen?'chevron-up':'chevron-down')}</button><span class="t-body-s-strong">${esc(c.count)}</span>
+    ${S.sortOpen?`<div class="sortmenu">${sorts.map(s=>`<button data-sort="${s}">${s}${s===S.sort?ic('check'):''}</button>`).join('')}</div>`:''}</div>
+    <div class="grid4">${c.cards.map(ProductCard).join('')}</div></div></div></div>`}
+
+/* ---------- Товар ---------- */
+function Product(){
+  const p=C.product, k=p.id, inCart=S.cart[k]>0;
+  const imgs=[0,1,2].map(i=>`img/p/33794_big${i}.jpg`);
+  const stars=n=>`<span class="stars">${[1,2,3,4,5].map(i=>ic('star',i<=n?'':'off')).join('')}</span>`;
+  const variants=p.variants.map(([t,opts],gi)=>{const sel=S.variant[gi]??opts.findIndex(o=>o[1]==='sel');
+    return `<div class="divider"></div><div class="vgroup"><span class="t-body-l-strong">${esc(t)}</span><div class="vopts">${opts.map(([v,st],i)=>`<button class="chip ${st==='na'?'na':(i===sel?'':'unsel')}" ${st==='na'?'disabled':`data-var="${gi}:${i}"`}>${esc(v)}</button>`).join('')}</div></div>`}).join('');
+  const inst=S.inst?'190 ₸ × 12 мес.':'В рассрочку';
+  return `<div class="wrap" style="padding-top:40px">
+   <nav class="crumbs" style="margin-bottom:32px"><button data-home>главная</button><span>/</span>${CAT_ORDER.map(x=>`<button data-cat="${x}">${esc(C.categories[x].title.toLowerCase())}</button><span>/</span>`).join('')}</nav>
+   <div class="prod"><div>
+    <div class="gallery"><div class="thumbs">${imgs.map((s,i)=>`<button class="tb ${i===S.gal?'on':''}" data-galto="${i}" aria-label="Фото ${i+1}"><img src="${s}" alt=""></button>`).join('')}</div>
+     <div class="main" id="galMain"><div class="strip" style="transform:translateX(-${S.gal*100}%)">${imgs.map(s=>`<img src="${s}" alt="${esc(p.brand+' '+p.title)}" draggable="false">`).join('')}</div>
+      <button class="iconbtn nav l" data-gal="-1" aria-label="Предыдущее фото" ${S.gal===0?'disabled':''}>${ic('chevron-left')}</button><button class="iconbtn nav r" data-gal="1" aria-label="Следующее фото" ${S.gal===imgs.length-1?'disabled':''}>${ic('chevron-right')}</button></div>
+     <div class="badges"><span class="badge l">${esc(p.badge)}</span></div></div>
+    <div class="content">
+     <section class="sect">${SectionHeader('О товаре')}<p class="t-body-text" style="margin:0">${esc(p.about)}</p><div class="t-caption" style="display:flex;gap:24px"><span><span class="muted">Артикул:</span> <b>${p.sku}</b></span><span><span class="muted">Код товара:</span> <b>${p.code}</b></span></div></section>
+     <section class="sect">${SectionHeader('Назначение')}<div class="tags">${p.purpose.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div></section>
+     <section class="sect">${SectionHeader('Характеристики')}<div class="specs">${(S.specsAll?p.specs.concat(p.specsMore.slice(0,2)):p.specs).map(([a,b])=>`<div class="spec"><span>${esc(a)}</span><span>${esc(b)}</span></div>`).join('')}</div><button class="link" id="specsBtn" style="align-self:flex-start">${S.specsAll?'Свернуть':'Все характеристики'}${ic(S.specsAll?'chevron-up':'chevron-down')}</button></section>
+     <section class="sect">${SectionHeader('Особенности Cutop Profi')}<ul class="bullets">${p.features.map(f=>`<li>${esc(f)}</li>`).join('')}</ul></section>
+     <section class="sect">${SectionHeader('Гарантия')}<div class="warranty"><div class="row">${p.warranty.map(([a,b])=>`<div><b>${a}</b><span class="t-body-s-strong">${b}</span></div>`).join('')}</div><span class="link">Вся информация о гарантии${ic('chevron-right')}</span></div></section>
+     <section class="sect">${SectionHeader('Документация')}<div>${p.docs.map(([a,b])=>`<div class="doc">${ic('file-text')}<div class="t"><span class="t-body-m-strong">${esc(a)}</span><span class="t-caption muted">${b}</span></div><span class="link">${ic('download')}Скачать</span></div>`).join('')}</div></section>
+     <section class="sect">${SectionHeader('Видео о товаре')}<div style="width:307.5px">${Reel(REEL_PRODUCT)}</div></section>
+    </div></div>
+    <aside class="buy">
+     <div style="display:flex;flex-direction:column;gap:12px"><span class="link" style="cursor:default">${esc(p.brand)}${ic('chevron-right')}</span><h1 class="ptitle" style="margin:0">${esc(p.title)}</h1></div>
+     <div style="display:flex;flex-direction:column;gap:8px"><div class="bonus"><i></i>${esc(p.bonus)}</div><div class="price"><span class="t-price-xl">${esc(p.price)}</span><span class="t-price-old-l">${esc(p.old)}</span></div></div>
+     ${variants}<div class="divider"></div>
+     <div style="display:flex;flex-direction:column;gap:16px"><span class="t-body-l-strong city">Ваш город: <u>Алматы</u></span>${p.delivery.map(([a,b,i])=>`<div class="dopt">${ic(i)}<div class="t"><span class="t-body-l-strong">${esc(a)}</span><span class="t-body-m muted">${esc(b)}</span></div></div>`).join('')}</div>
+     <div style="display:flex;flex-direction:column;gap:12px">${inCart?Stepper(k,true):`<button class="btn btn-primary" data-add="${k}">${ic('shopping-cart')}В корзину</button>`}<button class="btn btn-installment" id="instBtn">${ic('bank')}${inst}</button></div>
+    </aside></div>
+   <section class="sect" style="margin-top:96px">${SectionHeader('Отзывы')}<div class="reviews"><div class="rsum"><div style="display:flex;flex-direction:column;gap:8px"><div style="display:flex;align-items:center;gap:12px"><span class="t-display">4,7</span>${stars(5).replace(/ico /g,'ico ')}</div><span class="t-body-m muted">3 отзыва</span></div>
+     <div style="display:flex;flex-direction:column;gap:8px">${[[5,2],[4,1],[3,0],[2,0],[1,0]].map(([s,n])=>`<div class="rbar"><span class="lab">${s}${ic('star')}</span><span class="track"><i style="width:${n/3*100}%"></i></span><span class="n">${n}</span></div>`).join('')}</div>
+     <span class="btn btn-secondary" style="cursor:default">Написать отзыв</span></div>
+     <div>${p.reviews.map(([n,r,d,t])=>`<div class="review"><div class="h"><span class="t-h4">${esc(n)}</span>${stars(r)}</div><span class="t-body-s muted">${esc(d)}</span><p class="t-body-text">${esc(t)}</p></div>`).join('')}</div></div></section>
+   <section class="sect" style="margin-top:96px">${SectionHeader('Сопутствующие товары',{arrows:1,id:'related'})}${Carousel('related',p.related)}</section></div>`}
+
+/* ---------- Рендер ---------- */
+const app=document.getElementById('app');
+function render(keepScroll){
+  if(window.matchMedia('(max-width: 767px)').matches) return mRender(keepScroll);
+  const y=window.scrollY; const rows={}; app.querySelectorAll('.row-scroll').forEach(el=>rows[el.id]=el.scrollLeft);
+  let body=S.view==='home'?Home():S.view==='cat'?Category(S.cat):Product();
+  app.innerHTML=`<div class="page-scale">${Header()}<main>${body}</main>${Footer()}</div>${S.menuOpen?'<div class="scrim" id="scrim"></div>':''}${S.viewer?Viewer():''}`;
+  Object.entries(rows).forEach(([id,x])=>{const el=document.getElementById(id); if(el) {el.style.scrollBehavior='auto'; el.scrollLeft=x; el.style.scrollBehavior='';}});
+  if(keepScroll) window.scrollTo(0,y);
+  bindDrag(); updateArrows(); onScroll(); setupHero(); fitBuy();
+  if(S.viewer) startViewer();
+}
+function go(view,id){S.view=view;S.cat=id||null;S.menuOpen=false;S.menuPath=[];S.sortOpen=false;S.gal=0;S.inst=false;S.specsAll=false;S.filters={};S.closed={};S.more={};render();window.scrollTo(0,0)}
+function toast(t){const el=document.getElementById('toast');el.textContent=t;el.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('show'),1800)}
+function bump(){const b=document.getElementById('cartBadge'); if(b){b.classList.add('bump');setTimeout(()=>b.classList.remove('bump'),200)}}
+
+/* ---------- События ---------- */
+let dragMoved=false;
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-home],[data-cat],#btnCatalog,[data-menu],#scrim,[data-add],[data-inc],[data-dec],[data-scroll],[data-heroto],[data-hero],[data-reel],[data-check],[data-more],[data-toggle],#sortBtn,[data-sort],[data-var],[data-gal],[data-galto],#instBtn,#specsBtn,[data-vclose],[data-vnav],[data-vplay],[data-vmute],[data-goprod],[data-stop]');
+  if(!t) { if(S.sortOpen&&!e.target.closest('.sortmenu')){S.sortOpen=false;render(true)} return; }
+  if(dragMoved){e.preventDefault();return}
+  const d=t.dataset;
+  if('stop' in d && !t.matches('[data-inc],[data-dec],[data-add]')) return;
+  if('home' in d) return go('home');
+  if(d.cat) return go('cat',d.cat);
+  if(t.id==='btnCatalog'){S.menuOpen=!S.menuOpen;S.menuPath=[];return render(true)}
+  if(t.id==='scrim'){S.menuOpen=false;return render(true)}
+  if(d.menu) return go('cat',d.menu);
+  if(d.add){e.stopPropagation();S.cart[d.add]=1;render(true);bump();return toast('Товар добавлен в корзину')}
+  if(d.inc){e.stopPropagation();S.cart[d.inc]++;render(true);return bump()}
+  if(d.dec){e.stopPropagation();S.cart[d.dec]--; if(S.cart[d.dec]<=0) delete S.cart[d.dec]; return render(true)}
+  if(d.scroll){ if(CARS[d.scroll]){CARS[d.scroll].go(Number(d.dir));return} const el=document.getElementById(d.scroll); el.scrollBy({left:5*270*Number(d.dir),behavior:'smooth'}); return}
+  if(d.heroto!==undefined){e.stopPropagation(); const h=HERO[d.heroto===''?S.heroI:+d.heroto].to; return go(h.v,h.id)}
+  if(d.hero!==undefined){const h=HERO[+d.hero].to; return go(h.v,h.id)}
+  if(d.reel){S.viewer={list:S.view==='home'?REELS_HOME:[REEL_PRODUCT],name:d.reel,muted:false,paused:false};return render(true)}
+  if(d.check){e.preventDefault();S.filters[d.check]=!S.filters[d.check];return render(true)}
+  if(d.more){e.preventDefault();S.more[d.more]=!S.more[d.more];return render(true)}
+  if(d.toggle){S.closed[d.toggle]=!(S.closed[d.toggle]??(d.def==='1'));return render(true)}
+  if(t.id==='sortBtn'){S.sortOpen=!S.sortOpen;return render(true)}
+  if(d.sort){S.sort=d.sort;S.sortOpen=false;return render(true)}
+  if(d.var){const [g,i]=d.var.split(':').map(Number);S.variant[g]=i;return render(true)}
+  if(d.gal){S.gal=Math.max(0,Math.min(2,S.gal+Number(d.gal)));return render(true)}
+  if(d.galto){S.gal=+d.galto;return render(true)}
+  if(t.id==='instBtn'){S.inst=!S.inst;return render(true)}
+  if(t.id==='specsBtn'){S.specsAll=!S.specsAll;return render(true)}
+  if('vclose' in d){S.viewer=null;return render(true)}
+  if(d.vnav){const L=S.viewer.list;const i=L.indexOf(S.viewer.name)+Number(d.vnav); if(L[i]){S.viewer.name=L[i];S.viewer.paused=false;render(true)} return}
+  if('vplay' in d){const v=document.getElementById('vvid'); if(v.paused){v.play();S.viewer.paused=false}else{v.pause();S.viewer.paused=true} t.innerHTML=ic(S.viewer.paused?'play':'pause'); return}
+  if('vmute' in d){const v=document.getElementById('vvid'); v.muted=!v.muted;S.viewer.muted=v.muted;t.innerHTML=ic(v.muted?'volume-off':'volume');return}
+  if('goprod' in d) return go('prod');
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){ if(S.viewer){S.viewer=null;render(true)} else if(S.menuOpen){S.menuOpen=false;render(true)} }
+  if(S.viewer&&(e.key==='ArrowRight'||e.key==='ArrowLeft')){const L=S.viewer.list;const i=L.indexOf(S.viewer.name)+(e.key==='ArrowRight'?1:-1); if(L[i]){S.viewer.name=L[i];render(true)}}
+  if(e.key==='Enter'&&e.target.matches('[data-goprod],[data-reel]')) e.target.click();
+});
+document.addEventListener('mouseover',e=>{
+  if(!S.menuOpen) return; const t=e.target.closest('.mitem.live'); if(!t) return;
+  const lvl=+t.dataset.level; const np=S.menuPath.slice(0,lvl); np[lvl]=t.dataset.menu;
+  if(np.join()!==S.menuPath.join()){S.menuPath=np; const cat=document.querySelector('.catalog'); const sc=cat?cat.scrollTop:0; render(true); const c2=document.querySelector('.catalog'); if(c2) c2.scrollTop=sc;}
+});
+function onScroll(){const s=document.getElementById('shopping'); if(s) s.classList.toggle('scrolled',window.scrollY>52)}
+window.addEventListener('scroll',onScroll,{passive:true});
+
+/* Ленты главного баннера и Акций: перетаскивание курсором/пальцем + плавная доводка (transform, без прокрутки) */
+const CARS={};
+function car(id,key,step,count,visible){
+  const el=document.getElementById(id); if(!el) return null;
+  const max=count-visible; const set=(i,anim=true)=>{S[key]=Math.max(0,Math.min(max,i)); el.classList.toggle('dragging',!anim); el.style.transform=`translateX(${-S[key]*step}px)`; if(id==='heroTrack') syncDots(); updateArrows();};
+  let down=false,x0=0,dx=0,moved=false;
+  el.onpointerdown=e=>{if(e.button>0)return;down=true;moved=false;dx=0;x0=e.clientX;el.classList.add('dragging');stopAuto();window.addEventListener('pointermove',mv);window.addEventListener('pointerup',up,{once:true})};
+  const mv=e=>{if(!down)return; const z=parseFloat(app.style.zoom)||1; dx=(e.clientX-x0)/z; if(Math.abs(dx)>6) moved=true;
+    let off=-S[key]*step+dx; const lo=-max*step; if(off>0) off*=.35; if(off<lo) off=lo+(off-lo)*.35; el.style.transform=`translateX(${off}px)`};
+  const up=e=>{window.removeEventListener('pointermove',mv);if(!down)return;down=false;el.classList.remove('dragging'); dragMoved=moved; let i=S[key]; if(dx<-step*.15) i++; else if(dx>step*.15) i--; set(i); setTimeout(()=>dragMoved=false,30)};
+  el.addEventListener('wheel',e=>{if(Math.abs(e.deltaX)<Math.abs(e.deltaY)||Math.abs(e.deltaX)<20) return; e.preventDefault(); const now=Date.now(); if(now-(el._w||0)<450) return; el._w=now; set(S[key]+(e.deltaX>0?1:-1))},{passive:false});
+  return {go:d=>{stopAuto();set(S[key]+d)},set,max,key};
+}
+function syncDots(){heroSync(S.heroI)}
+function heroSync(i){const u=document.getElementById('heroUI'); if(!u) return; u.querySelectorAll('.pagination i,.m-dots i').forEach((d,k)=>d.classList.toggle('on',k===i));
+  if(u.dataset.i==String(i)) return; u.dataset.i=i;
+  const b=HERO[i]; u.classList.add('swap'); clearTimeout(u._t); u._t=setTimeout(()=>{u.querySelector('.hb').textContent=b.brand;u.querySelector('.ht').textContent=b.title;u.querySelector('.hbtn').textContent=b.btn;u.classList.remove('swap')},220)}
+function bindDrag(){
+  delete CARS.heroTrack; delete CARS.promoTrack;
+  const h=car('heroTrack','heroI',1350,HERO.length,1); if(h) CARS.heroTrack=h;
+  const p=car('promoTrack','promoI',945,PROMO.length,1); if(p) CARS.promoTrack=p;
+  document.querySelectorAll('.row-scroll').forEach(el=>el.onscroll=updateArrows);
+}
+function updateArrows(){
+  document.querySelectorAll('[data-scroll]').forEach(b=>{const id=b.dataset.scroll, dir=Number(b.dataset.dir);
+    if(CARS[id]){const i=S[CARS[id].key]; b.disabled=dir<0?i<=0:i>=CARS[id].max; return}
+    const el=document.getElementById(id); if(!el) return; const max=el.scrollWidth-el.clientWidth-2; b.disabled=dir<0?el.scrollLeft<=2:el.scrollLeft>=max});
+}
+let heroTimer;
+function stopAuto(){clearInterval(heroTimer)}
+function setupHero(){ stopAuto(); if(!CARS.heroTrack) return;
+  heroTimer=setInterval(()=>{ if(document.hidden) return; const c=CARS.heroTrack; c.set(S.heroI>=c.max?0:S.heroI+1) },6000) }
+/* Блок покупки: прилипает так, чтобы его низ (кнопка рассрочки) всегда был в экране */
+function fitBuy(){const b=document.querySelector('.buy'); if(!b) return; const z=parseFloat(app.style.zoom)||1; const vh=window.innerHeight/z; const top=Math.min(92+24, vh-b.offsetHeight-8); b.style.top=top+'px'}
+window.addEventListener('resize',()=>{fit();fitBuy()});
+/* Ползунок цены: два бегунка, перетаскивание и стрелки клавиатуры */
+function rangeSet(r,k,v){const cat=r.dataset.range; const cur=(S.price[cat]||[0,1]).slice(); v=Math.max(0,Math.min(1,v));
+  if(k===0) cur[0]=Math.min(v,cur[1]-0.02); else cur[1]=Math.max(v,cur[0]+0.02); S.price[cat]=cur;
+  const lo=+r.dataset.lo,hi=+r.dataset.hi; r.querySelector('[data-th="0"]').style.left=cur[0]*100+'%'; r.querySelector('[data-th="1"]').style.left=cur[1]*100+'%';
+  const f=r.querySelector('.fill'); f.style.left=cur[0]*100+'%'; f.style.right=(1-cur[1])*100+'%';
+  r.querySelector('[data-v="0"]').textContent='от '+fmt(lo+(hi-lo)*cur[0])+' ₸'; r.querySelector('[data-v="1"]').textContent='до '+fmt(lo+(hi-lo)*cur[1])+' ₸';}
+document.addEventListener('pointerdown',e=>{const rail=e.target.closest('.range .rail'); if(!rail) return; e.preventDefault(); const r=rail.closest('.range'); const rect=rail.getBoundingClientRect();
+  const pos=x=>(x-rect.left)/rect.width; const cur=S.price[r.dataset.range]||[0,1]; let k=e.target.dataset.th!==undefined?+e.target.dataset.th:(Math.abs(pos(e.clientX)-cur[0])<Math.abs(pos(e.clientX)-cur[1])?0:1);
+  rangeSet(r,k,pos(e.clientX)); const mv=ev=>rangeSet(r,k,pos(ev.clientX)); window.addEventListener('pointermove',mv); window.addEventListener('pointerup',()=>window.removeEventListener('pointermove',mv),{once:true});});
+document.addEventListener('keydown',e=>{const t=e.target; if(!t.matches||!t.matches('.range .thumb')) return; if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight') return; e.preventDefault(); const r=t.closest('.range'); const k=+t.dataset.th; const cur=S.price[r.dataset.range]||[0,1]; rangeSet(r,k,cur[k]+(e.key==='ArrowRight'?.02:-.02));});
+/* Галерея: свайп мышью по главному фото */
+document.addEventListener('pointerdown',e=>{const m=e.target.closest('#galMain'); if(!m||e.target.closest('button')) return; const x0=e.clientX;
+  const up=ev=>{document.removeEventListener('pointerup',up); const dx=ev.clientX-x0; if(Math.abs(dx)>40){S.gal=Math.max(0,Math.min(2,S.gal+(dx<0?1:-1)));render(true)}}; document.addEventListener('pointerup',up)});
+
+/* ---------- ReelViewer ---------- */
+function Viewer(){const v=S.viewer, L=v.list, i=L.indexOf(v.name);
+  return `<div class="viewer" data-vclose role="dialog" aria-label="Просмотр видео"><div class="vid" data-stop><video id="vvid" src="media/${v.name}.mp4" poster="media/${v.name}.jpg" playsinline autoplay loop ${v.muted?'muted':''}></video><span class="prog"><i id="vprog"></i></span>
+   <a class="ctl" style="right:16px;top:32px" href="${INSTAGRAM}" target="_blank" rel="noopener" aria-label="Открыть в Instagram">${ic('arrow-up-right')}</a>
+   <button class="ctl" style="left:16px;bottom:16px" data-vplay aria-label="Пауза">${ic('pause')}</button><button class="ctl" style="left:56px;bottom:16px" data-vmute aria-label="Звук">${ic(v.muted?'volume-off':'volume')}</button></div>
+   <button class="close" data-vclose aria-label="Закрыть">${ic('x')}</button>
+   ${L.length>1?`<button class="side" style="left:calc(50% - min(820px,100vh - 80px)*9/32 - 96px)" data-vnav="-1" ${i<=0?'disabled':''} aria-label="Предыдущее видео">${ic('chevron-left')}</button>
+   <button class="side" style="left:calc(50% + min(820px,100vh - 80px)*9/32 + 48px)" data-vnav="1" ${i>=L.length-1?'disabled':''} aria-label="Следующее видео">${ic('chevron-right')}</button>`:''}</div>`}
+const VBLOB={};
+/* iOS Safari не играет видео с хостинга без Range-запросов — грузим файл целиком и отдаём blob-URL */
+function vSrc(v){const name=S.viewer.name, url=`media/${name}.mp4`; if(VBLOB[name]){if(v.src!==VBLOB[name]) v.src=VBLOB[name]; return}
+  fetch(url).then(r=>r.blob()).then(b=>{VBLOB[name]=URL.createObjectURL(b); const cur=document.getElementById('vvid'); if(cur&&S.viewer&&S.viewer.name===name){cur.src=VBLOB[name]; cur.play().catch(()=>{cur.muted=true;S.viewer.muted=true;cur.play().catch(()=>{})})}}).catch(()=>{})}
+function startViewer(){const v=document.getElementById('vvid'); if(!v) return; vSrc(v); const p=v.play(); if(p&&p.catch) p.catch(()=>{v.muted=true;S.viewer.muted=true;v.play().catch(()=>{});const b=document.querySelector('[data-vmute]'); if(b) b.innerHTML=ic('volume-off')});
+  v.ontimeupdate=()=>{const i=document.getElementById('vprog'); if(i&&v.duration) i.style.width=(v.currentTime/v.duration*100)+'%'}}
+
+/* Реальный масштаб: 1:1 при ширине окна ≥1440, на узких экранах страница уменьшается целиком */
+function fit(){app.style.zoom=window.matchMedia('(max-width: 767px)').matches?1:Math.min(1,window.innerWidth/1440)}
+window.addEventListener('resize',fit);fit();
+/* ---------- Старт ---------- */
+Promise.all([fetch('content.json').then(r=>r.json()),fetch('idmap.json').then(r=>r.json()).catch(()=>({}))]).then(([c,m])=>{C=c;IDMAP=m;render()}).catch(()=>{app.innerHTML='<p style="padding:40px">Не удалось загрузить данные прототипа.</p>'});
+</script>
+<script>
+/* ================= Мобильная версия (≤767px) ================= */
+const MQ=window.matchMedia('(max-width: 767px)');
+const isM=()=>MQ.matches;
+MQ.addEventListener('change',()=>{fit();if(C)render()});
+Object.assign(ICONS,{
+ home:'<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>',
+ sliders:'<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="16" cy="6" r="2" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="12" r="2" stroke="currentColor" stroke-width="1.5"/><circle cx="18" cy="18" r="2" stroke="currentColor" stroke-width="1.5"/>'});
+Object.assign(S,{mPath:[],sheet:null,search:false,term:12});
+const SORTS=['по популярности','сначала дешевле','сначала дороже','новинки'];
+const _go=go;
+go=function(v,id){S.sheet=null;S.search=false;if(v!=='mcat')S.mPath=[];_go(v,id)};
+
+function MHeader(){
+  if(S.search) return `<header class="m-head"><div class="m-searchrow"><label class="m-field">${ic('search')}<input id="mSearch" type="search" placeholder="Поиск товаров" enterkeyhint="search"></label><button class="m-cancel" data-m="search-off">Отмена</button></div></header>`;
+  return `<header class="m-head"><div class="m-hrow"><button class="m-logo" data-home aria-label="На главную">${LOGO}</button>
+   <div class="m-right"><span class="m-city">${ic('map-pin')}Алматы${ic('chevron-down','chev')}</span><button class="m-ib" data-m="search-on" aria-label="Поиск">${ic('search')}</button></div></div></header>`}
+function MTab(){const n=cartCount(),v=S.view;
+  return `<nav class="m-tab"><button class="m-tabi ${v==='home'?'on':''}" data-home>${ic('home')}Главная</button><button class="m-tabi ${v==='mcat'?'on':''}" data-m="catalog">${ic('layout-grid')}Каталог</button>
+   <span class="m-tabi">${ic('bag')}Корзина${n?`<i class="m-badge" id="cartBadge">${n}</i>`:''}</span><span class="m-tabi">${ic('package')}Заказы</span><span class="m-tabi">${ic('user')}Войти</span></nav>`}
+const MSH=(t,link)=>`<div class="m-sh"><h2>${esc(t)}</h2>${link?`<span class="m-link">${esc(link)}${ic('chevron-right')}</span>`:''}</div>`;
+const MRow=(id,cards)=>`<div><div class="snap m-scroll" id="${id}">${cards.map(ProductCard).join('')}</div><div class="m-sbar" data-for="${id}"><i></i></div></div>`;
+function MHome(){const h=C.home, pos=['60% center','55% center','40% center'];
+  return `<main class="m-main home">
+  <div class="m-herowrap"><div class="snap" id="mHero">${HERO.map((b,i)=>`<div class="m-slide" data-hero="${i}"><img src="${b.img}" alt="" style="object-position:${pos[i]}"></div>`).join('')}</div>
+   <div class="hero-ui" id="heroUI" data-i="${S.heroI}"><div class="m-hc"><div class="hfade"><span class="m-hb hb">${esc(HERO[S.heroI].brand)}</span><span class="m-ht ht">${esc(HERO[S.heroI].title)}</span></div><button class="m-btn y hbtn" data-heroto="">${esc(HERO[S.heroI].btn)}</button></div>
+   <div class="m-dots">${HERO.map((_,j)=>`<i class="${j===S.heroI?'on':''}"></i>`).join('')}</div></div></div>
+  <section class="m-hs">${MSH('Хиты продаж','Смотреть все')}${MRow('mHits',h.hits)}</section>
+  <section class="m-about"><h2>Рядом с мастером</h2><p>Мы гордимся тем, что являемся частью ваших амбициозных проектов</p>
+   <div class="m-stats">${[['4.9','оценка от наших клиентов'],['20+','лет в индустрии'],['178','магазинов в Казахстане'],['>100 000','инструментов мировых брендов']].map(([a,b])=>`<div><b>${a}</b><span>${b}</span></div>`).join('')}<span class="m-link">Подробнее о нас${ic('chevron-right')}</span></div></section>
+  <section class="m-hs">${MSH('Акции','Смотреть все')}<div class="snap m-scroll" id="mPromo">${PROMO.map(p=>`<div class="m-promo"><div class="im"><img src="${p.img}" alt=""></div><span class="e">${esc(p.e)}</span><span class="t">${esc(p.t)}</span><span class="s">${esc(p.s)}</span></div>`).join('')}</div></section>
+  <section class="m-hs">${MSH('Рассказываем об инструментах и не только')}<div class="snap m-scroll" id="mReels">${REELS_HOME.map(Reel).join('')}<a class="m-cta" href="${INSTAGRAM}" target="_blank" rel="noopener"><b>Мы в Instagram</b><span>Больше 40 000 человек уже следят за нашей лентой</span>${ic('instagram','ig')}</a></div></section>
+  <section class="m-hs">${MSH('Вам будет интересно')}<div class="m-grid">${h.interest.slice(0,6).map(ProductCard).join('')}</div><div class="m-wbtn"><span class="m-btn g wide">Показать ещё</span></div></section>
+  <section class="m-hs">${MSH('50+ мировых брендов')}<div class="m-brands">${BRANDS.slice(0,6).map((b,i)=>`<div><img src="img/brands/${i+1}.png" alt="${esc(b)}"></div>`).join('')}</div><div class="m-wbtn"><span class="m-btn g wide">Все бренды</span></div></section>
+  </main>`}
+function MCatalog(){const p=S.mPath, cur=p.length?p[p.length-1]:'c1', items=MENU[cur]||[];
+  const prev=p.length>1?C.categories[p[p.length-2]]?.title:'Каталог';
+  const head=p.length?`<button class="m-ch" data-m="cat-back">${ic('chevron-left')}${esc(C.categories[cur]?.title||'')}</button>`:'';
+  const all=p.length&&C.categories[cur]?`<li><button class="m-li all" data-cat="${cur}">Все товары раздела${ic('chevron-right')}</button></li>`:'';
+  return `<main class="m-main">${head}<ul class="m-list">${all}${items.map(it=>{const [l,id]=Array.isArray(it)?it:[it,null];
+    if(!id) return `<li><span class="m-li dead">${esc(l)}${ic('chevron-right')}</span></li>`;
+    return `<li><button class="m-li" ${MENU[id]?`data-m="cat-push" data-id="${id}"`:`data-cat="${id}"`}>${esc(l)}${ic('chevron-right')}</button></li>`}).join('')}</ul></main>`}
+function chipLabel(k){if(k==='pickup')return 'Самовывоз сегодня';if(k.startsWith('b:'))return k.slice(2);const a=k.split(':');return a.slice(2).join(':')}
+function MCategory(id){const c=C.categories[id], on=Object.keys(S.filters).filter(k=>S.filters[k]);
+  const back=c.parent?`<button class="m-back" data-cat="${c.parent}">${ic('chevron-left')}${esc(C.categories[c.parent].title)}</button>`:`<button class="m-back" data-m="catalog">${ic('chevron-left')}Каталог</button>`;
+  return `<main class="m-main"><div class="m-ph">${back}<div class="m-tt"><h1>${esc(c.title)}</h1><span>${esc(c.count)}</span></div></div>
+   <div class="m-fbar"><button data-m="sheet" data-s="filters">${ic('sliders')}Фильтры${on.length?`<b>${on.length}</b>`:''}</button><button data-m="sheet" data-s="sort">${esc(S.sort)}${ic('chevron-down')}</button></div>
+   ${on.length?`<div class="m-chips">${on.map(k=>`<button class="m-chip" data-check="${esc(k)}">${esc(chipLabel(k))}${ic('x')}</button>`).join('')}<button class="m-reset" data-m="reset">Сбросить все</button></div>`:''}
+   <div class="m-grid m-catgrid">${c.cards.map(ProductCard).join('')}</div>
+   <div class="m-more"><span class="m-btn g">Показать ещё</span><span>Показано ${c.cards.length} из ${esc(c.count)}</span></div></main>`}
+function MFilters(id){const c=C.categories[id];
+  const sub=c.sub.length?FGroup('m-sub','Категория',c.sub.map(([t,n,to])=>`<button class="subcat ${to?'live':'dead'}" ${to?`data-cat="${to}"`:'tabindex="-1"'}>${esc(t)}<span class="n">(${n})</span></button>`).join(''),false):'';
+  const pick=`<label class="m-pick" data-check="pickup"><span>Самовывоз сегодня в <u>Алматы</u></span><span class="check ${S.filters.pickup?'on':''}" style="pointer-events:none"><span class="box">${ic('check')}</span></span></label>`;
+  const price=FGroup('price','Цена, ₸',PriceRange(id,c),false);
+  const brands=FGroup('brand','Бренд',c.brands.map(b=>Check('b:'+b,b)).join('')+More('brand:'+id,c.brandsMore,MORE_BRANDS.filter(b=>!c.brands.includes(b)).map(b=>Check('b:'+b,b))),false);
+  const extra=(c.extra||[]).map(([t,opts,open,more])=>{const o2=opts.length?opts:(EXTRA_VALUES[t]||[]);return FGroup('x:'+t,t,o2.map(o=>Check('x:'+t+':'+o,o)).join('')+(more?More('x:'+t+':'+id,more,MORE_PURPOSE.map(o=>Check('x:'+t+':'+o,o))):''),true)}).join('');
+  return `<div class="m-filters">${pick}${sub}${price}${brands}${extra}</div>`}
+function MSheet(){const s=S.sheet; if(!s) return ''; const a=S._anim?'anim':'';
+  let h,b,f='',cls='';
+  if(s==='filters'){cls='full';h=`Фильтры<button class="m-ib" data-m="sheet-close" aria-label="Закрыть">${ic('x')}</button>`;b=MFilters(S.cat);f=`<button class="m-btn y wide" data-m="sheet-close">Показать ${esc(C.categories[S.cat].count)}</button>`}
+  else if(s==='sort'){h='Сортировка';b=SORTS.map(x=>`<button class="m-srow ${x===S.sort?'b':''}" data-m="sort" data-v="${x}">${x[0].toUpperCase()+x.slice(1)}${x===S.sort?ic('check'):''}</button>`).join('')}
+  else {const pr=num(C.product.price), m=Math.ceil(pr/S.term);
+    h='Рассрочка';b=`<div class="m-inst"><div class="m-sum"><b>${fmt(m)} ₸</b><span>× ${S.term} мес.</span></div>
+     <div class="m-terms">${[3,6,12,24].map(t=>`<button class="${t===S.term?'on':''}" data-m="term" data-v="${t}">${t} мес.</button>`).join('')}</div>
+     <div class="m-irow"><span>Стоимость товара</span><span>${esc(C.product.price)}</span></div><div class="m-irow"><span>Переплата</span><span>0 ₸</span></div><div class="m-irow"><span>Первый взнос</span><span>0 ₸</span></div></div>`;
+    f=`<button class="m-btn r wide" data-m="inst-go">${ic('bank')}Оформить рассрочку</button>`}
+  return `<div class="m-scrim ${a}" data-m="sheet-close"></div><div class="m-sheet ${cls} ${f?'has-btn':''} ${a}" role="dialog"><div class="m-handle"></div><div class="m-shh">${h}</div><div class="m-shb">${b}</div>${f?`<div class="m-shf">${f}</div>`:''}</div>`}
+function MProduct(){const p=C.product,k=p.id,inCart=S.cart[k]>0, imgs=[0,1,2].map(i=>`img/p/33794_big${i}.jpg`);
+  const stars=n=>`<span class="stars">${[1,2,3,4,5].map(i=>ic('star',i<=n?'':'off')).join('')}</span>`;
+  const variants=p.variants.map(([t,opts],gi)=>{const sel=S.variant[gi]??opts.findIndex(o=>o[1]==='sel');
+    return `<div class="m-vg"><span class="t">${esc(t)}</span><div class="vopts">${opts.map(([v,st],i)=>`<button class="chip ${st==='na'?'na':(i===sel?'':'unsel')}" ${st==='na'?'disabled':`data-var="${gi}:${i}"`}>${esc(v)}</button>`).join('')}</div></div>`}).join('');
+  const last=CAT_ORDER[CAT_ORDER.length-1];
+  return `<main class="m-main m-prod"><button class="m-back" data-cat="${last}">${ic('chevron-left')}${esc(C.categories[last].title)}</button>
+   <div class="m-gal"><div class="snap" id="mGal">${imgs.map(s=>`<img src="${s}" alt="" draggable="false">`).join('')}</div><span class="badge l">${esc(p.badge)}</span><div class="m-gdots" id="mGalDots">${imgs.map((_,i)=>`<i class="${i===S.gal?'on':''}"></i>`).join('')}</div></div>
+   <div class="m-buy"><div><span class="m-brand">${esc(p.brand)}</span><h1 class="m-title">${esc(p.title)}</h1></div>
+    <div class="m-pb"><div class="bonus"><i></i>${esc(p.bonus)}</div><div class="m-price"><b>${esc(p.price)}</b><s>${esc(p.old)}</s></div></div>
+    <div class="m-mods">${variants}</div>
+    <div class="m-dlv"><span class="m-cityl">Ваш город: <u>Алматы</u></span>${p.delivery.map(([a,b,i])=>`<div class="m-do">${ic(i)}<div><b>${esc(a)}</b><span>${esc(b)}</span></div></div>`).join('')}</div>
+    <div class="m-acts" id="mActs">${inCart?Stepper(k,true):`<button class="m-btn y wide" data-add="${k}">${ic('shopping-cart')}В корзину</button>`}<button class="m-btn r wide" data-m="sheet" data-s="inst">${ic('bank')}В рассрочку</button></div></div>
+   <section class="m-sec"><h2>О товаре</h2><p class="m-txt">${esc(p.about)}</p><span class="m-cap">Артикул: <b>${p.sku}</b> · Код товара: <b>${p.code}</b></span></section>
+   <section class="m-sec"><h2>Назначение</h2><div class="tags">${p.purpose.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div></section>
+   <section class="m-sec"><h2>Характеристики</h2><div>${(S.specsAll?p.specs.concat(p.specsMore.slice(0,2)):p.specs).map(([a,b])=>`<div class="m-spec"><span>${esc(a)}</span><b>${esc(b)}</b></div>`).join('')}</div><button class="m-link" id="specsBtn">${S.specsAll?'Свернуть':'Все характеристики'}${ic(S.specsAll?'chevron-up':'chevron-down')}</button></section>
+   <section class="m-sec"><h2>Особенности Cutop Profi</h2><ul class="bullets">${p.features.map(f=>`<li>${esc(f)}</li>`).join('')}</ul></section>
+   <section class="m-sec"><h2>Гарантия</h2><div class="m-war">${p.warranty.map(([a,b])=>`<div><b>${a}</b><span>${b}</span></div>`).join('')}<span class="m-link">Вся информация о гарантии${ic('chevron-right')}</span></div></section>
+   <section class="m-sec"><h2>Документация</h2><div>${p.docs.map(([a,b])=>`<div class="m-doc">${ic('file-text')}<div><b>${esc(a)}</b><span>${b}</span></div>${ic('download')}</div>`).join('')}</div></section>
+   <section class="m-sec"><h2>Видео о товаре</h2><div class="m-reelone">${Reel(REEL_PRODUCT)}</div></section>
+   <section class="m-sec"><h2>Отзывы</h2><div class="m-rs"><div class="m-avg"><b>4,7</b>${stars(5)}<span class="m-cap">3 отзыва</span></div>
+    <div class="m-bars">${[[5,2],[4,1],[3,0],[2,0],[1,0]].map(([s,n])=>`<div class="rbar"><span class="lab">${s}${ic('star')}</span><span class="track"><i style="width:${n/3*100}%"></i></span><span class="n">${n}</span></div>`).join('')}</div>
+    <span class="m-btn y wide" style="cursor:default">Написать отзыв</span></div>
+    <div>${p.reviews.slice(0,2).map(([n,r,d,t])=>`<div class="review"><div class="h"><span class="t-h4">${esc(n)}</span>${stars(r)}</div><span class="m-cap">${esc(d)}</span><p class="m-txt">${esc(t)}</p></div>`).join('')}</div><span class="m-btn g wide" style="cursor:default">Все отзывы</span></section>
+   <section class="m-sec flush"><div class="m-sh"><h2>Сопутствующие товары</h2><span class="m-link">Смотреть все${ic('chevron-right')}</span></div>${MRow('mRel',p.related)}</section></main>`}
+function MBuyBar(){const p=C.product,k=p.id;
+  return `<div class="m-bbar"><div class="m-bp"><b>${esc(p.price)}</b><s>${esc(p.old)}</s></div><button class="m-sq r" data-m="sheet" data-s="inst" aria-label="В рассрочку">${ic('bank')}</button>
+   ${S.cart[k]>0?`<div class="m-bstep">${Stepper(k,true)}</div>`:`<button class="m-btn y" data-add="${k}">${ic('shopping-cart')}В корзину</button>`}</div>`}
+function MFooter(){const acc=['О компании','Покупателям','Сотрудничество','Поддержка'];
+  return `<footer class="m-foot"><div class="m-fc"><span class="m-city">${ic('map-pin')}Алматы${ic('chevron-down','chev')}</span><b>+7 778 021 01 65</b><span class="m-soc">${ic('instagram')}${ic('youtube')}</span></div>
+   ${acc.map(a=>`<div class="m-acc">${a}${ic('chevron-down')}</div>`).join('')}
+   <div class="m-fb"><span class="logo">${LOGO}</span><span>Сеть магазинов «TSSP» © 2003 – 2026</span><span>Публичная оферта · Политика конфиденциальности</span><span class="m-pay">${VISA}${MC}</span></div></footer>`}
+function MViewer(){const v=S.viewer,L=v.list,i=L.indexOf(v.name);
+  return `<div class="m-viewer" id="mViewer" role="dialog" aria-label="Просмотр видео"><video id="vvid" src="media/${v.name}.mp4" poster="media/${v.name}.jpg" playsinline autoplay loop ${v.muted?'muted':''}></video>
+   <div class="m-vprog">${L.map((_,j)=>`<i class="${j<i?'done':''}">${j===i?'<b id="vprog"></b>':''}</i>`).join('')}</div>
+   <a class="ctl m-vo" href="${INSTAGRAM}" target="_blank" rel="noopener" aria-label="Открыть в Instagram">${ic('arrow-up-right')}</a><button class="ctl m-vx" data-vclose aria-label="Закрыть">${ic('x')}</button>
+   <button class="ctl m-vp" data-vplay aria-label="Пауза">${ic('pause')}</button><button class="ctl m-vm" data-vmute aria-label="Звук">${ic(v.muted?'volume-off':'volume')}</button>
+   ${L.length>1?`<span class="m-vh">Листайте вверх · ${i+1}/${L.length}</span>`:''}</div>`}
+
+function mRender(keepScroll){
+  const y=window.scrollY, xs={}; app.querySelectorAll('.snap[id]').forEach(e=>xs[e.id]=e.scrollLeft);
+  const shb=app.querySelector('.m-shb'), sy=shb?shb.scrollTop:0, wasSheet=!!shb;
+  S._anim=!wasSheet; const barOn=!!app.querySelector('.m.bar-on');
+  const v=S.view, body=v==='home'?MHome():v==='mcat'?MCatalog():v==='cat'?MCategory(S.cat):MProduct();
+  app.innerHTML=`<div class="m ${v==='prod'&&barOn?'bar-on':''}">${MHeader()}${body}${v==='mcat'?'':MFooter()}${MTab()}${v==='prod'?MBuyBar():''}${MSheet()}${S.viewer?MViewer():''}</div>`;
+  Object.entries(xs).forEach(([id,x])=>{const e=document.getElementById(id);if(e)e.scrollLeft=x});
+  const nb=app.querySelector('.m-shb'); if(nb&&wasSheet) nb.scrollTop=sy;
+  if(keepScroll) window.scrollTo(0,y);
+  document.documentElement.style.overflow=(S.sheet||S.viewer)?'hidden':'';
+  mAfter(); if(S.viewer) startViewer();
+  if(S.search){const i=document.getElementById('mSearch'); if(i) i.focus()}
+}
+function dots(sc,box,key){const el=document.getElementById(sc),d=document.getElementById(box); if(!el||!d) return;
+  el.onscroll=()=>{const i=Math.round(el.scrollLeft/el.clientWidth); if(i!==S[key]){S[key]=i;[...d.children].forEach((x,j)=>x.classList.toggle('on',j===i))}}}
+function mBar(){const a=document.getElementById('mActs'),m=app.querySelector('.m'); if(!m) return; m.classList.toggle('bar-on',!!a&&a.getBoundingClientRect().bottom<0)}
+window.addEventListener('scroll',()=>{if(isM())mBar()},{passive:true});
+function mAfter(){
+  const mh=document.getElementById('mHero'); if(mh) mh.onscroll=()=>{const i=Math.round(mh.scrollLeft/mh.clientWidth); if(i!==S.heroI){S.heroI=i;heroSync(i)}}; dots('mGal','mGalDots','gal');
+  const h=document.getElementById('mHero'); if(h&&S.heroI) h.scrollLeft=S.heroI*h.clientWidth;
+  const g=document.getElementById('mGal'); if(g&&S.gal) g.scrollLeft=S.gal*g.clientWidth;
+  mBar();
+  document.querySelectorAll('.m-sbar').forEach(b=>{const el=document.getElementById(b.dataset.for),i=b.firstChild; if(!el) return; const u=()=>{const w=b.clientWidth, r=el.clientWidth/el.scrollWidth; i.style.width=w*r+'px'; i.style.transform=`translateX(${el.scrollLeft/(el.scrollWidth-el.clientWidth||1)*w*(1-r)}px)`}; el.addEventListener('scroll',u,{passive:true}); u()});
+  const vw=document.getElementById('mViewer');
+  if(vw){let y0=null; vw.addEventListener('pointerdown',e=>{if(!e.target.closest('.ctl')) y0=e.clientY});
+    vw.addEventListener('pointerup',e=>{if(y0===null) return; const dy=e.clientY-y0; y0=null; const L=S.viewer.list,i=L.indexOf(S.viewer.name);
+      if(dy<-60&&L[i+1]){S.viewer.name=L[i+1];render(true)} else if(dy>60){ if(L[i-1]){S.viewer.name=L[i-1];render(true)} else {S.viewer=null;render(true)} }
+      else if(Math.abs(dy)<8){const b=vw.querySelector('[data-vplay]'); if(b) b.click()}})}
+}
+document.addEventListener('click',e=>{ if(!isM()) return; const t=e.target.closest('[data-m]'); if(!t) return;
+  e.stopPropagation(); e.preventDefault(); const d=t.dataset, a=d.m;
+  if(a==='search-on'){S.search=true;return render(true)}
+  if(a==='search-off'){S.search=false;return render(true)}
+  if(a==='catalog'){S.mPath=[];go('mcat');return}
+  if(a==='cat-push'){S.mPath.push(d.id);render();return window.scrollTo(0,0)}
+  if(a==='cat-back'){S.mPath.pop();render();return window.scrollTo(0,0)}
+  if(a==='sheet'){S.sheet=d.s;return render(true)}
+  if(a==='sheet-close'){S.sheet=null;return render(true)}
+  if(a==='sort'){S.sort=d.v;S.sheet=null;return render(true)}
+  if(a==='reset'){S.filters={};S.price={};return render(true)}
+  if(a==='term'){S.term=+d.v;return render(true)}
+  if(a==='inst-go'){S.sheet=null;render(true);return toast('Заявка на рассрочку — в следующей версии')}
+},true);
+</script>
