@@ -129,7 +129,7 @@ img{display:block;max-width:100%}
 .bonus{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600}
 .bonus i{width:15px;height:15px;border-radius:50%;background:var(--action-primary-default);display:block}
 .price{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
-.pcard .title-wrap{padding:24px 20px 24px 0}
+.pcard .title-wrap{padding:12px 20px 16px 0}
 .pcard .title{font-size:15px;font-weight:500;line-height:1.3;height:calc(3 * 1.3em);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .pcard .title b,.ptitle b{font-weight:800}
 .pcard .pfoot{height:48px;display:flex;align-items:center;justify-content:space-between}
@@ -150,8 +150,8 @@ img{display:block;max-width:100%}
 .row-scroll{display:flex;gap:var(--layout-grid-gutter);overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none}
 .row-scroll::-webkit-scrollbar{display:none}
 .row-scroll>*{scroll-snap-align:start}
-.grid5{display:grid;grid-template-columns:repeat(5,var(--layout-column-width));column-gap:var(--layout-grid-gutter);row-gap:48px}
-.grid4{display:grid;grid-template-columns:repeat(4,var(--layout-column-width));column-gap:var(--layout-grid-gutter);row-gap:48px}
+.grid5{display:grid;grid-template-columns:repeat(5,var(--layout-column-width));column-gap:var(--layout-grid-gutter);row-gap:64px}
+.grid4{display:grid;grid-template-columns:repeat(4,var(--layout-column-width));column-gap:var(--layout-grid-gutter);row-gap:64px}
 
 /* Home */
 .hero-wrap{position:relative;overflow:hidden}
@@ -394,12 +394,12 @@ html,body{overflow-x:clip}
 .m .pcard .media img{width:100%;height:156px}
 .m .pcard .info{padding-top:14px;gap:6px}
 .m .pcard .t-price-l{font-size:17px}
-.m .pcard .title-wrap{padding:8px 0 16px}
+.m .pcard .title-wrap{padding:6px 0 10px}
 .m .pcard .title{font-size:13px;line-height:17px;height:51px}
 .m .pcard .title-wrap{overflow:hidden}
 .m .pcard .price{gap:2px 6px}
-.m .pcard .pfoot{margin-top:auto}
 .m .pcard .t-price-old{font-size:12px}
+.m .pcard .pfoot{margin-top:auto}
 .m .pcard .pfoot{height:40px}
 .m .add{opacity:1;width:40px;height:40px}
 .m .add .ico{width:20px;height:20px}
@@ -411,7 +411,7 @@ html,body{overflow-x:clip}
 .m .stepper.big{height:48px}
 .m .bonus{font-size:12px;gap:6px}.m .bonus i{width:12px;height:12px}
 .m .oos{font-size:12px}.m .oos .ico{width:16px;height:16px}
-.m-grid{display:grid;grid-template-columns:1fr 1fr;column-gap:12px;row-gap:32px;padding:0 16px}
+.m-grid{display:grid;grid-template-columns:1fr 1fr;column-gap:12px;row-gap:40px;padding:0 16px}
 .m-grid>*{min-width:0}
 .m-about{padding:0 16px;display:flex;flex-direction:column;gap:16px}
 .m-about p{margin:0;font-size:15px;font-weight:500;line-height:1.5}
@@ -617,17 +617,17 @@ const REELS_HOME=['reel1','reel2','reel3']; const REEL_PRODUCT='reel4';
 const INSTAGRAM='https://www.instagram.com/tssp.kz/';
 const BRANDS=['KÄRCHER','STALKER','BOSCH','makita','STIHL','UNI-T','BIHUI','BLACK+DECKER','QBRICK','DeWALT'];
 const CAT_ORDER=['rashodniki','rezka','diski','almaz','beton'];
-const MENU={c1:['Электроинструмент','Генераторы','Компрессоры','Сварка','Строительная техника','Станки','Уборочная техника','Садовая техника','Насосы и мотопомпы','Климат','Складская техника','Измерительный инструмент','Ручной инструмент','Электрика и свет','Лестницы и стремянки','Спецодежда и СИЗ','Автосервис','Для мастерской','Стройматериалы','Крепёж и метизы',['Расходники','rashodniki']],
- rashodniki:['Сверление и бурение',['Резка и шлифовка','rezka'],'Биты и наборы','Всё для внутренней отделки','Мешки'],
- rezka:[['Диски','diski'],'Шлифовальные чашки','Абразивные материалы','Круги для дрелей','Щетки для щеточных шлифмашин','Фрезы','Наборы фрез','Шарошки и борфрезы','Наборы шарошек и борфрез','Наборы насадок','Щетки и корщетки для деталей','Насадки для УШМ','Насадки для граверов','Пыльные полотна','Круги заточные','Насадки для полировальных машин','Полировальные насадки на дрель','Бруски и камни для заточки','Франкфурты для мозаичных машин'],
- diski:[['Диски алмазные','almaz'],'Диски пильные','Диски отрезные абразивные','Диски шлифовальные','Лепестковые шлифовальные круги и диски','Алмазные гибкие шлифовальные диски','Отрезные диски по дереву'],
- almaz:[['По бетону','beton'],'По свежеуложенному бетону','По слабоармированному бетону','По высокоармированному бетону','По бетонному строительному блоку','По кирпичу','По известково-песчаному кирпичу','По полнотелому кирпичу','По строительному раствору','По мягкому камню','По твёрдому камню','По мягкой керамической плитке','По твёрдой керамической плитке','По фиброцементным плитам','По газоблоку','По асфальту','По битуму','По стеклу','По рубероиду','По пластику','По стали','По пенобетону','По нержавеющей стали','По листовой стали','По чугуну','По алюминию','По цветным металлам','По металлическим трубам и профилю','По металлическим сэндвич-панелям','По мягкой древесине','По твёрдой древесине','По древесной плите']};
+const MENU={c1:[['Электроинструмент', 'k01'], ['Генераторы', 'k02'], ['Компрессоры', 'k03'], ['Сварка', 'k04'], ['Строительная техника', 'k05'], ['Станки', 'k06'], ['Уборочная техника', 'k07'], ['Садовая техника', 'k08'], ['Насосы и мотопомпы', 'k09'], ['Климат', 'k10'], ['Складская техника', 'k11'], ['Измерительный инструмент', 'k12'], ['Ручной инструмент', 'k13'], ['Электрика и свет', 'k14'], ['Лестницы и стремянки', 'k15'], ['Спецодежда и СИЗ', 'k16'], ['Автосервис', 'k17'], ['Для мастерской', 'k18'], ['Стройматериалы', 'k19'], ['Крепёж и метизы', 'k20'], ['Расходники', 'rashodniki']],
+ rashodniki:[['Сверление и бурение', 'k21'], ['Резка и шлифовка', 'rezka'], ['Биты и наборы', 'k22'], ['Всё для внутренней отделки', 'k23'], ['Мешки', 'k24']],
+ rezka:[['Диски', 'diski'], ['Шлифовальные чашки', 'k25'], ['Абразивные материалы', 'k26'], ['Круги для дрелей', 'k27'], ['Щетки для щеточных шлифмашин', 'k28'], ['Фрезы', 'k29'], ['Наборы фрез', 'k30'], ['Шарошки и борфрезы', 'k31'], ['Наборы шарошек и борфрез', 'k32'], ['Наборы насадок', 'k33'], ['Щетки и корщетки для деталей', 'k34'], ['Насадки для УШМ', 'k35'], ['Насадки для граверов', 'k36'], ['Пыльные полотна', 'k37'], ['Круги заточные', 'k38'], ['Насадки для полировальных машин', 'k39'], ['Полировальные насадки на дрель', 'k40'], ['Бруски и камни для заточки', 'k41'], ['Франкфурты для мозаичных машин', 'k42']],
+ diski:[['Диски алмазные', 'almaz'], ['Диски пильные', 'k43'], ['Диски отрезные абразивные', 'k44'], ['Диски шлифовальные', 'k45'], ['Лепестковые шлифовальные круги и диски', 'k46'], ['Алмазные гибкие шлифовальные диски', 'k47'], ['Отрезные диски по дереву', 'k48']],
+ almaz:[['По бетону', 'beton'], ['По свежеуложенному бетону', 'k49'], ['По слабоармированному бетону', 'k50'], ['По высокоармированному бетону', 'k51'], ['По бетонному строительному блоку', 'k52'], ['По кирпичу', 'k53'], ['По известково-песчаному кирпичу', 'k54'], ['По полнотелому кирпичу', 'k55'], ['По строительному раствору', 'k56'], ['По мягкому камню', 'k57'], ['По твёрдому камню', 'k58'], ['По мягкой керамической плитке', 'k59'], ['По твёрдой керамической плитке', 'k60'], ['По фиброцементным плитам', 'k61'], ['По газоблоку', 'k62'], ['По асфальту', 'k63'], ['По битуму', 'k64'], ['По стеклу', 'k65'], ['По рубероиду', 'k66'], ['По пластику', 'k67'], ['По стали', 'k68'], ['По пенобетону', 'k69'], ['По нержавеющей стали', 'k70'], ['По листовой стали', 'k71'], ['По чугуну', 'k72'], ['По алюминию', 'k73'], ['По цветным металлам', 'k74'], ['По металлическим трубам и профилю', 'k75'], ['По металлическим сэндвич-панелям', 'k76'], ['По мягкой древесине', 'k77'], ['По твёрдой древесине', 'k78'], ['По древесной плите', 'k79']]};
 
 /* ---------- Состояние ---------- */
 const S={more:{},price:{},heroI:0,promoI:0,view:'home',cat:null,cart:{},menuOpen:false,menuPath:[],filters:{},closed:{},sort:'по популярности',sortOpen:false,variant:{},gal:0,inst:false,specsAll:false,viewer:null};
 let C=null, IDMAP={};
 const cartCount=()=>Object.values(S.cart).reduce((a,b)=>a+b,0);
-const imgFor=c=>{const id=c[0]||IDMAP[c[1]+' '+c[2]];return id?`img/p/${id}.jpg`:''};
+const imgFor=c=>{if(c[9]) return c[9]; const id=c[0]||IDMAP[c[1]+' '+c[2]];return id?`img/p/${id}.jpg`:''};
 const keyOf=c=>c[0]||(c[1]+' '+c[2]);
 
 /* ---------- Компоненты ---------- */
@@ -665,7 +665,7 @@ function CatalogMenu(){
   while(cols.length<5) cols.push(null);
   return `<div class="catalog"><div class="wrap"><div class="cols ${path.length?'has-path':''}">${cols.map((col,i)=>{ if(!col) return '<div></div>';
     const leaf=i===4; return `<ul class="${leaf?'col-leaf':''}">${col[1].map(it=>{ const [label,id]=Array.isArray(it)?it:[it,null]; const act=id&&path[i]===id;
-      return `<li><button class="mitem ${id?'live':'dead'} ${act?'active':''}" ${id?`data-menu="${id}" data-level="${i}"`:''} ${id?'':'tabindex="-1"'}>${esc(label)}${leaf?'':ic('chevron-right')}</button></li>`}).join('')}</ul>`}).join('')}</div></div></div>`}
+      return `<li><button class="mitem ${id?'live':'dead'} ${act?'active':''}" ${id?`data-menu="${id}" data-level="${i}"`:''} ${id?'':'tabindex="-1"'}>${esc(label)}${id&&MENU[id]?ic('chevron-right'):''}</button></li>`}).join('')}</ul>`}).join('')}</div></div></div>`}
 
 /* ---------- Футер ---------- */
 function Footer(){
@@ -709,10 +709,10 @@ function PriceRange(cat,c){const lo=num(c.price[0]),hi=num(c.price[1]);const [a,
 function FGroup(id,title,body,defClosed){const closed=S.closed[id]??defClosed;return `<div class="fgroup ${closed?'closed':''}"><button class="fhead" data-toggle="${esc(id)}" data-def="${defClosed?1:0}">${esc(title)}${ic('chevron-up')}</button><div class="fbody">${body}</div></div>`}
 function Category(id){
   const c=C.categories[id];
-  const sub=c.sub.length?`<div class="fgroup"><span class="t-body-m-strong">Категория</span><div class="fbody">${c.sub.map(([t,n,to])=>`<button class="subcat ${to?'live':'dead'}" ${to?`data-cat="${to}"`:'tabindex="-1"'}>${esc(t)}<span class="n">(${n})</span></button>`).join('')}${c.subMore?More('sub:'+id,c.subMore,(MENU[id]||[]).slice(c.sub.length).map(x=>Array.isArray(x)?x[0]:x).map(t=>`<button class="subcat dead" tabindex="-1">${esc(t)}</button>`)):''}</div></div>`:'';
+  const sub=c.sub.length?`<div class="fgroup"><span class="t-body-m-strong">Категория</span><div class="fbody">${c.sub.map(([t,n,to])=>`<button class="subcat ${to?'live':'dead'}" ${to?`data-cat="${to}"`:'tabindex="-1"'}>${esc(t)}${n?`<span class="n">(${n})</span>`:''}</button>`).join('')}${c.subMore?More('sub:'+id,c.subMore,(MENU[id]||[]).slice(c.sub.length).map(x=>Array.isArray(x)?x[0]:x).map(t=>`<button class="subcat dead" tabindex="-1">${esc(t)}</button>`)):''}</div></div>`:'';
   const pick=`<div class="fgroup"><label class="pickup" data-check="pickup"><span>Самовывоз сегодня<br>в <u>Алматы</u></span><span class="check ${S.filters.pickup?'on':''}" style="pointer-events:none"><span class="box">${ic('check')}</span></span></label></div>`;
   const price=FGroup('price','Цена, ₸',PriceRange(id,c),false);
-  const brands=FGroup('brand','Бренд',c.brands.map(b=>Check('b:'+b,b)).join('')+More('brand:'+id,c.brandsMore,MORE_BRANDS.filter(b=>!c.brands.includes(b)).map(b=>Check('b:'+b,b))),false);
+  const brands=FGroup('brand','Бренд',c.brands.map(b=>Check('b:'+b,b)).join('')+(c.brandsMore?More('brand:'+id,c.brandsMore,(c.brandsRest||MORE_BRANDS.filter(b=>!c.brands.includes(b))).map(b=>Check('b:'+b,b))):''),false);
   const extra=(c.extra||[]).map(([t,opts,open,more])=>{const o2=opts.length?opts:(EXTRA_VALUES[t]||[]); return FGroup('x:'+t,t,o2.map(o=>Check('x:'+t+':'+o,o)).join('')+(more?More('x:'+t+':'+id,more,MORE_PURPOSE.map(o=>Check('x:'+t+':'+o,o))):''),!open)}).join('');
   const sorts=['по популярности','сначала дешевле','сначала дороже','новинки'];
   return `<div class="wrap" style="padding-top:40px"><div class="cat-head">${crumbs(id)}<h1 class="t-h1" style="margin:0">${esc(c.title)}</h1></div>
@@ -944,10 +944,10 @@ function MCategory(id){const c=C.categories[id], on=Object.keys(S.filters).filte
    <div class="m-grid m-catgrid">${c.cards.map(ProductCard).join('')}</div>
    <div class="m-more"><span class="m-btn g">Показать ещё</span><span>Показано ${c.cards.length} из ${esc(c.count)}</span></div></main>`}
 function MFilters(id){const c=C.categories[id];
-  const sub=c.sub.length?FGroup('m-sub','Категория',c.sub.map(([t,n,to])=>`<button class="subcat ${to?'live':'dead'}" ${to?`data-cat="${to}"`:'tabindex="-1"'}>${esc(t)}<span class="n">(${n})</span></button>`).join(''),false):'';
+  const sub=c.sub.length?FGroup('m-sub','Категория',c.sub.map(([t,n,to])=>`<button class="subcat ${to?'live':'dead'}" ${to?`data-cat="${to}"`:'tabindex="-1"'}>${esc(t)}${n?`<span class="n">(${n})</span>`:''}</button>`).join(''),false):'';
   const pick=`<label class="m-pick" data-check="pickup"><span>Самовывоз сегодня в <u>Алматы</u></span><span class="check ${S.filters.pickup?'on':''}" style="pointer-events:none"><span class="box">${ic('check')}</span></span></label>`;
   const price=FGroup('price','Цена, ₸',PriceRange(id,c),false);
-  const brands=FGroup('brand','Бренд',c.brands.map(b=>Check('b:'+b,b)).join('')+More('brand:'+id,c.brandsMore,MORE_BRANDS.filter(b=>!c.brands.includes(b)).map(b=>Check('b:'+b,b))),false);
+  const brands=FGroup('brand','Бренд',c.brands.map(b=>Check('b:'+b,b)).join('')+(c.brandsMore?More('brand:'+id,c.brandsMore,(c.brandsRest||MORE_BRANDS.filter(b=>!c.brands.includes(b))).map(b=>Check('b:'+b,b))):''),false);
   const extra=(c.extra||[]).map(([t,opts,open,more])=>{const o2=opts.length?opts:(EXTRA_VALUES[t]||[]);return FGroup('x:'+t,t,o2.map(o=>Check('x:'+t+':'+o,o)).join('')+(more?More('x:'+t+':'+id,more,MORE_PURPOSE.map(o=>Check('x:'+t+':'+o,o))):''),true)}).join('');
   return `<div class="m-filters">${pick}${sub}${price}${brands}${extra}</div>`}
 function MSheet(){const s=S.sheet; if(!s) return ''; const a=S._anim?'anim':'';
