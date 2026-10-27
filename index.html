@@ -587,7 +587,7 @@ html,body{overflow-x:clip}
 /* ===== Раскатка: квадратное фото на сером, компактный счётчик, спокойный ховер ===== */
 .pcard .media{height:240px}
 .pcard .slides{height:240px;background:#F2F2F2}
-.pcard .slides img{height:240px;background:transparent;mix-blend-mode:multiply}
+.pcard .slides img{height:240px;background:transparent;mix-blend-mode:normal}
 .sdots{display:none!important}
 .pcard .pcta{bottom:0}
 .pcard .pcta.in{bottom:0;left:auto;width:96px}
@@ -599,13 +599,18 @@ html,body{overflow-x:clip}
 .catalog{position:fixed;left:0;right:0;bottom:0;max-height:none;overflow:auto;overscroll-behavior:contain;z-index:60}
 .m .pcard .media{height:auto}
 .m .pcard .slides{height:auto;aspect-ratio:1/1;background:#F2F2F2}
-.m .pcard .slides img{height:auto;aspect-ratio:1/1;mix-blend-mode:multiply;background:transparent}
+.m .pcard .slides img{height:auto;aspect-ratio:1/1;mix-blend-mode:normal;background:transparent}
 .m .pcard .pcta.in{width:80px}
 .m .pcard .pcta.in .stepper{background:#DEDEDE;padding:0 6px}
 .rev-foot{display:flex;align-items:center;gap:32px;padding-top:8px}
 .rev-foot .link .ico{width:16px;height:16px}
 .rev-foot.m{flex-direction:column;align-items:stretch;gap:16px}
 .more-btn{align-self:center;width:auto;padding:0 40px;margin-top:16px}
+.gallery .main{background:#F2F2F2}
+.gallery .thumbs .tb{background:#F2F2F2;border-color:transparent}
+.gallery .thumbs .tb.on{border:2px solid var(--text-primary)}
+.m-gal .snap img{background:#F2F2F2}
+.reel img{background:none}
 </style>
 
 <div id="app"></div>
@@ -757,7 +762,7 @@ let C=null, IDMAP={};
 const cartCount=()=>Object.values(S.cart).reduce((a,b)=>a+b,0);
 const IMG={},IMGL={};
 function ensureImgs(){const id=S.view==='cat'?S.cat:S.view==='home'?'home':S.view==='prod'?'prod':null; if(!id||IMGL[id]) return; IMGL[id]=1; fetch(`img/c/${(C.categories[id]&&C.categories[id].imgs)||id}.json`).then(r=>r.json()).then(j=>{Object.assign(IMG,j); if((S.view==='cat'?S.cat:S.view)===id||(id==='home'&&S.view==='home')||(id==='prod'&&S.view==='prod')) render(true)}).catch(()=>{IMGL[id]=0})}
-const imgFor=c=>{if(c[9]) return IMG[c[0]]||'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='; const id=c[0]||IDMAP[c[1]+' '+c[2]];return id?`img/p/${id}.jpg`:''};
+const imgFor=c=>{if(c[9]) return IMG[c[0]]||'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='; const id=c[0]||IDMAP[c[1]+' '+c[2]];return id?`img/p/${id}.webp`:''};
 const keyOf=c=>c[0]||(c[1]+' '+c[2]);
 
 /* ---------- Компоненты ---------- */
@@ -857,7 +862,7 @@ function Category(id){
 /* ---------- Товар ---------- */
 function Product(){
   const p=C.product, k=p.id, inCart=S.cart[k]>0;
-  const imgs=[0,1,2].map(i=>`img/p/33794_big${i}.jpg`);
+  const imgs=[0,1,2].map(i=>`img/p/33794_big${i}.webp`);
   const stars=n=>`<span class="stars">${[1,2,3,4,5].map(i=>ic('star',i<=n?'':'off')).join('')}</span>`;
   const variants=p.variants.map(([t,opts],gi)=>{const sel=S.variant[gi]??opts.findIndex(o=>o[1]==='sel');
     return `<div class="divider"></div><div class="vgroup"><span class="t-body-l-strong">${esc(t)}</span><div class="vopts">${opts.map(([v,st],i)=>`<button class="chip ${st==='na'?'na':(i===sel?'':'unsel')}" ${st==='na'?'disabled':`data-var="${gi}:${i}"`}>${esc(v)}</button>`).join('')}</div></div>`}).join('');
@@ -1102,7 +1107,7 @@ function MSheet(){const s=S.sheet; if(!s) return ''; const a=S._anim?'anim':'';
      <div class="m-irow"><span>Стоимость товара</span><span>${esc(C.product.price)}</span></div><div class="m-irow"><span>Переплата</span><span>0 ₸</span></div><div class="m-irow"><span>Первый взнос</span><span>0 ₸</span></div></div>`;
     f=`<button class="m-btn r wide" data-m="inst-go">${ic('bank')}Оформить рассрочку</button>`}
   return `<div class="m-scrim ${a}" data-m="sheet-close"></div><div class="m-sheet ${cls} ${f?'has-btn':''} ${a}" role="dialog"><div class="m-handle"></div><div class="m-shh">${h}</div><div class="m-shb">${b}</div>${f?`<div class="m-shf">${f}</div>`:''}</div>`}
-function MProduct(){const p=C.product,k=p.id,inCart=S.cart[k]>0, imgs=[0,1,2].map(i=>`img/p/33794_big${i}.jpg`);
+function MProduct(){const p=C.product,k=p.id,inCart=S.cart[k]>0, imgs=[0,1,2].map(i=>`img/p/33794_big${i}.webp`);
   const stars=n=>`<span class="stars">${[1,2,3,4,5].map(i=>ic('star',i<=n?'':'off')).join('')}</span>`;
   const variants=p.variants.map(([t,opts],gi)=>{const sel=S.variant[gi]??opts.findIndex(o=>o[1]==='sel');
     return `<div class="m-vg"><span class="t">${esc(t)}</span><div class="vopts">${opts.map(([v,st],i)=>`<button class="chip ${st==='na'?'na':(i===sel?'':'unsel')}" ${st==='na'?'disabled':`data-var="${gi}:${i}"`}>${esc(v)}</button>`).join('')}</div></div>`}).join('');
