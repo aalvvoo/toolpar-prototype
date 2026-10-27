@@ -726,6 +726,30 @@ html,body{overflow-x:clip}
 .ck-pick .t{min-width:0}
 .ck-sum .ck-promo .btn{flex:none;width:auto!important}
 .ck-sum .ck-promo input{flex:1 1 auto}
+.ck-comment,.ck-sum .ck-promo input{pointer-events:none;resize:none}
+.ck-sum .ck-promo input{border-radius:0;-webkit-appearance:none;appearance:none}
+.lk-nav{background:none;padding:0}
+.lk-btns .ck-add{align-self:center}
+/* mobile cart line */
+.ck-line.mob .top{gap:12px}
+.ck-line.mob .top>.ck-box{margin-top:2px}
+.ck-line.mob .ph{width:88px;height:88px}
+.ck-line.mob .bot{padding-left:132px;gap:0}
+.ck-line.mob .ck-step{width:104px;height:36px;background:none;box-shadow:inset 0 0 0 1px var(--border-default);padding:0 6px}
+.ck-line.mob .ck-step .ico{width:14px;height:14px}
+.ck-line.mob .ck-ib{width:36px;height:36px;color:var(--text-secondary)}.ck-line.mob .ck-ib .ico{width:20px;height:20px}
+.ck.mob .ck-rec .acts,.ck.mob .ck-pick>.ck-iact{margin-top:8px}
+.lk.mob .lk-btns{flex-direction:row;flex-wrap:wrap;gap:8px}.lk.mob .lk-btns .btn{flex:1 1 0;width:auto!important;padding:0 12px}.lk.mob .lk-btns .ck-add{flex-basis:100%;text-align:center;margin-top:8px}
+.lk.mob .lk-status{margin-top:24px}
+.lk-mst{border:1px solid var(--border-default)}
+.lk-mst-h{display:flex;align-items:center;gap:12px;width:100%;padding:16px;text-align:left}
+.lk-mst-h .t{flex:1;display:flex;flex-direction:column;gap:2px}.lk-mst-h b{font-size:15px}.lk-mst-h em{font-style:normal;font-size:12px;color:var(--text-secondary)}
+.lk-mst-h>.ico{flex:none;width:18px;height:18px;transition:transform .2s}.lk-mst.open .lk-mst-h>.ico{transform:rotate(180deg)}
+.lk-mst .steps{padding:4px 16px 0}
+.pulse{width:10px;height:10px;border-radius:50%;background:#2DB34A;flex:none;position:relative}
+.pulse::after{content:'';position:absolute;inset:0;border-radius:50%;background:#2DB34A;animation:pls 1.6s ease-out infinite}
+@keyframes pls{0%{transform:scale(1);opacity:.6}100%{transform:scale(2.6);opacity:0}}
+.lk.mob{align-items:stretch}
 </style>
 
 <div id="app"></div>
@@ -1312,7 +1336,7 @@ Object.assign(ICONS,{
  heartf:`<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" fill="currentColor" ${SW}/>`,
  trash:`<path d="M3 6h18M8 6V4h8v2M6 6l1 15h10l1-15" ${SW}/>`,
  edit:`<path d="M17 3l4 4L8 20l-5 1 1-5Z" ${SW}/>`,
- packages:`<path d="M3 12h8v9H3zM7 12v3M13 6h8v15h-8zM17 6v3" ${SW}/>`,
+ packages:`<path d="M3 10h7v10H3zM3 13h7M14 5h7v15h-7zM14 8h7" ${SW}/>`,
  pkgcheck:`<path d="M21 10V8l-9-5-9 5v8l9 5 2-1.1M7.5 5.6l9 5.2M3.3 7.6 12 12.6l8.7-5M12 21v-8.4M16 17l2 2 4-4" ${SW}/>`});
 const K=Object.assign(S,{ck:{},fav:{},buyer:0,rcp:true,dmode:'pick',smode:'part',pay:0,promo:''});
 let CARDS=null;
@@ -1338,7 +1362,7 @@ function Line(x,m){ const {k,q,c}=x, p=N(c[3]), o=N(c[4]); const price=`<div cla
   const bon=`<div class="bonus"><i></i>+${String(N(c[6])*q).replace(/\B(?=(\d{3})+(?!\d))/g,' ')} ${pl(N(c[6])*q,'бонус','бонуса','бонусов')}</div>`;
   const step=`<div class="stepper ck-step"><button data-dec="${esc(k)}">${ic('minus')}</button><span class="v">${q}</span><button data-inc="${esc(k)}">${ic('plus')}</button></div>`;
   const fav=S.fav[k];
-  if(m) return `<div class="ck-line mob"><div class="top"><div class="ph"><img src="${img(c)}" alt="">${cbx(isSel(k),`data-cksel="${esc(k)}"`)}</div><div class="inf">${price}<span class="unit">${F(p)} × ${q}</span><div class="ttl"><b>${esc(c[1])}</b> ${esc(c[2])}</div>${bon}</div></div>
+  if(m) return `<div class="ck-line mob"><div class="top">${cbx(isSel(k),`data-cksel="${esc(k)}"`)}<div class="ph"><img src="${img(c)}" alt=""></div><div class="inf">${price}<span class="unit">${F(p)} × ${q}</span><div class="ttl"><b>${esc(c[1])}</b> ${esc(c[2])}</div>${bon}</div></div>
     <div class="bot">${step}<span style="flex:1"></span><button class="ck-ib" data-fav="${esc(k)}" aria-label="В избранное">${ic(fav?'heartf':'heart')}</button><button class="ck-ib" data-ckdel="${esc(k)}" aria-label="Удалить">${ic('trash')}</button></div></div>`;
   return `<div class="ck-line">${cbx(isSel(k),`data-cksel="${esc(k)}"`)}<div class="ph"><img src="${img(c)}" alt=""></div>
    <div class="inf"><div><div class="ttl"><b>${esc(c[1])}</b> ${esc(c[2])}</div>${c[0]?`<span class="code">Код товара: ${esc(c[0])}</span>`:''}</div><div class="acts">${iact(fav?'heartf':'heart',fav?'В избранном':'В избранное',`data-fav="${esc(k)}"`)}${iact('trash','Удалить',`data-ckdel="${esc(k)}"`)}</div></div>
@@ -1346,7 +1370,7 @@ function Line(x,m){ const {k,q,c}=x, p=N(c[3]), o=N(c[4]); const price=`<div cla
 function Summary(m){ const t=totals(), n=t.qty;
   return `<div class="ck-sum ${m?'mob':''}"><h3>Ваш заказ</h3><div class="rows"><div><span>Товары, ${n} шт.</span><span>${F(t.old)}</span></div>${t.disc?`<div><span>Скидка</span><span>−${F(t.disc)}</span></div>`:''}<div><span>Доставка</span><span>${S.dmode==='pick'?'Бесплатно':F(t.del)}</span></div><div><span>Бонусы</span><span class="bonus"><i></i>+${String(t.bon).replace(/\B(?=(\d{3})+(?!\d))/g,' ')}</span></div></div>
    <div class="tot"><b>Итого</b><b class="v">${F(t.total)}</b></div>
-   <div class="ck-promo"><input id="ckPromo" placeholder="Промокод" value="${esc(S.promo)}"><button class="btn btn-secondary" data-ckpromo>Применить</button></div>
+   <div class="ck-promo"><input id="ckPromo" placeholder="Промокод" readonly tabindex="-1"><span class="btn btn-secondary" style="cursor:default">Применить</span></div>
    ${m?'':`<button class="btn btn-primary" data-ckgo ${n?'':'disabled'}>Оформить заказ</button>`}<p class="note">Нажимая «Оформить заказ», вы соглашаетесь с условиями <u>публичной оферты</u></p></div>` }
 function Cart(m){ seed(); const L=lines(); const all=L.length&&L.every(x=>isSel(x.k)); const cnt=L.reduce((a,x)=>a+x.q,0);
   if(!L.length) return `<div class="ck ${m?'mob':''}"><div class="ck-head"><h1>Корзина</h1></div><div class="ck-empty"><b>В корзине пока пусто</b><span>Загляните в каталог — там много полезного</span><button class="btn btn-primary" data-home style="width:auto;padding:0 32px">На главную</button></div></div>`;
@@ -1355,7 +1379,7 @@ function Cart(m){ seed(); const L=lines(); const all=L.length&&L.every(x=>isSel(
   const pick=S.dmode==='pick'?`<div class="ck-pick"><span class="t"><b>Астана, просп. Акжол, 65</b><span>Пн–пт 9:00–18:00, сб 9:00–13:00, вс — выходной · +7 778 021 01 11</span></span>${iact('map-pin','На карте','data-toast="Карта пунктов выдачи — в следующей версии"')}</div>`
     :`<div class="ck-pick"><span class="t"><b>Алматы, ул. Толе би, 216Б, кв. 14</b><span>Курьер привезёт с 10:00 до 22:00 · от 1 500 ₸</span></span>${iact('edit','Изменить','data-toast="Редактирование адреса — в следующей версии"')}</div>`;
   const first=G[0], rest=G.slice(1).reduce((a,g)=>a+g.items.reduce((s,x)=>s+x.q,0),0), firstN=first?first.items.reduce((s,x)=>s+x.q,0):0;
-  const ship=`<div class="ck-opts">${opt(S.smode==='part','packages','По мере готовности',`${first?first.d.split(',')[0]:''}, ${firstN} ${pl(firstN,'товар','товара','товаров')}`,'data-smode="part"')}${opt(S.smode==='all','pkgcheck','Ждать весь заказ',`до 9 ноября, ${cnt} ${pl(cnt,'товар','товара','товаров')}`,'data-smode="all"')}</div>`;
+  const ship=`<div class="ck-opts">${opt(S.smode==='part','packages','По мере готовности',`${first?first.d.split(',')[0]:''}, ${firstN} ${pl(firstN,'товар','товара','товаров')}`,'data-smode="part"')}${opt(S.smode==='all','package','Ждать весь заказ',`до 9 ноября, ${cnt} ${pl(cnt,'товар','товара','товаров')}`,'data-smode="all"')}</div>`;
   const grp=G.map(g=>{const q=g.items.reduce((s,x)=>s+x.q,0);return `<div class="ck-grp"><div class="h"><b>${g.d}</b><span>· ${q} ${pl(q,'товар','товара','товаров')}</span><span style="flex:1"></span><b>${S.dmode==='pick'?'Бесплатно':F(1500)}</b></div><div class="th">${g.items.map(x=>`<span class="tb"><img src="${img(x.c)}" alt="">${x.q>1?`<i>${x.q} шт</i>`:''}</span>`).join('')}</div></div>`}).join('');
   const pays=[['Kaspi.kz','Оплата в приложении Kaspi.kz'],['Картой онлайн','Visa, Mastercard'],['В рассрочку',`От ${F(Math.ceil(totals().total/12))} в месяц на 12 месяцев`]];
   const left=`<div class="ck-main">
@@ -1363,7 +1387,7 @@ function Cart(m){ seed(); const L=lines(); const all=L.length&&L.every(x=>isSel(
    <div class="ck-lines">${L.map(x=>Line(x,m)).join('')}</div>
    <section><h2>Получатель</h2>${tabs(['Физическое лицо','Юридическое лицо'],S.buyer,'data-buyer')}${rec}<button class="ck-add" data-ckaddrcp>Добавить получателя</button></section>
    <section><h2>Доставка</h2>${tabs(['Пункт выдачи','Курьером'],S.dmode==='pick'?0:1,'data-dmode')}${pick}<h4>Как отправить</h4>${ship}<div class="ck-grps">${grp}</div></section>
-   <section><h2>Оплата</h2><div class="ck-opts three">${pays.map((p,i)=>opt(S.pay===i,null,p[0],p[1],`data-pay="${i}"`)).join('')}</div><textarea class="ck-comment" placeholder="Комментарий к заказу"></textarea></section>
+   <section><h2>Оплата</h2><div class="ck-opts three">${pays.map((p,i)=>opt(S.pay===i,null,p[0],p[1],`data-pay="${i}"`)).join('')}</div><textarea class="ck-comment" placeholder="Комментарий к заказу" readonly tabindex="-1"></textarea></section>
    ${m?Summary(true):''}</div>`;
   return `<div class="ck ${m?'mob':''}"><div class="ck-head"><h1>Корзина</h1><span>${cnt} ${pl(cnt,'товар','товара','товаров')}</span></div><div class="ck-grid">${left}${m?'':`<aside>${Summary(false)}</aside>`}</div></div>
    ${m?`<div class="ck-bbar"><div><b>${F(totals().total)}</b><span>${cnt} ${pl(cnt,'товар','товара','товаров')}, ${S.dmode==='pick'?'самовывоз':'с доставкой'}</span></div><button class="m-btn y" data-ckgo>Оформить заказ</button></div>`:''}` }
@@ -1381,12 +1405,12 @@ function Order(m){ const L=orderItems(); let sum=0,old=0,bon=0; L.forEach(({c,q}
   const info=`<section><h2>Информация о заказе</h2><div class="lk-info">${[['Получатель','Максим, +7 705 453 97 56'],['Способ получения','Курьером'],['Адрес','Алматы, ул. Толе би, 216Б, кв. 14'],['Оплата','Kaspi.kz — оплачено 24 октября'],['Комментарий','Позвоните за час до доставки']].map(([a,b])=>`<div><span>${a}</span><b>${b}</b></div>`).join('')}</div></section>`;
   const btns=`<div class="lk-btns"><button class="btn btn-primary" data-lkrepeat>Повторить заказ</button><button class="btn btn-secondary" data-toast="Чек скачан">${ic('download')}Скачать чек</button><button class="ck-add" data-toast="Отмена заказа — в следующей версии">Отменить заказ</button></div>`;
   const head=`<div class="lk-head"><button class="lk-back" data-toast="Список заказов — в следующей версии">${ic('chevron-left')}Мои заказы</button><h1>Заказ № ${ORDER.no}</h1><span>от ${ORDER.date} · ${cnt} ${pl(cnt,'товар','товара','товаров')}</span></div>`;
-  if(m) return `<div class="lk mob">${head}${st}${comp}${info}${btns}${help}</div>`;
+  if(m){const cur=steps.find(x=>x[2]==='cur');const mst=`<div class="lk-mst ${S.stOpen?'open':''}"><button class="lk-mst-h" data-stopen><i class="pulse"></i><span><b>${cur[0]}</b><em>${cur[1]}</em></span>${ic('chevron-down')}</button>${S.stOpen?`<div class="steps">${steps.map(([t,d,s])=>`<div class="st ${s}"><i></i><span><b>${t}</b><em>${d}</em></span></div>`).join('')}</div>`:''}</div>`;return `<div class="lk mob">${head}<div class="lk-status">${mst}</div>${comp}${info}${btns}${help}</div>`}
   const nav=`<nav class="lk-nav"><div class="who"><b>Максим</b><span>+7 705 453 97 56</span><u>Изменить профиль</u></div><hr>${[['Личный кабинет',''],['Мои заказы','3',1],['Корзина',String(cartCount()),0,'data-gocart'],['Избранное',String(Object.values(S.fav).filter(Boolean).length||12)],['Бонусы','4 250']].map(([a,b,on,at])=>`<button class="${on?'on':''}" ${at||''}><span>${a}</span><span>${b}</span></button>`).join('')}<hr><button><span>Контакты</span></button><button><span>Адреса магазинов</span></button><hr><button><span>Выйти из аккаунта</span></button></nav>`;
   return `<div class="lk">${nav}<div class="lk-mid">${head}${btns}${comp}${info}</div><aside>${st}<hr>${help}</aside></div>` }
 window.Cart=Cart; window.Order=Order; window.lines_n=()=>lines().length;
 /* ---- События ---- */
-document.addEventListener('click',e=>{const t=e.target.closest('[data-cksel],[data-ckall],[data-ckdelsel],[data-ckdel],[data-fav],[data-buyer],[data-dmode],[data-smode],[data-pay],[data-ckpromo],[data-ckgo],[data-ckrcp],[data-ckaddrcp],[data-toast],[data-gocart],[data-goorder],[data-lkrepeat]');if(!t)return;const d=t.dataset;
+document.addEventListener('click',e=>{const t=e.target.closest('[data-cksel],[data-ckall],[data-ckdelsel],[data-ckdel],[data-fav],[data-buyer],[data-dmode],[data-smode],[data-pay],[data-ckpromo],[data-ckgo],[data-ckrcp],[data-ckaddrcp],[data-toast],[data-gocart],[data-goorder],[data-lkrepeat],[data-stopen]');if(!t)return;const d=t.dataset;
  if('toast' in d){e.preventDefault();return toast(d.toast)}
  e.preventDefault();e.stopPropagation();
  if(d.cksel){S.ck[d.cksel]=!isSel(d.cksel)}
@@ -1398,12 +1422,13 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-cksel],[da
  else if(d.dmode){S.dmode=d.dmode==='0'?'pick':'cour'}
  else if(d.smode){S.smode=d.smode}
  else if(d.pay){S.pay=+d.pay}
- else if('ckpromo' in d){const v=(document.getElementById('ckPromo')||{}).value||'';S.promo=v;toast(v?'Промокод не найден':'Введите промокод')}
+ else if('ckpromo' in d){return}
  else if('ckrcp' in d){S.rcp=false;toast('Получатель удалён')}
  else if('ckaddrcp' in d){S.rcp=true}
  else if('ckgo' in d){ORDER.items=lines().filter(x=>isSel(x.k)).map(x=>({c:x.c,q:x.q}));ORDER.no=String(33040+Math.floor(Math.random()*900));ORDER.date='сегодня';lines().filter(x=>isSel(x.k)).forEach(x=>delete S.cart[x.k]);go('order');toast('Заказ оформлен');return}
  else if('gocart' in d){return go('cart')}
  else if('goorder' in d){return go('order')}
+ else if('stopen' in d){S.stOpen=!S.stOpen}
  else if('lkrepeat' in d){orderItems().forEach(({c,q})=>{const k=keyOf(c);S.cart[k]=(S.cart[k]||0)+q});toast('Товары добавлены в корзину');return go('cart')}
  render(true)},true);
 })();
