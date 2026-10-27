@@ -607,8 +607,9 @@ html,body{overflow-x:clip}
 .rev-foot.mob{flex-direction:column;align-items:stretch;gap:16px}
 .more-btn{align-self:center;width:auto;padding:0 40px;margin-top:16px}
 .gallery .main{background:#F2F2F2}
-.pcard::after{content:'';position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--text-tertiary);opacity:0;transition:opacity .15s;pointer-events:none}
+.pcard::after{content:'';position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--border-default);opacity:0;transition:opacity .15s;pointer-events:none}
 .pcard:hover::after{opacity:1}
+@media (hover:hover){.pcard{padding-bottom:16px}}
 @media (hover:none){.pcard::after{display:none}}
 .brands{display:flex;gap:30px;overflow-x:auto;scrollbar-width:none;margin:0 -40px;padding:0 40px;-webkit-mask:linear-gradient(90deg,transparent,#000 40px,#000 calc(100% - 40px),transparent)}
 .brands::-webkit-scrollbar{display:none}.brands .brand-tile{flex:none;width:280px}
@@ -1022,9 +1023,8 @@ function Product(){
    <nav class="crumbs" style="margin-bottom:32px"><button data-home>главная</button><span>/</span>${CAT_ORDER.map(x=>`<button data-cat="${x}">${esc(C.categories[x].title.toLowerCase())}</button><span>/</span>`).join('')}</nav>
    <div class="prod"><div>
     <div class="gallery"><div class="thumbs">${imgs.map((s,i)=>`<button class="tb ${i===S.gal?'on':''}" data-galto="${i}" aria-label="Фото ${i+1}"><img src="${s}" alt=""></button>`).join('')}</div>
-     <div class="main" id="galMain"><div class="strip" style="transform:translateX(-${S.gal*100}%)">${imgs.map(s=>`<img src="${s}" alt="${esc(p.brand+' '+p.title)}" draggable="false">`).join('')}</div>
-      <button class="iconbtn nav l" data-gal="-1" aria-label="Предыдущее фото" ${S.gal===0?'disabled':''}>${ic('chevron-left')}</button><button class="iconbtn nav r" data-gal="1" aria-label="Следующее фото" ${S.gal===imgs.length-1?'disabled':''}>${ic('chevron-right')}</button></div>
-     <div class="badges"><span class="badge l">${esc(p.badge)}</span></div></div>
+     <div class="main" id="galMain"><div class="strip" style="transform:translateX(-${S.gal*100}%)">${imgs.map(s=>`<img src="${s}" alt="${esc(p.brand+' '+p.title)}" draggable="false">`).join('')}</div><div class="badges"><span class="badge l">${esc(p.badge)}</span></div>
+      <button class="iconbtn nav l" data-gal="-1" aria-label="Предыдущее фото" ${S.gal===0?'disabled':''}>${ic('chevron-left')}</button><button class="iconbtn nav r" data-gal="1" aria-label="Следующее фото" ${S.gal===imgs.length-1?'disabled':''}>${ic('chevron-right')}</button></div></div>
     <div class="content">
      <section class="sect">${SectionHeader('О товаре')}<p class="t-body-text" style="margin:0">${esc(p.about)}</p><div class="t-caption" style="display:flex;gap:24px"><span><span class="muted">Артикул:</span> <b>${p.sku}</b></span><span><span class="muted">Код товара:</span> <b>${p.code}</b></span></div></section>
      <section class="sect">${SectionHeader('Назначение')}<div class="tags">${p.purpose.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div></section>
