@@ -90,8 +90,9 @@ img{display:block;max-width:100%}
 .catalog .cols{display:grid;grid-template-columns:repeat(5,var(--layout-column-width));gap:var(--layout-grid-gutter);padding:32px 0 48px}
 .catalog ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
 .mitem{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:5px 0;font-size:13px;font-weight:500;color:var(--text-primary);text-align:left;width:100%}
-.mitem .ico{width:14px;height:14px;color:var(--text-tertiary)}
-.cols.has-path .mitem{color:var(--text-tertiary)}
+.mitem .ico{width:14px;height:14px;color:var(--text-primary)}
+.catalog ul.sel .mitem{color:var(--text-secondary)}
+.catalog ul.sel .mitem .ico{color:var(--text-secondary)}
 .cols .mitem.active{color:var(--text-primary);font-weight:600}
 .cols .mitem.active .ico{color:var(--text-primary)}
 .mitem.live{cursor:pointer}.mitem.dead{cursor:default}
@@ -120,8 +121,17 @@ img{display:block;max-width:100%}
 
 /* ProductCard */
 .pcard{width:var(--layout-column-width);flex:none;display:flex;flex-direction:column;background:var(--bg-primary);cursor:pointer;position:relative}
-.pcard .media{height:240px;position:relative}
-.pcard .media img{width:240px;height:220px;object-fit:contain;background:#fff}
+.pcard .media{height:240px;position:relative;overflow:hidden}
+.pcard .slides{position:relative;width:100%;height:220px}
+.pcard .slides img{position:absolute;left:0;top:0;width:100%;height:220px;object-fit:contain;background:#fff;opacity:0}
+.pcard .slides img.on{opacity:1}
+.sdots{position:absolute;left:0;right:0;top:226px;display:flex;gap:4px;justify-content:center;opacity:0;transition:opacity .15s}
+.pcard:hover .sdots{opacity:1}
+.sdots i{width:16px;height:2px;background:var(--control-bg)}.sdots i.on{background:var(--text-primary)}
+.pcard .pcta{position:absolute;right:0;bottom:20px}
+.pcard .pcta.in{left:0;right:0;bottom:20px}
+.pcard .t-price-l,.pcard .title,.pcard .bonus,.pcard .delivery .lbl span:last-child,.pcard .delivery>.ico,.pcard .oos{transition:color .15s}
+.pcard:hover .t-price-l,.pcard:hover .title,.pcard:hover .bonus,.pcard:hover .delivery .lbl span:last-child,.pcard:hover .delivery>.ico,.pcard:hover .oos{color:var(--text-secondary)}
 .badge{position:absolute;left:0;top:0;height:28px;padding:0 8px;display:flex;align-items:center;font-size:13px;font-weight:700;background:var(--badge-sale);color:var(--text-primary)}
 .badge.new{background:var(--badge-new);color:var(--text-inverse)}
 .badge.l{height:32px;font-size:15px;padding:0 10px}
@@ -129,10 +139,10 @@ img{display:block;max-width:100%}
 .bonus{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600}
 .bonus i{width:15px;height:15px;border-radius:50%;background:var(--action-primary-default);display:block}
 .price{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
-.pcard .title-wrap{padding:12px 20px 16px 0}
+.pcard .title-wrap{padding:12px 20px 12px 0}
 .pcard .title{font-size:15px;font-weight:500;line-height:1.3;height:calc(3 * 1.3em);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .pcard .title b,.ptitle b{font-weight:800}
-.pcard .pfoot{height:48px;display:flex;align-items:center;justify-content:space-between}
+.pcard .pfoot{display:flex;align-items:center;min-height:28px}
 .delivery{display:flex;align-items:center;gap:8px}
 .delivery .lbl{display:flex;flex-direction:column;font-size:12px;line-height:1.2}
 .delivery .lbl span:first-child{color:var(--text-secondary);font-weight:500}
@@ -150,8 +160,8 @@ img{display:block;max-width:100%}
 .row-scroll{display:flex;gap:var(--layout-grid-gutter);overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none}
 .row-scroll::-webkit-scrollbar{display:none}
 .row-scroll>*{scroll-snap-align:start}
-.grid5{display:grid;grid-template-columns:repeat(5,var(--layout-column-width));column-gap:var(--layout-grid-gutter);row-gap:64px}
-.grid4{display:grid;grid-template-columns:repeat(4,var(--layout-column-width));column-gap:var(--layout-grid-gutter);row-gap:64px}
+.grid5{display:grid;grid-template-columns:repeat(5,var(--layout-column-width));column-gap:var(--layout-grid-gutter);row-gap:48px}
+.grid4{display:grid;grid-template-columns:repeat(4,var(--layout-column-width));column-gap:var(--layout-grid-gutter);row-gap:48px}
 
 /* Home */
 .hero-wrap{position:relative;overflow:hidden}
@@ -177,8 +187,12 @@ img{display:block;max-width:100%}
 .stat{display:flex;flex-direction:column;gap:8px}
 .stat b{font-size:44px;font-weight:700;line-height:1}
 .stat span{font-size:13px;font-weight:600;line-height:1.3}
-.promo{flex:none;width:915px;display:flex;flex-direction:column;gap:20px}
-.promo .media{aspect-ratio:915/416;background:var(--bg-tertiary);overflow:hidden}
+.promo{flex:none;width:504px;display:flex;flex-direction:column;gap:16px;scroll-snap-align:start}
+.promo .media{position:relative}
+.pdate{position:absolute;left:0;top:0;display:flex;align-items:center;gap:6px;background:var(--bg-primary);color:var(--text-primary);font-size:13px;font-weight:600;height:32px;padding:0 12px}
+.pdate .ico{width:16px;height:16px}
+.m .pdate{height:28px;font-size:12px;padding:0 10px}
+.promo .media{aspect-ratio:915/416;position:relative;background:var(--bg-tertiary);overflow:hidden}
 .promo .media img{width:100%;height:100%;object-fit:cover;pointer-events:none}
 .promo .txt{display:flex;flex-direction:column;gap:8px}
 .reels{display:grid;grid-template-columns:repeat(4,1fr);gap:30px}
@@ -294,7 +308,8 @@ img{display:block;max-width:100%}
 .doc{display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border-default)}
 .doc .t{flex:1;display:flex;flex-direction:column;gap:4px}
 .reviews{display:grid;grid-template-columns:375px 780px;gap:165px}
-.rsum{display:flex;flex-direction:column;gap:32px}
+.rsum2{display:flex;align-items:center;justify-content:space-between;gap:24px}
+.rsum2 .avg{display:flex;align-items:center;gap:16px}
 .stars{display:flex;gap:2px}.stars .ico{width:16px;height:16px}.stars .ico.off{color:var(--border-default)}
 .rbar{display:flex;align-items:center;gap:12px;font-size:14px;font-weight:600}
 .rbar .lab{width:28px;display:flex;align-items:center;gap:4px}.rbar .lab .ico{width:12px;height:12px}
@@ -391,7 +406,13 @@ html,body{overflow-x:clip}
 .m-sbar{margin:16px 16px 0;height:2px;background:var(--border-default);position:relative;overflow:hidden}
 .m-sbar i{position:absolute;top:0;bottom:0;left:0;background:var(--text-primary);transition:width .2s}
 .m .pcard .media{height:156px}
-.m .pcard .media img{width:100%;height:156px}
+.m .pcard .slides{height:156px;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.m .pcard .slides::-webkit-scrollbar{display:none}
+.m .pcard .slides img{position:static;flex:none;width:100%;height:156px;opacity:1;scroll-snap-align:start}
+.m .sdots{opacity:1;top:auto;bottom:-10px}
+.m .pcard .media{overflow:visible}
+.m .pcard .pcta{bottom:0}.m .pcard .pcta.in{bottom:0}
+.m .pcard:hover .t-price-l,.m .pcard:hover .title,.m .pcard:hover .bonus,.m .pcard:hover .delivery .lbl span:last-child,.m .pcard:hover .delivery>.ico{color:inherit}
 .m .pcard .info{padding-top:14px;gap:6px}
 .m .pcard .t-price-l{font-size:17px}
 .m .pcard .title-wrap{padding:6px 0 10px}
@@ -400,7 +421,7 @@ html,body{overflow-x:clip}
 .m .pcard .price{gap:2px 6px}
 .m .pcard .t-price-old{font-size:12px}
 .m .pcard .pfoot{margin-top:auto}
-.m .pcard .pfoot{height:40px}
+.m .pcard .pfoot{min-height:28px}
 .m .add{opacity:1;width:40px;height:40px}
 .m .add .ico{width:20px;height:20px}
 .m .delivery{gap:6px}.m .delivery .ico{width:16px;height:16px}
@@ -420,7 +441,7 @@ html,body{overflow-x:clip}
 .m-stats span{font-size:13px;font-weight:600;line-height:1.3}
 .m-stats .m-link{grid-column:1/-1}
 .m-promo{width:300px;display:flex;flex-direction:column;gap:12px}
-.m-promo .im{aspect-ratio:915/416;overflow:hidden;background:var(--bg-tertiary)}
+.m-promo .im{aspect-ratio:915/416;overflow:hidden;position:relative;background:var(--bg-tertiary)}
 .m-promo .im img{width:100%;height:100%;object-fit:cover;pointer-events:none}
 .m-promo .e{font-size:12px;font-weight:500;color:var(--text-secondary)}
 .m-promo .t{font-size:17px;font-weight:700;line-height:1.25}
@@ -648,22 +669,22 @@ const S={more:{},price:{},heroI:0,promoI:0,view:'home',cat:null,cart:{},menuOpen
 let C=null, IDMAP={};
 const cartCount=()=>Object.values(S.cart).reduce((a,b)=>a+b,0);
 const IMG={},IMGL={};
-function ensureImgs(){const id=S.view==='cat'?S.cat:null; if(!id||IMGL[id]||!C.categories[id].cards.some(c=>c[9])) return; IMGL[id]=1; fetch(`img/c/${id}.json`).then(r=>r.json()).then(j=>{Object.assign(IMG,j); if(S.cat===id) render(true)}).catch(()=>{IMGL[id]=0})}
+function ensureImgs(){const id=S.view==='cat'?S.cat:S.view==='home'?'home':S.view==='prod'?'prod':null; if(!id||IMGL[id]) return; IMGL[id]=1; fetch(`img/c/${id}.json`).then(r=>r.json()).then(j=>{Object.assign(IMG,j); if((S.view==='cat'?S.cat:S.view)===id||(id==='home'&&S.view==='home')||(id==='prod'&&S.view==='prod')) render(true)}).catch(()=>{IMGL[id]=0})}
 const imgFor=c=>{if(c[9]) return IMG[c[0]]||'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='; const id=c[0]||IDMAP[c[1]+' '+c[2]];return id?`img/p/${id}.jpg`:''};
 const keyOf=c=>c[0]||(c[1]+' '+c[2]);
 
 /* ---------- Компоненты ---------- */
 function Delivery(t){const [a,b]=String(t).split('\n');return `<div class="delivery">${ic('calendar')}<div class="lbl"><span>${esc(a)}</span><span>${esc(b||'')}</span></div></div>`}
 function Stepper(k,big){return `<div class="stepper ${big?'big':''}" data-stop><button aria-label="Меньше" data-dec="${esc(k)}">${ic('minus')}</button><span class="v">${S.cart[k]}</span><button aria-label="Больше" data-inc="${esc(k)}">${ic('plus')}</button></div>`}
+const PIX='data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
 function ProductCard(c){
-  const k=keyOf(c), out=c[8]==='out', inCart=S.cart[k]>0;
+  const k=keyOf(c), out=c[8]==='out', inCart=S.cart[k]>0, n=c[10]||1;
   const badge=c[5]?`<span class="badge ${c[5]==='Новинка'?'new':''}">${esc(c[5])}</span>`:'';
-  let foot;
-  if(out) foot=`<div class="oos">${ic('x')}Нет в наличии</div>`;
-  else if(inCart) foot=Stepper(k);
-  else foot=`${Delivery(c[7])}<button class="add" aria-label="В корзину" data-add="${esc(k)}">${ic('shopping-cart')}</button>`;
-  return `<article class="pcard ${out?'out':''}" data-goprod tabindex="0">
-   <div class="media"><img loading="lazy" src="${imgFor(c)}" alt="${esc(c[1]+' '+c[2])}">${badge}</div>
+  const srcs=[imgFor(c)]; for(let j=1;j<n;j++) srcs.push(IMG[c[0]+'_'+j]||PIX);
+  const cta=out?'':inCart?`<div class="pcta in">${Stepper(k)}</div>`:`<button class="add pcta" aria-label="В корзину" data-add="${esc(k)}">${ic('shopping-cart')}</button>`;
+  const foot=out?`<div class="oos">${ic('x')}Нет в наличии</div>`:Delivery(c[7]);
+  return `<article class="pcard ${out?'out':''} ${inCart?'incart':''}" data-goprod tabindex="0">
+   <div class="media"><div class="slides">${srcs.map((s,j)=>`<img loading="lazy" src="${s}" alt="${j?'':esc(c[1]+' '+c[2])}" class="${j?'':'on'}" draggable="false">`).join('')}</div>${n>1?`<div class="sdots">${srcs.map((_,j)=>`<i class="${j?'':'on'}"></i>`).join('')}</div>`:''}${badge}${cta}</div>
    <div class="info"><div class="bonus"><i></i>${esc(c[6])}</div><div class="price"><span class="t-price-l">${esc(c[3])}</span>${c[4]?`<span class="t-price-old">${esc(c[4])}</span>`:''}</div></div>
    <div class="title-wrap"><div class="title"><b>${esc(c[1])}</b> ${esc(c[2])}</div></div>
    <div class="pfoot">${foot}</div></article>`}
@@ -686,7 +707,7 @@ function CatalogMenu(){
   path.forEach(p=>{ if(MENU[p]) cols.push([p,MENU[p]]); });
   while(cols.length<5) cols.push(null);
   return `<div class="catalog"><div class="wrap"><div class="cols ${path.length?'has-path':''}">${cols.map((col,i)=>{ if(!col) return '<div></div>';
-    const leaf=i===4; return `<ul class="${leaf?'col-leaf':''}">${col[1].map(it=>{ const [label,id]=Array.isArray(it)?it:[it,null]; const act=id&&path[i]===id;
+    const leaf=i===4; return `<ul class="${leaf?'col-leaf':''} ${path[i]?'sel':''}">${col[1].map(it=>{ const [label,id]=Array.isArray(it)?it:[it,null]; const act=id&&path[i]===id;
       return `<li><button class="mitem ${id?'live':'dead'} ${act?'active':''}" ${id?`data-menu="${id}" data-level="${i}"`:''} ${id?'':'tabindex="-1"'}>${esc(label)}${id&&MENU[id]?ic('chevron-right'):''}</button></li>`}).join('')}</ul>`}).join('')}</div></div></div>`}
 
 /* ---------- Футер ---------- */
@@ -705,10 +726,12 @@ function Home(){
   <div class="hero-wrap"><div class="car" id="heroTrack" style="transform:translateX(${-S.heroI*1350}px)">${HERO.map((b,i)=>`<div class="hero" data-hero="${i}"><img src="${b.img}" alt="" onerror="this.remove()"></div>`).join('')}</div>
    <div class="hero-ui" id="heroUI" data-i="${S.heroI}"><div class="content"><div class="text hfade"><span class="brand hb">${esc(HERO[S.heroI].brand)}</span><span class="t-display ht">${esc(HERO[S.heroI].title)}</span></div><button class="btn btn-primary hbtn" data-heroto="">${esc(HERO[S.heroI].btn)}</button></div><div class="pagination">${HERO.map((_,j)=>`<i class="${j===S.heroI?'on':''}"></i>`).join('')}</div></div></div>
   <section class="sect">${SectionHeader('Хиты продаж',{arrows:1,id:'hits'})}${Carousel('hits',h.hits)}</section>
+  <section class="sect"><div class="sect-head"><div class="left"><h2 class="t-h1" style="margin:0">Дрели и шуруповёрты</h2><button class="link" data-cat="k01">Смотреть все${ic('chevron-right')}</button></div><div class="arrows"><button class="iconbtn" data-scroll="drills" data-dir="-1" aria-label="Назад">${ic('chevron-left')}</button><button class="iconbtn" data-scroll="drills" data-dir="1" aria-label="Вперёд">${ic('chevron-right')}</button></div></div>${Carousel('drills',h.drills)}</section>
+  <section class="sect"><div class="sect-head"><div class="left"><h2 class="t-h1" style="margin:0">Готовимся к зиме</h2><button class="link" data-cat="k10">Смотреть все${ic('chevron-right')}</button></div><div class="arrows"><button class="iconbtn" data-scroll="winter" data-dir="-1" aria-label="Назад">${ic('chevron-left')}</button><button class="iconbtn" data-scroll="winter" data-dir="1" aria-label="Вперёд">${ic('chevron-right')}</button></div></div>${Carousel('winter',h.winter)}</section>
   <section class="about"><div class="txt"><h2 class="t-h1" style="margin:0">Рядом<br>с мастером</h2><p class="t-body-text" style="margin:0">Мы гордимся тем, что являемся частью ваших амбициозных проектов</p></div>
    <div class="stats"><div class="row">${[['4.9','оценка от наших клиентов'],['20+','лет в индустрии'],['178','магазинов в Казахстане'],['>100 000','инструментов мировых брендов']].map(([a,b],i)=>`<div class="stat" style="width:${i<3?165:214}px"><b>${a}</b><span>${b}</span></div>`).join('')}</div><span class="link">Подробнее о нас${ic('chevron-right')}</span></div></section>
-  <section class="sect"><div class="sect-head"><div class="left"><h2 class="t-h1" style="margin:0">Акции</h2><span class="link">Все предложения${ic('chevron-right')}</span></div><div class="arrows"><button class="iconbtn" data-scroll="promoTrack" data-dir="-1" aria-label="Назад">${ic('chevron-left')}</button><button class="iconbtn" data-scroll="promoTrack" data-dir="1" aria-label="Вперёд">${ic('chevron-right')}</button></div></div>
-   <div class="car" id="promoTrack" style="transform:translateX(${-S.promoI*945}px)">${PROMO.map(p=>`<div class="promo"><div class="media"><img src="${p.img}" alt="" onerror="this.remove()"></div><div class="txt"><span class="t-body-s muted">${esc(p.e)}</span><span class="t-h2">${esc(p.t)}</span><span class="t-body-text muted">${esc(p.s)}</span></div></div>`).join('')}</div></section>
+  <section class="sect"><div class="sect-head"><div class="left"><h2 class="t-h1" style="margin:0">Акции</h2><span class="link">Все предложения${ic('chevron-right')}</span></div><div class="arrows"><button class="iconbtn" data-scroll="promoRow" data-dir="-1" aria-label="Назад">${ic('chevron-left')}</button><button class="iconbtn" data-scroll="promoRow" data-dir="1" aria-label="Вперёд">${ic('chevron-right')}</button></div></div>
+   <div class="row-scroll promo-row" id="promoRow">${PROMO.map(p=>`<div class="promo"><div class="media"><img src="${p.img}" alt="" onerror="this.remove()"><span class="pdate">${ic('calendar')}${esc(p.e)}</span></div><div class="txt"><span class="t-h3">${esc(p.t)}</span><span class="t-body-m muted">${esc(p.s)}</span></div></div>`).join('')}</div></section>
   <section class="sect">${SectionHeader('Рассказываем об инструментах и не только')}<div class="reels">${REELS_HOME.map(Reel).join('')}<a class="cta" href="${INSTAGRAM}" target="_blank" rel="noopener"><span class="t-h1">Мы<br>в Instagram</span><span class="t-body-text" style="margin-top:12px">Больше 40 000 человек уже следят за нашей лентой</span>${ic('instagram','ig')}</a></div></section>
   <section class="sect">${SectionHeader('Вам будет интересно')}<div class="grid5">${h.interest.map(ProductCard).join('')}</div></section>
   <section class="sect" style="gap:40px"><div style="display:flex;flex-direction:column;align-items:center;gap:16px"><h2 class="t-h1" style="margin:0">50+ мировых брендов</h2><span class="link">Полный каталог${ic('chevron-right')}</span></div>
@@ -766,6 +789,8 @@ function Product(){
      <section class="sect">${SectionHeader('Гарантия')}<div class="warranty"><div class="row">${p.warranty.map(([a,b])=>`<div><b>${a}</b><span class="t-body-s-strong">${b}</span></div>`).join('')}</div><span class="link">Вся информация о гарантии${ic('chevron-right')}</span></div></section>
      <section class="sect">${SectionHeader('Документация')}<div>${p.docs.map(([a,b])=>`<div class="doc">${ic('file-text')}<div class="t"><span class="t-body-m-strong">${esc(a)}</span><span class="t-caption muted">${b}</span></div><span class="link">${ic('download')}Скачать</span></div>`).join('')}</div></section>
      <section class="sect">${SectionHeader('Видео о товаре')}<div style="width:307.5px">${Reel(REEL_PRODUCT)}</div></section>
+     <section class="sect">${SectionHeader('Отзывы')}<div class="rsum2"><div class="avg"><span class="t-display">4,7</span>${stars(5)}<span class="t-body-m muted">3 отзыва</span></div><span class="btn btn-primary" style="cursor:default;width:auto;padding:0 24px">Написать отзыв</span></div>
+      <div>${p.reviews.map(([n,r,d,t])=>`<div class="review"><div class="h"><span class="t-h4">${esc(n)}</span>${stars(r)}</div><span class="t-body-s muted">${esc(d)}</span><p class="t-body-text">${esc(t)}</p></div>`).join('')}</div><button class="btn btn-secondary" style="cursor:default;align-self:flex-start;width:auto;padding:0 24px">Все отзывы</button></section>
     </div></div>
     <aside class="buy">
      <div style="display:flex;flex-direction:column;gap:12px"><span class="link" style="cursor:default">${esc(p.brand)}${ic('chevron-right')}</span><h1 class="ptitle" style="margin:0">${esc(p.title)}</h1></div>
@@ -774,10 +799,6 @@ function Product(){
      <div style="display:flex;flex-direction:column;gap:16px"><span class="t-body-l-strong city">Ваш город: <u>Алматы</u></span>${p.delivery.map(([a,b,i])=>`<div class="dopt">${ic(i)}<div class="t"><span class="t-body-l-strong">${esc(a)}</span><span class="t-body-m muted">${esc(b)}</span></div></div>`).join('')}</div>
      <div style="display:flex;flex-direction:column;gap:12px">${inCart?Stepper(k,true):`<button class="btn btn-primary" data-add="${k}">${ic('shopping-cart')}В корзину</button>`}<button class="btn btn-installment" id="instBtn">${ic('bank')}${inst}</button></div>
     </aside></div>
-   <section class="sect" style="margin-top:96px">${SectionHeader('Отзывы')}<div class="reviews"><div class="rsum"><div style="display:flex;flex-direction:column;gap:8px"><div style="display:flex;align-items:center;gap:12px"><span class="t-display">4,7</span>${stars(5).replace(/ico /g,'ico ')}</div><span class="t-body-m muted">3 отзыва</span></div>
-     <div style="display:flex;flex-direction:column;gap:8px">${[[5,2],[4,1],[3,0],[2,0],[1,0]].map(([s,n])=>`<div class="rbar"><span class="lab">${s}${ic('star')}</span><span class="track"><i style="width:${n/3*100}%"></i></span><span class="n">${n}</span></div>`).join('')}</div>
-     <span class="btn btn-secondary" style="cursor:default">Написать отзыв</span></div>
-     <div>${p.reviews.map(([n,r,d,t])=>`<div class="review"><div class="h"><span class="t-h4">${esc(n)}</span>${stars(r)}</div><span class="t-body-s muted">${esc(d)}</span><p class="t-body-text">${esc(t)}</p></div>`).join('')}</div></div></section>
    <section class="sect" style="margin-top:96px">${SectionHeader('Сопутствующие товары',{arrows:1,id:'related'})}${Carousel('related',p.related)}</section></div>`}
 
 /* ---------- Рендер ---------- */
@@ -797,6 +818,11 @@ function go(view,id){S.view=view;S.cat=id||null;S.menuOpen=false;S.menuPath=[];S
 function toast(t){const el=document.getElementById('toast');el.textContent=t;el.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('show'),1800)}
 function bump(){const b=document.getElementById('cartBadge'); if(b){b.classList.add('bump');setTimeout(()=>b.classList.remove('bump'),200)}}
 
+/* ---------- Слайдер фото в карточке ---------- */
+function cardShow(m,i){const im=m.querySelectorAll('.slides img'),d=m.querySelectorAll('.sdots i');im.forEach((x,j)=>x.classList.toggle('on',j===i));d.forEach((x,j)=>x.classList.toggle('on',j===i))}
+document.addEventListener('mousemove',e=>{if(window.matchMedia('(max-width: 767px)').matches)return;const m=e.target.closest&&e.target.closest('.pcard .media');if(!m)return;const n=m.querySelectorAll('.slides img').length;if(n<2)return;const r=m.getBoundingClientRect();cardShow(m,Math.min(n-1,Math.floor((e.clientX-r.left)/r.width*n)))});
+document.addEventListener('mouseout',e=>{const m=e.target.closest&&e.target.closest('.pcard .media');if(m&&!m.contains(e.relatedTarget))cardShow(m,0)});
+document.addEventListener('scroll',e=>{const t=e.target;if(t.classList&&t.classList.contains('slides')){const i=Math.round(t.scrollLeft/t.clientWidth);t.parentNode.querySelectorAll('.sdots i').forEach((x,j)=>x.classList.toggle('on',j===i))}},true);
 /* ---------- События ---------- */
 let dragMoved=false;
 document.addEventListener('click',e=>{
@@ -944,9 +970,11 @@ function MHome(){const h=C.home, pos=['60% center','55% center','40% center'];
    <div class="hero-ui" id="heroUI" data-i="${S.heroI}"><div class="m-hc"><div class="hfade"><span class="m-hb hb">${esc(HERO[S.heroI].brand)}</span><span class="m-ht ht">${esc(HERO[S.heroI].title)}</span></div><button class="m-btn y hbtn" data-heroto="">${esc(HERO[S.heroI].btn)}</button></div>
    <div class="m-dots">${HERO.map((_,j)=>`<i class="${j===S.heroI?'on':''}"></i>`).join('')}</div></div></div>
   <section class="m-hs">${MSH('Хиты продаж','Смотреть все')}${MRow('mHits',h.hits)}</section>
+  <section class="m-hs"><div class="m-sh"><h2>Дрели и шуруповёрты</h2><button class="m-link" data-cat="k01">Смотреть все${ic('chevron-right')}</button></div>${MRow('mDrills',h.drills)}</section>
+  <section class="m-hs"><div class="m-sh"><h2>Готовимся к зиме</h2><button class="m-link" data-cat="k10">Смотреть все${ic('chevron-right')}</button></div>${MRow('mWinter',h.winter)}</section>
   <section class="m-about"><h2>Рядом с мастером</h2><p>Мы гордимся тем, что являемся частью ваших амбициозных проектов</p>
    <div class="m-stats">${[['4.9','оценка от наших клиентов'],['20+','лет в индустрии'],['178','магазинов в Казахстане'],['>100 000','инструментов мировых брендов']].map(([a,b])=>`<div><b>${a}</b><span>${b}</span></div>`).join('')}<span class="m-link">Подробнее о нас${ic('chevron-right')}</span></div></section>
-  <section class="m-hs">${MSH('Акции','Смотреть все')}<div class="snap m-scroll" id="mPromo">${PROMO.map(p=>`<div class="m-promo"><div class="im"><img src="${p.img}" alt=""></div><span class="e">${esc(p.e)}</span><span class="t">${esc(p.t)}</span><span class="s">${esc(p.s)}</span></div>`).join('')}</div></section>
+  <section class="m-hs">${MSH('Акции','Смотреть все')}<div class="snap m-scroll" id="mPromo">${PROMO.map(p=>`<div class="m-promo"><div class="im"><img src="${p.img}" alt=""><span class="pdate">${ic('calendar')}${esc(p.e)}</span></div><span class="t">${esc(p.t)}</span><span class="s">${esc(p.s)}</span></div>`).join('')}</div></section>
   <section class="m-hs">${MSH('Рассказываем об инструментах и не только')}<div class="snap m-scroll" id="mReels">${REELS_HOME.map(Reel).join('')}<a class="m-cta" href="${INSTAGRAM}" target="_blank" rel="noopener"><b>Мы в Instagram</b><span>Больше 40 000 человек уже следят за нашей лентой</span>${ic('instagram','ig')}</a></div></section>
   <section class="m-hs">${MSH('Вам будет интересно')}<div class="m-grid">${h.interest.slice(0,6).map(ProductCard).join('')}</div><div class="m-wbtn"><span class="m-btn g wide">Показать ещё</span></div></section>
   <section class="m-hs">${MSH('50+ мировых брендов')}<div class="m-brands">${BRANDS.slice(0,6).map((b,i)=>`<div><img src="img/brands/${i+1}.png" alt="${esc(b)}"></div>`).join('')}</div><div class="m-wbtn"><span class="m-btn g wide">Все бренды</span></div></section>
@@ -1003,7 +1031,6 @@ function MProduct(){const p=C.product,k=p.id,inCart=S.cart[k]>0, imgs=[0,1,2].ma
    <section class="m-sec"><h2>Документация</h2><div>${p.docs.map(([a,b])=>`<div class="m-doc">${ic('file-text')}<div><b>${esc(a)}</b><span>${b}</span></div>${ic('download')}</div>`).join('')}</div></section>
    <section class="m-sec"><h2>Видео о товаре</h2><div class="m-reelone">${Reel(REEL_PRODUCT)}</div></section>
    <section class="m-sec"><h2>Отзывы</h2><div class="m-rs"><div class="m-avg"><b>4,7</b>${stars(5)}<span class="m-cap">3 отзыва</span></div>
-    <div class="m-bars">${[[5,2],[4,1],[3,0],[2,0],[1,0]].map(([s,n])=>`<div class="rbar"><span class="lab">${s}${ic('star')}</span><span class="track"><i style="width:${n/3*100}%"></i></span><span class="n">${n}</span></div>`).join('')}</div>
     <span class="m-btn y wide" style="cursor:default">Написать отзыв</span></div>
     <div>${p.reviews.slice(0,2).map(([n,r,d,t])=>`<div class="review"><div class="h"><span class="t-h4">${esc(n)}</span>${stars(r)}</div><span class="m-cap">${esc(d)}</span><p class="m-txt">${esc(t)}</p></div>`).join('')}</div><span class="m-btn g wide" style="cursor:default">Все отзывы</span></section>
    <section class="m-sec flush"><div class="m-sh"><h2>Сопутствующие товары</h2><span class="m-link">Смотреть все${ic('chevron-right')}</span></div>${MRow('mRel',p.related)}</section></main>`}
