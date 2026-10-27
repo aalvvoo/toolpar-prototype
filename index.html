@@ -607,6 +607,16 @@ html,body{overflow-x:clip}
 .rev-foot.mob{flex-direction:column;align-items:stretch;gap:16px}
 .more-btn{align-self:center;width:auto;padding:0 40px;margin-top:16px}
 .gallery .main{background:#F2F2F2}
+.pcard::after{content:'';position:absolute;left:0;right:0;bottom:-12px;height:2px;background:var(--text-primary);opacity:0;transition:opacity .15s;pointer-events:none}
+.pcard:hover::after{opacity:1}
+@media (hover:none){.pcard::after{display:none}}
+.gallery{height:auto}.gallery .main{flex:none;width:600px;height:600px;aspect-ratio:1/1}
+.m-gal .snap img{height:auto;aspect-ratio:1/1}
+.brands{display:flex;gap:30px;overflow-x:auto;scrollbar-width:none;margin:0 -40px;padding:0 40px;-webkit-mask:linear-gradient(90deg,transparent,#000 40px,#000 calc(100% - 40px),transparent)}
+.brands::-webkit-scrollbar{display:none}.brands .brand-tile{flex:none;width:280px}
+.br-head{display:flex;justify-content:space-between;align-items:center}
+.m-brands{display:flex;overflow-x:auto;scrollbar-width:none;gap:12px}.m-brands::-webkit-scrollbar{display:none}
+.m-brands div{flex:none;width:128px}
 .gallery .thumbs .tb{background:#F2F2F2;border-color:transparent}
 .gallery .thumbs .tb.on{border:2px solid var(--text-primary)}
 .m-gal .snap img{background:#F2F2F2}
@@ -970,7 +980,7 @@ function Home(){
    <div class="row-scroll promo-row" id="promoRow">${PROMO.map(p=>`<div class="promo"><div class="media"><img src="${p.img}" alt="" onerror="this.remove()"></div><div class="txt"><span class="pdate">${esc(p.e)}</span><span class="t-h3">${esc(p.t)}</span><span class="t-body-m muted">${esc(p.s)}</span></div></div>`).join('')}</div></section>
   <section class="sect">${SectionHeader('Рассказываем об инструментах и не только')}<div class="reels">${REELS_HOME.map(Reel).join('')}<a class="cta" href="${INSTAGRAM}" target="_blank" rel="noopener"><span class="t-h1">Мы<br>в Instagram</span><span class="t-body-text" style="margin-top:12px">Больше 40 000 человек уже следят за нашей лентой</span>${ic('instagram','ig')}</a></div></section>
   <section class="sect">${SectionHeader('Ещё в каталоге')}<div class="grid5">${moreCards(10).map(ProductCard).join('')}</div>${S.moreN<2?'<button class="btn btn-secondary more-btn" data-moreitems>Показать ещё</button>':''}</section>
-  <section class="sect" style="gap:40px"><div style="display:flex;flex-direction:column;align-items:center;gap:16px"><h2 class="t-h1" style="margin:0">50+ мировых брендов</h2><span class="link">Полный каталог${ic('chevron-right')}</span></div>
+  <section class="sect" style="gap:40px"><div class="br-head"><h2 class="t-h1" style="margin:0">50+ мировых брендов</h2><span class="link">Полный каталог${ic('chevron-right')}</span></div>
    <div class="brands">${BRANDS.map((b,i)=>`<div class="brand-tile"><img src="img/brands/${i+1}.png" alt="${esc(b)}" onerror="this.replaceWith(document.createTextNode(this.alt))"></div>`).join('')}</div></section>
   </div>`}
 
@@ -1052,14 +1062,15 @@ function render(keepScroll){
   const cat=document.querySelector('.catalog'),sh=document.getElementById('shopping');if(cat&&sh){const z=parseFloat(app.style.zoom)||1;cat.style.top=(sh.getBoundingClientRect().bottom/z)+'px'}}
   if(S.viewer) startViewer();
 }
-function go(view,id){S.view=view;S.cat=id||null;S.menuOpen=false;S.menuPath=[];S.sortOpen=false;S.gal=0;S.inst=false;S.specsAll=false;S.filters={};S.closed={};S.more={};render();window.scrollTo(0,0)}
+function go(view,id){S.view=view;S.cat=id||null;S.menuOpen=false;S.menuPath=[];S.sortOpen=false;S.gal=0;S.inst=false;S.specsAll=false;S.filters={};S.closed={};S.more={};if(!go._pop)history.pushState({view,id:id||null},'');render();window.scrollTo(0,0)}
+history.replaceState({view:S.view,id:S.cat},'');
+window.addEventListener('popstate',e=>{const st=e.state;if(!st)return;go._pop=1;try{go(st.view,st.id)}finally{go._pop=0}});
 function toast(t){const el=document.getElementById('toast');el.textContent=t;el.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('show'),1800)}
 function bump(){const b=document.getElementById('cartBadge'); if(b){b.classList.add('bump');setTimeout(()=>b.classList.remove('bump'),200)}}
 
 /* ---------- Слайдер фото в карточке ---------- */
 function cardShow(m,i){const im=m.querySelectorAll('.slides img'),d=m.querySelectorAll('.sdots i');im.forEach((x,j)=>x.classList.toggle('on',j===i));d.forEach((x,j)=>x.classList.toggle('on',j===i))}
 document.addEventListener('mousemove',e=>{if(window.matchMedia('(max-width: 767px)').matches)return;const m=e.target.closest&&e.target.closest('.pcard .media');if(!m)return;const n=m.querySelectorAll('.slides img').length;if(n<2)return;const r=m.getBoundingClientRect();cardShow(m,Math.min(n-1,Math.floor((e.clientX-r.left)/r.width*n)))});
-document.addEventListener('mouseover',e=>{const m=e.target.closest&&e.target.closest('.pcard');if(!m||m.contains(e.relatedTarget))return;const md=m.querySelector('.media');if(md&&md.querySelectorAll('.slides img').length>1&&!e.target.closest('.media'))cardShow(md,1)});
 document.addEventListener('mouseout',e=>{const pc=e.target.closest&&e.target.closest('.pcard');if(pc&&!pc.contains(e.relatedTarget)){const md=pc.querySelector('.media');if(md)cardShow(md,0)}});
 document.addEventListener('mouseout',e=>{const m=e.target.closest&&e.target.closest('.pcard .media');if(m&&!m.contains(e.relatedTarget))cardShow(m,0)});
 document.addEventListener('scroll',e=>{const t=e.target;if(t.classList&&t.classList.contains('slides')){const i=Math.round(t.scrollLeft/t.clientWidth);t.parentNode.querySelectorAll('.sdots i').forEach((x,j)=>x.classList.toggle('on',j===i))}},true);
@@ -1216,7 +1227,7 @@ function MHome(){const h=C.home, pos=['60% center','55% center','40% center'];
   <section class="m-hs">${MSH('Акции','Смотреть все')}<div class="snap m-scroll" id="mPromo">${PROMO.map(p=>`<div class="m-promo"><div class="im"><img src="${p.img}" alt=""></div><span class="pdate">${esc(p.e)}</span><span class="t">${esc(p.t)}</span><span class="s">${esc(p.s)}</span></div>`).join('')}</div></section>
   <section class="m-hs">${MSH('Рассказываем об инструментах и не только')}<div class="snap m-scroll" id="mReels">${REELS_HOME.map(Reel).join('')}<a class="m-cta" href="${INSTAGRAM}" target="_blank" rel="noopener"><b>Мы в Instagram</b><span>Больше 40 000 человек уже следят за нашей лентой</span>${ic('instagram','ig')}</a></div></section>
   <section class="m-hs">${MSH('Ещё в каталоге')}<div class="m-grid">${moreCards(6).map(ProductCard).join('')}</div>${S.moreN<2?'<div class="m-wbtn"><button class="m-btn g wide" data-moreitems>Показать ещё</button></div>':''}</section>
-  <section class="m-hs">${MSH('50+ мировых брендов')}<div class="m-brands">${BRANDS.slice(0,6).map((b,i)=>`<div><img src="img/brands/${i+1}.png" alt="${esc(b)}"></div>`).join('')}</div><div class="m-wbtn"><span class="m-btn g wide">Все бренды</span></div></section>
+  <section class="m-hs">${MSH('50+ мировых брендов')}<div class="m-brands">${BRANDS.map((b,i)=>`<div><img src="img/brands/${i+1}.png" alt="${esc(b)}"></div>`).join('')}</div><div class="m-wbtn"><span class="m-btn g wide">Все бренды</span></div></section>
   </main>`}
 function MCatalog(){const p=S.mPath, cur=p.length?p[p.length-1]:'c1', items=MENU[cur]||[];
   const prev=p.length>1?C.categories[p[p.length-2]]?.title:'Каталог';
