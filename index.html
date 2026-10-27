@@ -607,11 +607,9 @@ html,body{overflow-x:clip}
 .rev-foot.mob{flex-direction:column;align-items:stretch;gap:16px}
 .more-btn{align-self:center;width:auto;padding:0 40px;margin-top:16px}
 .gallery .main{background:#F2F2F2}
-.pcard::after{content:'';position:absolute;left:0;right:0;bottom:-12px;height:2px;background:var(--text-primary);opacity:0;transition:opacity .15s;pointer-events:none}
+.pcard::after{content:'';position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--text-tertiary);opacity:0;transition:opacity .15s;pointer-events:none}
 .pcard:hover::after{opacity:1}
 @media (hover:none){.pcard::after{display:none}}
-.gallery{height:auto}.gallery .main{flex:none;width:600px;height:600px;aspect-ratio:1/1}
-.m-gal .snap img{height:auto;aspect-ratio:1/1}
 .brands{display:flex;gap:30px;overflow-x:auto;scrollbar-width:none;margin:0 -40px;padding:0 40px;-webkit-mask:linear-gradient(90deg,transparent,#000 40px,#000 calc(100% - 40px),transparent)}
 .brands::-webkit-scrollbar{display:none}.brands .brand-tile{flex:none;width:280px}
 .br-head{display:flex;justify-content:space-between;align-items:center}
