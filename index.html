@@ -583,6 +583,29 @@ html,body{overflow-x:clip}
   .toast{bottom:calc(76px + env(safe-area-inset-bottom,0px));white-space:nowrap}
   .proto-note{display:none}
 }
+
+/* ===== Раскатка: квадратное фото на сером, компактный счётчик, спокойный ховер ===== */
+.pcard .media{height:240px}
+.pcard .slides{height:240px;background:#F2F2F2}
+.pcard .slides img{height:240px;background:transparent;mix-blend-mode:multiply}
+.sdots{display:none!important}
+.pcard .pcta{bottom:0}
+.pcard .pcta.in{bottom:0;left:auto;width:96px}
+.pcard .pcta.in .stepper{background:#DEDEDE;padding:0 8px}
+.pcard .info{padding-top:16px}
+.pcard:hover .t-price-l,.pcard:hover .title,.pcard:hover .bonus,.pcard:hover .delivery .lbl span:last-child,.pcard:hover .delivery>.ico,.pcard:hover .oos{color:inherit}
+.catalog ul.sel .mitem,.catalog ul.sel .mitem .ico{color:#7E7E7E}
+.catalog ul.sel .mitem.active,.catalog ul.sel .mitem.active .ico,.catalog .mitem.live:hover{color:var(--text-primary)}
+.catalog{position:fixed;left:0;right:0;bottom:0;max-height:none;overflow:auto;overscroll-behavior:contain;z-index:60}
+.m .pcard .media{height:auto}
+.m .pcard .slides{height:auto;aspect-ratio:1/1;background:#F2F2F2}
+.m .pcard .slides img{height:auto;aspect-ratio:1/1;mix-blend-mode:multiply;background:transparent}
+.m .pcard .pcta.in{width:80px}
+.m .pcard .pcta.in .stepper{background:#DEDEDE;padding:0 6px}
+.rev-foot{display:flex;align-items:center;gap:32px;padding-top:8px}
+.rev-foot .link .ico{width:16px;height:16px}
+.rev-foot.m{flex-direction:column;align-items:stretch;gap:16px}
+.more-btn{align-self:center;width:auto;padding:0 40px;margin-top:16px}
 </style>
 
 <div id="app"></div>
@@ -729,7 +752,7 @@ const MENU={c1:[['Электроинструмент', 'k01'], ['Генерат�
  s139:[['Дюбели нейлоновые', 't352'], ['Дюбели полипропиленовые', 't353'], ['Дюбели металлические', 't354']]};
 
 /* ---------- Состояние ---------- */
-const S={more:{},price:{},heroI:0,promoI:0,view:'home',cat:null,cart:{},menuOpen:false,menuPath:[],filters:{},closed:{},sort:'по популярности',sortOpen:false,variant:{},gal:0,inst:false,specsAll:false,viewer:null};
+const S={moreN:0,more:{},price:{},heroI:0,promoI:0,view:'home',cat:null,cart:{},menuOpen:false,menuPath:[],filters:{},closed:{},sort:'по популярности',sortOpen:false,variant:{},gal:0,inst:false,specsAll:false,viewer:null};
 let C=null, IDMAP={};
 const cartCount=()=>Object.values(S.cart).reduce((a,b)=>a+b,0);
 const IMG={},IMGL={};
@@ -740,6 +763,8 @@ const keyOf=c=>c[0]||(c[1]+' '+c[2]);
 /* ---------- Компоненты ---------- */
 function Delivery(t){const [a,b]=String(t).split('\n');return `<div class="delivery">${ic('calendar')}<div class="lbl"><span>${esc(a)}</span><span>${esc(b||'')}</span></div></div>`}
 function Stepper(k,big){return `<div class="stepper ${big?'big':''}" data-stop><button aria-label="Меньше" data-dec="${esc(k)}">${ic('minus')}</button><span class="v">${S.cart[k]}</span><button aria-label="Больше" data-inc="${esc(k)}">${ic('plus')}</button></div>`}
+function moreCards(base){const h=C.home;let L=h.interest.slice(0,base);const ex=[...(h.more1||[]),...(h.more2||[])];for(let i=0;i<S.moreN;i++)L=L.concat((i?h.more2:h.more1).slice(0,base));return L}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-moreitems]');if(!t)return;e.stopPropagation();S.moreN=(S.moreN||0)+1;render(true)},true);
 const PIX='data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
 function ProductCard(c){
   const k=keyOf(c), out=c[8]==='out', inCart=S.cart[k]>0, n=c[10]||1;
@@ -790,14 +815,13 @@ function Home(){
   <div class="hero-wrap"><div class="car" id="heroTrack" style="transform:translateX(${-S.heroI*1350}px)">${HERO.map((b,i)=>`<div class="hero" data-hero="${i}"><img src="${b.img}" alt="" onerror="this.remove()"></div>`).join('')}</div>
    <div class="hero-ui" id="heroUI" data-i="${S.heroI}"><div class="content"><div class="text hfade"><span class="brand hb">${esc(HERO[S.heroI].brand)}</span><span class="t-display ht">${esc(HERO[S.heroI].title)}</span></div><button class="btn btn-primary hbtn" data-heroto="">${esc(HERO[S.heroI].btn)}</button></div><div class="pagination">${HERO.map((_,j)=>`<i class="${j===S.heroI?'on':''}"></i>`).join('')}</div></div></div>
   <section class="sect">${SectionHeader('Хиты продаж',{arrows:1,id:'hits'})}${Carousel('hits',h.hits)}</section>
-  <section class="sect"><div class="sect-head"><div class="left"><h2 class="t-h1" style="margin:0">Дрели и шуруповёрты</h2><button class="link" data-cat="k01">Смотреть все${ic('chevron-right')}</button></div><div class="arrows"><button class="iconbtn" data-scroll="drills" data-dir="-1" aria-label="Назад">${ic('chevron-left')}</button><button class="iconbtn" data-scroll="drills" data-dir="1" aria-label="Вперёд">${ic('chevron-right')}</button></div></div>${Carousel('drills',h.drills)}</section>
   <section class="sect"><div class="sect-head"><div class="left"><h2 class="t-h1" style="margin:0">Готовимся к зиме</h2><button class="link" data-cat="k10">Смотреть все${ic('chevron-right')}</button></div><div class="arrows"><button class="iconbtn" data-scroll="winter" data-dir="-1" aria-label="Назад">${ic('chevron-left')}</button><button class="iconbtn" data-scroll="winter" data-dir="1" aria-label="Вперёд">${ic('chevron-right')}</button></div></div>${Carousel('winter',h.winter)}</section>
   <section class="about"><div class="txt"><h2 class="t-h1" style="margin:0">Рядом<br>с мастером</h2><p class="t-body-text" style="margin:0">Мы гордимся тем, что являемся частью ваших амбициозных проектов</p></div>
    <div class="stats"><div class="row">${[['4.9','оценка от наших клиентов'],['20+','лет в индустрии'],['178','магазинов в Казахстане'],['>100 000','инструментов мировых брендов']].map(([a,b],i)=>`<div class="stat" style="width:${i<3?165:214}px"><b>${a}</b><span>${b}</span></div>`).join('')}</div><span class="link">Подробнее о нас${ic('chevron-right')}</span></div></section>
   <section class="sect"><div class="sect-head"><div class="left"><h2 class="t-h1" style="margin:0">Акции</h2><span class="link">Все предложения${ic('chevron-right')}</span></div><div class="arrows"><button class="iconbtn" data-scroll="promoRow" data-dir="-1" aria-label="Назад">${ic('chevron-left')}</button><button class="iconbtn" data-scroll="promoRow" data-dir="1" aria-label="Вперёд">${ic('chevron-right')}</button></div></div>
    <div class="row-scroll promo-row" id="promoRow">${PROMO.map(p=>`<div class="promo"><div class="media"><img src="${p.img}" alt="" onerror="this.remove()"></div><div class="txt"><span class="pdate">${esc(p.e)}</span><span class="t-h3">${esc(p.t)}</span><span class="t-body-m muted">${esc(p.s)}</span></div></div>`).join('')}</div></section>
   <section class="sect">${SectionHeader('Рассказываем об инструментах и не только')}<div class="reels">${REELS_HOME.map(Reel).join('')}<a class="cta" href="${INSTAGRAM}" target="_blank" rel="noopener"><span class="t-h1">Мы<br>в Instagram</span><span class="t-body-text" style="margin-top:12px">Больше 40 000 человек уже следят за нашей лентой</span>${ic('instagram','ig')}</a></div></section>
-  <section class="sect">${SectionHeader('Вам будет интересно')}<div class="grid5">${h.interest.map(ProductCard).join('')}</div></section>
+  <section class="sect">${SectionHeader('Ещё в каталоге')}<div class="grid5">${moreCards(10).map(ProductCard).join('')}</div>${S.moreN<2?'<button class="btn btn-secondary more-btn" data-moreitems>Показать ещё</button>':''}</section>
   <section class="sect" style="gap:40px"><div style="display:flex;flex-direction:column;align-items:center;gap:16px"><h2 class="t-h1" style="margin:0">50+ мировых брендов</h2><span class="link">Полный каталог${ic('chevron-right')}</span></div>
    <div class="brands">${BRANDS.map((b,i)=>`<div class="brand-tile"><img src="img/brands/${i+1}.png" alt="${esc(b)}" onerror="this.replaceWith(document.createTextNode(this.alt))"></div>`).join('')}</div></section>
   </div>`}
@@ -853,8 +877,8 @@ function Product(){
      <section class="sect">${SectionHeader('Гарантия')}<div class="warranty"><div class="row">${p.warranty.map(([a,b])=>`<div><b>${a}</b><span class="t-body-s-strong">${b}</span></div>`).join('')}</div><span class="link">Вся информация о гарантии${ic('chevron-right')}</span></div></section>
      <section class="sect">${SectionHeader('Документация')}<div>${p.docs.map(([a,b])=>`<div class="doc">${ic('file-text')}<div class="t"><span class="t-body-m-strong">${esc(a)}</span><span class="t-caption muted">${b}</span></div><span class="link">${ic('download')}Скачать</span></div>`).join('')}</div></section>
      <section class="sect">${SectionHeader('Видео о товаре')}<div style="width:307.5px">${Reel(REEL_PRODUCT)}</div></section>
-     <section class="sect">${SectionHeader('Отзывы')}<div class="rsum2"><div class="avg"><span class="t-display">4,7</span>${stars(5)}<span class="t-body-m muted">3 отзыва</span></div><span class="btn btn-primary" style="cursor:default">Написать отзыв</span></div>
-      <div>${p.reviews.map(([n,r,d,t])=>`<div class="review"><div class="h"><span class="t-h4">${esc(n)}</span>${stars(r)}</div><span class="t-body-s muted">${esc(d)}</span><p class="t-body-text">${esc(t)}</p></div>`).join('')}</div><button class="btn btn-secondary" style="cursor:default;align-self:flex-start;width:auto;padding:0 24px">Все отзывы</button></section>
+     <section class="sect">${SectionHeader('Отзывы')}<div class="rsum2"><div class="avg"><span class="t-display">4,7</span>${stars(5)}<span class="t-body-m muted">3 отзыва</span></div></div>
+      <div>${p.reviews.map(([n,r,d,t])=>`<div class="review"><div class="h"><span class="t-h4">${esc(n)}</span>${stars(r)}</div><span class="t-body-s muted">${esc(d)}</span><p class="t-body-text">${esc(t)}</p></div>`).join('')}</div><div class="rev-foot"><span class="btn btn-primary" style="cursor:default;width:auto;padding:0 32px">Написать отзыв</span><span class="link" style="cursor:default">Ещё отзывы${ic('chevron-down')}</span></div></section>
     </div></div>
     <aside class="buy">
      <div style="display:flex;flex-direction:column;gap:12px"><span class="link" style="cursor:default">${esc(p.brand)}${ic('chevron-right')}</span><h1 class="ptitle" style="margin:0">${esc(p.title)}</h1></div>
@@ -876,6 +900,8 @@ function render(keepScroll){
   Object.entries(rows).forEach(([id,x])=>{const el=document.getElementById(id); if(el) {el.style.scrollBehavior='auto'; el.scrollLeft=x; el.style.scrollBehavior='';}});
   if(keepScroll) window.scrollTo(0,y);
   bindDrag(); updateArrows(); onScroll(); setupHero(); fitBuy();
+  if(!window.matchMedia('(max-width: 767px)').matches){document.documentElement.style.overflow=S.menuOpen?'hidden':'';
+  const cat=document.querySelector('.catalog'),sh=document.getElementById('shopping');if(cat&&sh){const z=parseFloat(app.style.zoom)||1;cat.style.top=(sh.getBoundingClientRect().bottom/z)+'px'}}
   if(S.viewer) startViewer();
 }
 function go(view,id){S.view=view;S.cat=id||null;S.menuOpen=false;S.menuPath=[];S.sortOpen=false;S.gal=0;S.inst=false;S.specsAll=false;S.filters={};S.closed={};S.more={};render();window.scrollTo(0,0)}
@@ -885,6 +911,8 @@ function bump(){const b=document.getElementById('cartBadge'); if(b){b.classList.
 /* ---------- Слайдер фото в карточке ---------- */
 function cardShow(m,i){const im=m.querySelectorAll('.slides img'),d=m.querySelectorAll('.sdots i');im.forEach((x,j)=>x.classList.toggle('on',j===i));d.forEach((x,j)=>x.classList.toggle('on',j===i))}
 document.addEventListener('mousemove',e=>{if(window.matchMedia('(max-width: 767px)').matches)return;const m=e.target.closest&&e.target.closest('.pcard .media');if(!m)return;const n=m.querySelectorAll('.slides img').length;if(n<2)return;const r=m.getBoundingClientRect();cardShow(m,Math.min(n-1,Math.floor((e.clientX-r.left)/r.width*n)))});
+document.addEventListener('mouseover',e=>{const m=e.target.closest&&e.target.closest('.pcard');if(!m||m.contains(e.relatedTarget))return;const md=m.querySelector('.media');if(md&&md.querySelectorAll('.slides img').length>1&&!e.target.closest('.media'))cardShow(md,1)});
+document.addEventListener('mouseout',e=>{const pc=e.target.closest&&e.target.closest('.pcard');if(pc&&!pc.contains(e.relatedTarget)){const md=pc.querySelector('.media');if(md)cardShow(md,0)}});
 document.addEventListener('mouseout',e=>{const m=e.target.closest&&e.target.closest('.pcard .media');if(m&&!m.contains(e.relatedTarget))cardShow(m,0)});
 document.addEventListener('scroll',e=>{const t=e.target;if(t.classList&&t.classList.contains('slides')){const i=Math.round(t.scrollLeft/t.clientWidth);t.parentNode.querySelectorAll('.sdots i').forEach((x,j)=>x.classList.toggle('on',j===i))}},true);
 /* ---------- События ---------- */
@@ -1034,13 +1062,12 @@ function MHome(){const h=C.home, pos=['60% center','55% center','40% center'];
    <div class="hero-ui" id="heroUI" data-i="${S.heroI}"><div class="m-hc"><div class="hfade"><span class="m-hb hb">${esc(HERO[S.heroI].brand)}</span><span class="m-ht ht">${esc(HERO[S.heroI].title)}</span></div><button class="m-btn y hbtn" data-heroto="">${esc(HERO[S.heroI].btn)}</button></div>
    <div class="m-dots">${HERO.map((_,j)=>`<i class="${j===S.heroI?'on':''}"></i>`).join('')}</div></div></div>
   <section class="m-hs">${MSH('Хиты продаж','Смотреть все')}${MRow('mHits',h.hits)}</section>
-  <section class="m-hs"><div class="m-sh"><h2>Дрели и шуруповёрты</h2><button class="m-link" data-cat="k01">Смотреть все${ic('chevron-right')}</button></div>${MRow('mDrills',h.drills)}</section>
   <section class="m-hs"><div class="m-sh"><h2>Готовимся к зиме</h2><button class="m-link" data-cat="k10">Смотреть все${ic('chevron-right')}</button></div>${MRow('mWinter',h.winter)}</section>
   <section class="m-about"><h2>Рядом с мастером</h2><p>Мы гордимся тем, что являемся частью ваших амбициозных проектов</p>
    <div class="m-stats">${[['4.9','оценка от наших клиентов'],['20+','лет в индустрии'],['178','магазинов в Казахстане'],['>100 000','инструментов мировых брендов']].map(([a,b])=>`<div><b>${a}</b><span>${b}</span></div>`).join('')}<span class="m-link">Подробнее о нас${ic('chevron-right')}</span></div></section>
   <section class="m-hs">${MSH('Акции','Смотреть все')}<div class="snap m-scroll" id="mPromo">${PROMO.map(p=>`<div class="m-promo"><div class="im"><img src="${p.img}" alt=""></div><span class="pdate">${esc(p.e)}</span><span class="t">${esc(p.t)}</span><span class="s">${esc(p.s)}</span></div>`).join('')}</div></section>
   <section class="m-hs">${MSH('Рассказываем об инструментах и не только')}<div class="snap m-scroll" id="mReels">${REELS_HOME.map(Reel).join('')}<a class="m-cta" href="${INSTAGRAM}" target="_blank" rel="noopener"><b>Мы в Instagram</b><span>Больше 40 000 человек уже следят за нашей лентой</span>${ic('instagram','ig')}</a></div></section>
-  <section class="m-hs">${MSH('Вам будет интересно')}<div class="m-grid">${h.interest.slice(0,6).map(ProductCard).join('')}</div><div class="m-wbtn"><span class="m-btn g wide">Показать ещё</span></div></section>
+  <section class="m-hs">${MSH('Ещё в каталоге')}<div class="m-grid">${moreCards(6).map(ProductCard).join('')}</div>${S.moreN<2?'<div class="m-wbtn"><button class="m-btn g wide" data-moreitems>Показать ещё</button></div>':''}</section>
   <section class="m-hs">${MSH('50+ мировых брендов')}<div class="m-brands">${BRANDS.slice(0,6).map((b,i)=>`<div><img src="img/brands/${i+1}.png" alt="${esc(b)}"></div>`).join('')}</div><div class="m-wbtn"><span class="m-btn g wide">Все бренды</span></div></section>
   </main>`}
 function MCatalog(){const p=S.mPath, cur=p.length?p[p.length-1]:'c1', items=MENU[cur]||[];
@@ -1095,8 +1122,8 @@ function MProduct(){const p=C.product,k=p.id,inCart=S.cart[k]>0, imgs=[0,1,2].ma
    <section class="m-sec"><h2>Документация</h2><div>${p.docs.map(([a,b])=>`<div class="m-doc">${ic('file-text')}<div><b>${esc(a)}</b><span>${b}</span></div>${ic('download')}</div>`).join('')}</div></section>
    <section class="m-sec"><h2>Видео о товаре</h2><div class="m-reelone">${Reel(REEL_PRODUCT)}</div></section>
    <section class="m-sec"><h2>Отзывы</h2><div class="m-rs"><div class="m-avg"><b>4,7</b>${stars(5)}<span class="m-cap">3 отзыва</span></div>
-    <span class="m-btn y wide" style="cursor:default">Написать отзыв</span></div>
-    <div>${p.reviews.slice(0,2).map(([n,r,d,t])=>`<div class="review"><div class="h"><span class="t-h4">${esc(n)}</span>${stars(r)}</div><span class="m-cap">${esc(d)}</span><p class="m-txt">${esc(t)}</p></div>`).join('')}</div><span class="m-btn g wide" style="cursor:default">Все отзывы</span></section>
+    </div>
+    <div>${p.reviews.slice(0,2).map(([n,r,d,t])=>`<div class="review"><div class="h"><span class="t-h4">${esc(n)}</span>${stars(r)}</div><span class="m-cap">${esc(d)}</span><p class="m-txt">${esc(t)}</p></div>`).join('')}</div><div class="rev-foot m"><span class="m-btn y wide" style="cursor:default">Написать отзыв</span><span class="m-link" style="cursor:default;align-self:center">Ещё отзывы${ic('chevron-down')}</span></div></section>
    <section class="m-sec flush"><div class="m-sh"><h2>Сопутствующие товары</h2><span class="m-link">Смотреть все${ic('chevron-right')}</span></div>${MRow('mRel',p.related)}</section></main>`}
 function MBuyBar(){const p=C.product,k=p.id;
   return `<div class="m-bbar"><div class="m-bp"><b>${esc(p.price)}</b><s>${esc(p.old)}</s></div><button class="m-sq r" data-m="sheet" data-s="inst" aria-label="В рассрочку">${ic('bank')}</button>
