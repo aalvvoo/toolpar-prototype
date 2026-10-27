@@ -308,7 +308,8 @@ img{display:block;max-width:100%}
 .doc{display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border-default)}
 .doc .t{flex:1;display:flex;flex-direction:column;gap:4px}
 .reviews{display:grid;grid-template-columns:375px 780px;gap:165px}
-.rsum2{display:flex;align-items:center;justify-content:space-between;gap:24px}
+.rsum2{display:flex;flex-direction:column;align-items:flex-start;gap:32px}
+.rsum2 .btn{width:375px!important}
 .rsum2 .avg{display:flex;align-items:center;gap:16px}
 .stars{display:flex;gap:2px}.stars .ico{width:16px;height:16px}.stars .ico.off{color:var(--border-default)}
 .rbar{display:flex;align-items:center;gap:12px;font-size:14px;font-weight:600}
@@ -789,7 +790,7 @@ function Product(){
      <section class="sect">${SectionHeader('Гарантия')}<div class="warranty"><div class="row">${p.warranty.map(([a,b])=>`<div><b>${a}</b><span class="t-body-s-strong">${b}</span></div>`).join('')}</div><span class="link">Вся информация о гарантии${ic('chevron-right')}</span></div></section>
      <section class="sect">${SectionHeader('Документация')}<div>${p.docs.map(([a,b])=>`<div class="doc">${ic('file-text')}<div class="t"><span class="t-body-m-strong">${esc(a)}</span><span class="t-caption muted">${b}</span></div><span class="link">${ic('download')}Скачать</span></div>`).join('')}</div></section>
      <section class="sect">${SectionHeader('Видео о товаре')}<div style="width:307.5px">${Reel(REEL_PRODUCT)}</div></section>
-     <section class="sect">${SectionHeader('Отзывы')}<div class="rsum2"><div class="avg"><span class="t-display">4,7</span>${stars(5)}<span class="t-body-m muted">3 отзыва</span></div><span class="btn btn-primary" style="cursor:default;width:auto;padding:0 24px">Написать отзыв</span></div>
+     <section class="sect">${SectionHeader('Отзывы')}<div class="rsum2"><div class="avg"><span class="t-display">4,7</span>${stars(5)}<span class="t-body-m muted">3 отзыва</span></div><span class="btn btn-primary" style="cursor:default">Написать отзыв</span></div>
       <div>${p.reviews.map(([n,r,d,t])=>`<div class="review"><div class="h"><span class="t-h4">${esc(n)}</span>${stars(r)}</div><span class="t-body-s muted">${esc(d)}</span><p class="t-body-text">${esc(t)}</p></div>`).join('')}</div><button class="btn btn-secondary" style="cursor:default;align-self:flex-start;width:auto;padding:0 24px">Все отзывы</button></section>
     </div></div>
     <aside class="buy">
