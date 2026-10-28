@@ -3,7 +3,7 @@
 <title>Toolpar — прототип</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Barlow+Condensed:wght@400;600&display=swap">
 <style>
 /* Toolpar DS → CSS. Имена переменных = переменные Figma (коллекция Color, Layout), классы .t-* = текстовые стили.
    Сетка Desktop 1440: поля 60, 5 колонок по 240, гаттер 30. Сайт одной светлой темы, как в макетах. */
@@ -36,6 +36,7 @@ img{display:block;max-width:100%}
 .page{min-width:0}
 /* Текстовые стили (Figma: Text Styles) */
 .t-display{font-size:44px;font-weight:700;line-height:1}
+.ht{white-space:pre-line}
 .t-h1{font-size:32px;font-weight:700;line-height:1;text-wrap:balance}
 .t-h2{font-size:26px;font-weight:600;line-height:1.25}
 .t-h3{font-size:20px;font-weight:700;line-height:1.25}
@@ -168,6 +169,11 @@ img{display:block;max-width:100%}
 .hero-wrap{position:relative;overflow:hidden}
 .car{display:flex;gap:30px;cursor:grab;user-select:none;touch-action:pan-y;will-change:transform;transition:transform .5s cubic-bezier(.22,.7,.2,1)}
 .car.dragging{cursor:grabbing;transition:none}
+#heroTrack{cursor:default}
+.hero-wrap .hero-ui{z-index:3}
+.hero-edge{position:absolute;top:0;bottom:0;width:18%;z-index:2;border:0;padding:0;background:transparent}
+.hero-edge.l{left:0;cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Ccircle cx='24' cy='24' r='23' fill='white'/%3E%3Cpath d='M27 16l-8 8 8 8' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E") 24 24,w-resize}
+.hero-edge.r{right:0;cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Ccircle cx='24' cy='24' r='23' fill='white'/%3E%3Cpath d='M21 16l8 8-8 8' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E") 24 24,e-resize}
 .hero{flex:none;width:var(--layout-content);max-width:100%;aspect-ratio:1320/600;position:relative;background:#1b1b1b;overflow:hidden;color:var(--text-inverse)}
 .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
 .hero-ui{position:absolute;inset:0;pointer-events:none;color:var(--text-inverse)}
@@ -593,7 +599,8 @@ html,body{overflow-x:clip}
 .pcard .pcta.in{bottom:0;left:auto;width:96px}
 .pcard .pcta.in .stepper{background:#DEDEDE;padding:0 8px}
 .pcard .info{padding-top:16px}
-.pcard:hover .t-price-l,.pcard:hover .title,.pcard:hover .bonus,.pcard:hover .delivery .lbl span:last-child,.pcard:hover .delivery>.ico,.pcard:hover .oos{color:inherit}
+.pcard .info *{transition:color .15s,opacity .15s}
+@media (hover:hover){.pcard:hover .info,.pcard:hover .info *{color:#999999}.pcard:hover .bonus i{opacity:.5}}
 .catalog ul.sel .mitem,.catalog ul.sel .mitem .ico{color:#7E7E7E}
 .catalog ul.sel .mitem.active,.catalog ul.sel .mitem.active .ico,.catalog .mitem.live:hover{color:var(--text-primary)}
 .catalog{position:fixed;left:0;right:0;bottom:0;max-height:none;overflow:auto;overscroll-behavior:contain;z-index:60}
@@ -607,10 +614,6 @@ html,body{overflow-x:clip}
 .rev-foot.mob{flex-direction:column;align-items:stretch;gap:16px}
 .more-btn{align-self:center;width:auto;padding:0 40px;margin-top:16px}
 .gallery .main{background:#F2F2F2}
-.pcard::after{content:'';position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--border-default);opacity:0;pointer-events:none}
-.pcard:hover::after,.pcard.incart::after{opacity:1}
-@media (hover:hover){.pcard{padding-bottom:16px}}
-@media (hover:none){.pcard::after{display:none}}
 .brands{display:flex;gap:30px;overflow-x:auto;scrollbar-width:none;margin:0 -40px;padding:0 40px;-webkit-mask:linear-gradient(90deg,transparent,#000 40px,#000 calc(100% - 40px),transparent)}
 .brands::-webkit-scrollbar{display:none}.brands .brand-tile{flex:none;width:280px}
 .br-head{display:flex;justify-content:space-between;align-items:center}
@@ -655,7 +658,8 @@ html,body{overflow-x:clip}
 .ck-pick{background:var(--bg-secondary);padding:20px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px}
 .ck-opts{display:grid;grid-template-columns:1fr 1fr;gap:15px}.ck-opts.three{grid-template-columns:repeat(3,1fr)}
 .ck-opt{display:flex;gap:12px;align-items:flex-start;text-align:left;padding:20px 24px;border:1px solid var(--border-default);background:var(--bg-primary)}
-.ck-opt.on{border-color:var(--text-primary)}
+.ck-opt.on{border:2px solid var(--text-primary);padding:19px 23px}
+.m .ck-opt.on{padding:15px}
 .ck-opt .ico{width:24px;height:24px;flex:none}.ck-opt .t{display:flex;flex-direction:column;gap:4px}.ck-opt b{font-size:15px;font-weight:600}.ck-opt .t span{font-size:13px;color:var(--text-secondary)}
 .ck-grp{padding:16px 0;border-bottom:1px solid var(--border-default)}.ck-grp:first-child{border-top:1px solid var(--border-default)}
 .ck-grp .h{display:flex;gap:6px;align-items:baseline;font-size:14px}.ck-grp .h span{color:var(--text-secondary)}
@@ -677,7 +681,7 @@ html,body{overflow-x:clip}
 .lk{display:grid;grid-template-columns:240px 645px 375px;gap:30px;padding-top:40px;align-items:start}
 .lk-nav{background:var(--bg-tertiary);padding:24px 20px;display:flex;flex-direction:column}
 .lk-nav .who{display:flex;flex-direction:column;gap:4px;padding-bottom:16px}.lk-nav .who b{font-size:20px}.lk-nav .who span{font-size:13px;color:var(--text-secondary)}.lk-nav .who u{font-size:13px;margin-top:8px}
-.lk-nav hr,.lk aside hr{border:0;border-top:1px solid var(--border-strong);margin:8px 0;width:100%}
+.lk-nav hr,.lk aside hr{border:0;border-top:1px solid var(--border-default);margin:8px 0;width:100%}
 .lk-nav button{display:flex;justify-content:space-between;padding:12px 0;font-size:15px;color:var(--text-secondary);font-weight:500;text-align:left}
 .lk-nav button.on{color:var(--text-primary);font-weight:600}
 .lk-head{display:flex;flex-direction:column;gap:8px}.lk-head h1{font-size:32px;margin:0;line-height:1.1}.lk-head>span{color:var(--text-secondary)}
@@ -763,6 +767,10 @@ html,body{overflow-x:clip}
 .pulse::after{content:'';position:absolute;inset:0;border-radius:50%;background:#2DB34A;animation:pls 1.6s ease-out infinite}
 @keyframes pls{0%{transform:scale(1);opacity:.6}100%{transform:scale(2.6);opacity:0}}
 .lk.mob{align-items:stretch}
+.badge{font-family:'DIN Condensed','DIN Condensed VF','Barlow Condensed',sans-serif;font-size:20px;line-height:1.3;letter-spacing:-.02em;font-weight:600;height:28px;padding:2px 8px 0}
+.badge.new{font-weight:400}
+.badge.l{font-size:22px;height:32px;padding:2px 10px 0}
+.m .badge{font-size:17px;height:24px;padding:2px 6px 0}.m .badge.l{font-size:19px;height:26px}
 </style>
 
 <div id="app"></div>
@@ -811,7 +819,7 @@ const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&g
 const HERO=[
  {img:'img/banners/hero1.jpg',brand:'Black+Decker',title:'Ровный рез без лишних усилий',btn:'Выбрать лобзик',to:{v:'cat',id:'rezka'}},
  {img:'img/banners/hero2.jpg',brand:'Bosch',title:'Мощь, которая помещается в руке',btn:'Смотреть гайковёрты',to:{v:'cat',id:'diski'}},
- {img:'img/banners/hero3.jpg',brand:'Kärcher',title:'Чистый двор за одно утро',btn:'Подобрать мойку',to:{v:'cat',id:'rashodniki'}}];
+ {img:'img/banners/hero3.jpg',brand:'Kärcher',title:'Чистый двор\nза одно утро',btn:'Подобрать мойку',to:{v:'cat',id:'rashodniki'}}];
 const PROMO=[
  {img:'img/banners/promo1.jpg',e:'До 30 ноября',t:'−15% на бензопилы STIHL',s:'Готовим участок к зиме: пилы, цепи и масло для двухтактных двигателей по сниженным ценам'},
  {img:'img/banners/promo2.jpg',e:'До 15 декабря',t:'Аккумулятор в подарок к дрели Makita',s:'Покупаете дрель-шуруповёрт серии LXT — аккумулятор 18V 3 Ач добавим бесплатно'},
@@ -925,7 +933,7 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-moreitems]
 const PIX='data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
 function ProductCard(c){
   const k=keyOf(c), out=c[8]==='out', inCart=S.cart[k]>0, n=c[10]||1;
-  const badge=c[5]?`<span class="badge ${c[5]==='Новинка'?'new':''}">${esc(c[5])}</span>`:'';
+  const badge=c[5]?`<span class="badge ${c[5]==='Новинка'?'new':c[5]==='ХИТ'?'hit':''}">${esc(c[5])}</span>`:'';
   const srcs=[imgFor(c)]; for(let j=1;j<n;j++) srcs.push(IMG[c[0]+'_'+j]||PIX);
   const cta=out?'':inCart?`<div class="pcta in">${Stepper(k)}</div>`:`<button class="add pcta" aria-label="В корзину" data-add="${esc(k)}">${ic('shopping-cart')}</button>`;
   const foot=out?`<div class="oos">${ic('x')}Нет в наличии</div>`:Delivery(c[7]);
@@ -969,7 +977,7 @@ function Footer(){
 function Home(){
   const h=C.home;
   return `<div class="wrap" style="display:flex;flex-direction:column;gap:96px;padding-top:40px">
-  <div class="hero-wrap"><div class="car" id="heroTrack" style="transform:translateX(${-S.heroI*1350}px)">${HERO.map((b,i)=>`<div class="hero" data-hero="${i}"><img src="${b.img}" alt="" onerror="this.remove()"></div>`).join('')}</div>
+  <div class="hero-wrap"><div class="car" id="heroTrack" style="transform:translateX(${-S.heroI*1350}px)">${HERO.map((b,i)=>`<div class="hero" data-hero="${i}"><img src="${b.img}" alt="" onerror="this.remove()"></div>`).join('')}</div><button class="hero-edge l" data-scroll="heroTrack" data-dir="-1" aria-label="Предыдущий баннер"></button><button class="hero-edge r" data-scroll="heroTrack" data-dir="1" aria-label="Следующий баннер"></button>
    <div class="hero-ui" id="heroUI" data-i="${S.heroI}"><div class="content"><div class="text hfade"><span class="brand hb">${esc(HERO[S.heroI].brand)}</span><span class="t-display ht">${esc(HERO[S.heroI].title)}</span></div><button class="btn btn-primary hbtn" data-heroto="">${esc(HERO[S.heroI].btn)}</button></div><div class="pagination">${HERO.map((_,j)=>`<i class="${j===S.heroI?'on':''}"></i>`).join('')}</div></div></div>
   <section class="sect">${SectionHeader('Хиты продаж',{arrows:1,id:'hits'})}${Carousel('hits',h.hits)}</section>
   <section class="sect"><div class="sect-head"><div class="left"><h2 class="t-h1" style="margin:0">Готовимся к зиме</h2><button class="link" data-cat="k10">Смотреть все${ic('chevron-right')}</button></div><div class="arrows"><button class="iconbtn" data-scroll="winter" data-dir="-1" aria-label="Назад">${ic('chevron-left')}</button><button class="iconbtn" data-scroll="winter" data-dir="1" aria-label="Вперёд">${ic('chevron-right')}</button></div></div>${Carousel('winter',h.winter)}</section>
@@ -1040,7 +1048,7 @@ function Product(){
      <div style="display:flex;flex-direction:column;gap:12px"><span class="link" style="cursor:default">${esc(p.brand)}${ic('chevron-right')}</span><h1 class="ptitle" style="margin:0">${esc(p.title)}</h1></div>
      <div style="display:flex;flex-direction:column;gap:8px"><div class="bonus"><i></i>${esc(p.bonus)}</div><div class="price"><span class="t-price-xl">${esc(p.price)}</span><span class="t-price-old-l">${esc(p.old)}</span></div></div>
      ${variants}<div class="divider"></div>
-     <div style="display:flex;flex-direction:column;gap:16px"><span class="t-body-l-strong city">Ваш город: <u>Алматы</u></span>${p.delivery.map(([a,b,i])=>`<div class="dopt">${ic(i)}<div class="t"><span class="t-body-l-strong">${esc(a)}</span><span class="t-body-m muted">${esc(b)}</span></div></div>`).join('')}</div>
+     <div style="display:flex;flex-direction:column;gap:16px"><span class="t-body-l-strong city">Ваш город: <u>Алматы</u></span>${p.delivery.map(([a,b,i])=>`<div class="dopt">${ic(i)}<div class="t"><span class="t-body-l-strong">${esc(a)}</span><span class="t-body-m muted">${esc(b).replace('магазина','<u>магазина</u>')}</span></div></div>`).join('')}</div>
      <div style="display:flex;flex-direction:column;gap:12px">${inCart?Stepper(k,true):`<button class="btn btn-primary" data-add="${k}">${ic('shopping-cart')}В корзину</button>`}<button class="btn btn-installment" id="instBtn">${ic('bank')}${inst}</button></div>
     </aside></div>
    <section class="sect" style="margin-top:96px">${SectionHeader('Сопутствующие товары',{arrows:1,id:'related'})}${Carousel('related',p.related)}</section></div>`}
@@ -1127,6 +1135,7 @@ function car(id,key,step,count,visible){
   const el=document.getElementById(id); if(!el) return null;
   const max=count-visible; const set=(i,anim=true)=>{S[key]=Math.max(0,Math.min(max,i)); el.classList.toggle('dragging',!anim); el.style.transform=`translateX(${-S[key]*step}px)`; if(id==='heroTrack') syncDots(); updateArrows();};
   let down=false,x0=0,dx=0,moved=false;
+  if(id==='heroTrack'){return {go:d=>{stopAuto();set((S[key]+d+count)%count)},set,max,key}}
   el.onpointerdown=e=>{if(e.button>0)return;down=true;moved=false;dx=0;x0=e.clientX;el.classList.add('dragging');stopAuto();window.addEventListener('pointermove',mv);window.addEventListener('pointerup',up,{once:true})};
   const mv=e=>{if(!down)return; const z=parseFloat(app.style.zoom)||1; dx=(e.clientX-x0)/z; if(Math.abs(dx)>6) moved=true;
     let off=-S[key]*step+dx; const lo=-max*step; if(off>0) off*=.35; if(off<lo) off=lo+(off-lo)*.35; el.style.transform=`translateX(${off}px)`};
@@ -1269,7 +1278,7 @@ function MProduct(){const p=C.product,k=p.id,inCart=S.cart[k]>0, imgs=[0,1,2].ma
    <div class="m-buy"><div><span class="m-brand">${esc(p.brand)}</span><h1 class="m-title">${esc(p.title)}</h1></div>
     <div class="m-pb"><div class="bonus"><i></i>${esc(p.bonus)}</div><div class="m-price"><b>${esc(p.price)}</b><s>${esc(p.old)}</s></div></div>
     <div class="m-mods">${variants}</div>
-    <div class="m-dlv"><span class="m-cityl">Ваш город: <u>Алматы</u></span>${p.delivery.map(([a,b,i])=>`<div class="m-do">${ic(i)}<div><b>${esc(a)}</b><span>${esc(b)}</span></div></div>`).join('')}</div>
+    <div class="m-dlv"><span class="m-cityl">Ваш город: <u>Алматы</u></span>${p.delivery.map(([a,b,i])=>`<div class="m-do">${ic(i)}<div><b>${esc(a)}</b><span>${esc(b).replace('магазина','<u>магазина</u>')}</span></div></div>`).join('')}</div>
     <div class="m-acts" id="mActs">${inCart?Stepper(k,true):`<button class="m-btn y wide" data-add="${k}">${ic('shopping-cart')}В корзину</button>`}<button class="m-btn r wide" data-m="sheet" data-s="inst">${ic('bank')}В рассрочку</button></div></div>
    <section class="m-sec"><h2>О товаре</h2><p class="m-txt">${esc(p.about)}</p><span class="m-cap">Артикул: <b>${p.sku}</b> · Код товара: <b>${p.code}</b></span></section>
    <section class="m-sec"><h2>Назначение</h2><div class="tags">${p.purpose.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div></section>
@@ -1393,13 +1402,13 @@ function Cart(m){ seed(); const L=lines(); const all=L.length&&L.every(x=>isSel(
     :`<div class="ck-pick"><span class="t"><b>Алматы, ул. Толе би, 216Б, кв. 14</b><span>Курьер привезёт с 10:00 до 22:00 · от 1 500 ₸</span></span>${iact('edit','Изменить','data-toast="Редактирование адреса — в следующей версии"')}</div>`;
   const first=G[0], rest=G.slice(1).reduce((a,g)=>a+g.items.reduce((s,x)=>s+x.q,0),0), firstN=first?first.items.reduce((s,x)=>s+x.q,0):0;
   const ship=`<div class="ck-opts">${opt(S.smode==='part','packages','По мере готовности',`${first?first.d.split(',')[0]:''}, ${firstN} ${pl(firstN,'товар','товара','товаров')}`,'data-smode="part"')}${opt(S.smode==='all','package','Ждать весь заказ',`до 9 ноября, ${cnt} ${pl(cnt,'товар','товара','товаров')}`,'data-smode="all"')}</div>`;
-  const grp=G.map(g=>{const q=g.items.reduce((s,x)=>s+x.q,0);return `<div class="ck-grp"><div class="h"><b>${g.d}</b><span>· ${q} ${pl(q,'товар','товара','товаров')}</span><span style="flex:1"></span><b>${S.dmode==='pick'?'Бесплатно':F(1500)}</b></div><div class="th">${g.items.map(x=>`<span class="tb"><img src="${img(x.c)}" alt="">${x.q>1?`<i>${x.q} шт</i>`:''}</span>`).join('')}</div></div>`}).join('');
+  const grp=G.map(g=>{const q=g.items.reduce((s,x)=>s+x.q,0);return `<div class="ck-grp"><div class="h"><b>${g.d}</b><span>· ${q} ${pl(q,'товар','товара','товаров')}</span><span style="flex:1"></span><b>${S.dmode==='pick'?'Доставим бесплатно':'Доставим за '+F(1500)}</b></div><div class="th">${g.items.map(x=>`<span class="tb"><img src="${img(x.c)}" alt="">${x.q>1?`<i>${x.q} шт</i>`:''}</span>`).join('')}</div></div>`}).join('');
   const pays=[['Kaspi.kz','Оплата в приложении Kaspi.kz'],['Картой онлайн','Visa, Mastercard'],['В рассрочку',`От ${F(Math.ceil(totals().total/12))} в месяц на 12 месяцев`]];
   const left=`<div class="ck-main">
    <div class="ck-bar"><label class="ck-all" data-ckall>${cbx(all,'')}<span>Выбрать все</span></label><button class="ck-iact muted" data-ckdelsel>${ic('trash')}<span>Удалить выбранные</span></button></div>
    <div class="ck-lines">${L.map(x=>Line(x,m)).join('')}</div>
    <section><h2>Получатель</h2>${tabs(['Физическое лицо','Юридическое лицо'],S.buyer,'data-buyer')}${rec}<button class="ck-add" data-ckaddrcp>Добавить получателя</button></section>
-   <section><h2>Доставка</h2>${tabs(['Пункт выдачи','Курьером'],S.dmode==='pick'?0:1,'data-dmode')}${pick}<h4>Как отправить</h4>${ship}<div class="ck-grps">${grp}</div></section>
+   <section><h2>Доставка</h2><div class="ck-opts">${opt(S.dmode==='pick','store','Пункт выдачи','Астана, просп. Акжол, 65 · пн–пт 9:00–18:00','data-dmode="0"')}${opt(S.dmode!=='pick','truck','Курьер','Алматы, ул. Толе би, 216Б, кв. 14 · с 10:00 до 22:00','data-dmode="1"')}</div><h4>Как отправить</h4>${ship}<div class="ck-grps">${grp}</div></section>
    <section><h2>Оплата</h2><div class="ck-opts three">${pays.map((p,i)=>opt(S.pay===i,null,p[0],p[1],`data-pay="${i}"`)).join('')}</div><textarea class="ck-comment" placeholder="Комментарий к заказу" readonly tabindex="-1"></textarea></section>
    ${m?Summary(true):''}</div>`;
   return `<div class="ck ${m?'mob':''}"><div class="ck-head"><h1>Корзина</h1><span>${cnt} ${pl(cnt,'товар','товара','товаров')}</span></div><div class="ck-grid">${left}${m?'':`<aside>${Summary(false)}</aside>`}</div></div>
@@ -1412,7 +1421,7 @@ function Order(m){ const L=orderItems(); let sum=0,old=0,bon=0; L.forEach(({c,q}
   const st=`<div class="lk-status"><h3>Собираем заказ</h3><div class="steps">${steps.map(([t,d,s])=>`<div class="st ${s}"><i></i><span><b>${t}</b><em>${d}</em></span></div>`).join('')}</div></div>`;
   const help=`<div class="lk-help"><b>Вопрос по заказу?</b><span>Позвоните в колл-центр — назовите номер заказа</span><u>+7 778 021 01 11</u></div>`;
   const cnt=L.reduce((a,x)=>a+x.q,0);
-  const comp=`<section><h2>Состав заказа</h2><div class="lk-dl"><b>Курьером</b><span>· доставим 28 октября</span><span style="flex:1"></span><b>Бесплатно</b></div>
+  const comp=`<section><h2>Состав заказа</h2><div class="lk-dl"><b>Курьером</b><span>· доставим 28 октября</span><span style="flex:1"></span><b>Доставим бесплатно</b></div>
     ${L.map(({c,q})=>`<div class="lk-it"><span class="ph"><img src="${img(c)}" alt=""></span><span class="t"><span><b>${esc(c[1])}</b> ${esc(c[2])}</span><em>${q} шт. × ${esc(c[3])}</em></span><b class="p">${F(N(c[3])*q)}</b></div>`).join('')}
     <div class="ck-sum flat"><div class="rows"><div><span>Товары, ${cnt} шт.</span><span>${F(old)}</span></div>${old-sum?`<div><span>Скидка</span><span>−${F(old-sum)}</span></div>`:''}<div><span>Доставка</span><span>Бесплатно</span></div><div><span>Бонусы</span><span class="bonus"><i></i>+${String(bon).replace(/\B(?=(\d{3})+(?!\d))/g,' ')}</span></div></div><div class="tot"><b>Итого</b><b class="v">${F(sum)}</b></div></div></section>`;
   const info=`<section><h2>Информация о заказе</h2><div class="lk-info">${[['Получатель','Максим, +7 705 453 97 56'],['Способ получения','Курьером'],['Адрес','Алматы, ул. Толе би, 216Б, кв. 14'],['Оплата','Kaspi.kz — оплачено 24 октября'],['Комментарий','Позвоните за час до доставки']].map(([a,b])=>`<div><span>${a}</span><b>${b}</b></div>`).join('')}</div></section>`;
