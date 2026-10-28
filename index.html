@@ -172,8 +172,8 @@ img{display:block;max-width:100%}
 #heroTrack{cursor:default}
 .hero-wrap .hero-ui{z-index:3}
 .hero-edge{position:absolute;top:0;bottom:0;width:18%;z-index:2;border:0;padding:0;background:transparent}
-.hero-edge.l{left:0;cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M27 16l-8 8 8 8' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 24 24,w-resize}
-.hero-edge.r{right:0;cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M21 16l8 8-8 8' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 24 24,e-resize}
+.hero-edge.l{left:0;cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Ccircle cx='18' cy='18' r='17' fill='white'/%3E%3Cpath d='M19 12l-6 6 6 6' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 18 18,w-resize}
+.hero-edge.r{right:0;cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Ccircle cx='18' cy='18' r='17' fill='white'/%3E%3Cpath d='M17 12l6 6-6 6' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 18 18,e-resize}
 .hero{flex:none;width:var(--layout-content);max-width:100%;aspect-ratio:1320/600;position:relative;background:#1b1b1b;overflow:hidden;color:var(--text-inverse)}
 .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
 .hero-ui{position:absolute;inset:0;pointer-events:none;color:var(--text-inverse)}
@@ -599,8 +599,8 @@ html,body{overflow-x:clip}
 .pcard .pcta.in{bottom:0;left:auto;width:96px}
 .pcard .pcta.in .stepper{background:#DEDEDE;padding:0 8px}
 .pcard .info{padding-top:16px}
-.pcard .info *{transition:color .15s,opacity .15s}
-@media (hover:hover){.pcard:hover .info,.pcard:hover .info *{color:#999722}.pcard:hover .bonus i{opacity:.5}}
+.pcard .info *,.pcard .title-wrap *,.pcard .delivery *{transition:color .15s,opacity .15s}
+@media (hover:hover){.pcard:hover .info,.pcard:hover .info *,.pcard:hover .title-wrap,.pcard:hover .title-wrap *,.pcard:hover .delivery,.pcard:hover .delivery *,.pcard:hover .oos,.pcard:hover .oos *{color:#999722!important}.pcard:hover .bonus i{opacity:.5}}
 .catalog ul.sel .mitem,.catalog ul.sel .mitem .ico{color:#7E7E7E}
 .catalog ul.sel .mitem.active,.catalog ul.sel .mitem.active .ico,.catalog .mitem.live:hover{color:var(--text-primary)}
 .catalog{position:fixed;left:0;right:0;bottom:0;max-height:none;overflow:auto;overscroll-behavior:contain;z-index:60}
@@ -767,11 +767,11 @@ html,body{overflow-x:clip}
 .pulse::after{content:'';position:absolute;inset:0;border-radius:50%;background:#2DB34A;animation:pls 1.6s ease-out infinite}
 @keyframes pls{0%{transform:scale(1);opacity:.6}100%{transform:scale(2.6);opacity:0}}
 .lk.mob{align-items:stretch}
-.badge{font-family:'DIN Condensed','DIN Condensed VF','Barlow Condensed',sans-serif;font-size:25px;line-height:1;letter-spacing:-.02em;font-weight:600;height:32px;padding:3px 8px 0;align-items:center;justify-content:center}
-.badge.new{font-weight:600}
-.badge.l{font-size:28px;height:36px;padding:3px 10px 0}
-.m .badge{font-size:20px;height:26px;padding:2px 6px 0}.m .badge.l{font-size:22px;height:28px}
-.ck-opt .t .ck-oa{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:14px;font-weight:600;color:var(--text-primary);cursor:pointer}.ck-oa .ico{width:18px;height:18px}
+.badge{font-family:'DIN Condensed','DIN Condensed VF','Barlow Condensed',sans-serif;font-size:25px;line-height:1;letter-spacing:-.02em;font-weight:600;height:32px;padding:5px 8px 0;align-items:center;justify-content:center}
+.badge.new{font-weight:400;padding-top:3px}
+.badge.l{font-size:28px;height:36px;padding:5px 10px 0}.badge.l.new{padding-top:3px}
+.m .badge{font-size:20px;height:26px;padding:4px 6px 0}.m .badge.new{padding-top:2px}.m .badge.l{font-size:22px;height:28px}
+.ck-opt .t .ck-oa{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:14px;font-weight:600;color:var(--text-secondary);cursor:pointer;transition:color .15s}.ck-opt .t .ck-oa:hover{color:var(--text-primary)}.ck-opt .t>span:not(.ck-oa){color:var(--text-primary)}.ck-oa .ico{width:18px;height:18px}
 </style>
 
 <div id="app"></div>
