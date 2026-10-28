@@ -172,8 +172,8 @@ img{display:block;max-width:100%}
 #heroTrack{cursor:default}
 .hero-wrap .hero-ui{z-index:3}
 .hero-edge{position:absolute;top:0;bottom:0;width:18%;z-index:2;border:0;padding:0;background:transparent}
-.hero-edge.l{left:0;cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Ccircle cx='24' cy='24' r='23' fill='white'/%3E%3Cpath d='M27 16l-8 8 8 8' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E") 24 24,w-resize}
-.hero-edge.r{right:0;cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Ccircle cx='24' cy='24' r='23' fill='white'/%3E%3Cpath d='M21 16l8 8-8 8' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E") 24 24,e-resize}
+.hero-edge.l{left:0;cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M27 16l-8 8 8 8' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 24 24,w-resize}
+.hero-edge.r{right:0;cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M21 16l8 8-8 8' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 24 24,e-resize}
 .hero{flex:none;width:var(--layout-content);max-width:100%;aspect-ratio:1320/600;position:relative;background:#1b1b1b;overflow:hidden;color:var(--text-inverse)}
 .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
 .hero-ui{position:absolute;inset:0;pointer-events:none;color:var(--text-inverse)}
@@ -600,7 +600,7 @@ html,body{overflow-x:clip}
 .pcard .pcta.in .stepper{background:#DEDEDE;padding:0 8px}
 .pcard .info{padding-top:16px}
 .pcard .info *{transition:color .15s,opacity .15s}
-@media (hover:hover){.pcard:hover .info,.pcard:hover .info *{color:#999999}.pcard:hover .bonus i{opacity:.5}}
+@media (hover:hover){.pcard:hover .info,.pcard:hover .info *{color:#999722}.pcard:hover .bonus i{opacity:.5}}
 .catalog ul.sel .mitem,.catalog ul.sel .mitem .ico{color:#7E7E7E}
 .catalog ul.sel .mitem.active,.catalog ul.sel .mitem.active .ico,.catalog .mitem.live:hover{color:var(--text-primary)}
 .catalog{position:fixed;left:0;right:0;bottom:0;max-height:none;overflow:auto;overscroll-behavior:contain;z-index:60}
@@ -767,10 +767,11 @@ html,body{overflow-x:clip}
 .pulse::after{content:'';position:absolute;inset:0;border-radius:50%;background:#2DB34A;animation:pls 1.6s ease-out infinite}
 @keyframes pls{0%{transform:scale(1);opacity:.6}100%{transform:scale(2.6);opacity:0}}
 .lk.mob{align-items:stretch}
-.badge{font-family:'DIN Condensed','DIN Condensed VF','Barlow Condensed',sans-serif;font-size:20px;line-height:1.3;letter-spacing:-.02em;font-weight:600;height:28px;padding:2px 8px 0}
-.badge.new{font-weight:400}
-.badge.l{font-size:22px;height:32px;padding:2px 10px 0}
-.m .badge{font-size:17px;height:24px;padding:2px 6px 0}.m .badge.l{font-size:19px;height:26px}
+.badge{font-family:'DIN Condensed','DIN Condensed VF','Barlow Condensed',sans-serif;font-size:25px;line-height:1;letter-spacing:-.02em;font-weight:600;height:32px;padding:3px 8px 0;align-items:center;justify-content:center}
+.badge.new{font-weight:600}
+.badge.l{font-size:28px;height:36px;padding:3px 10px 0}
+.m .badge{font-size:20px;height:26px;padding:2px 6px 0}.m .badge.l{font-size:22px;height:28px}
+.ck-opt .t .ck-oa{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:14px;font-weight:600;color:var(--text-primary);cursor:pointer}.ck-oa .ico{width:18px;height:18px}
 </style>
 
 <div id="app"></div>
@@ -1379,7 +1380,7 @@ const img=c=>imgFor(c);
 const cbx=(on,attr)=>`<span class="ck-box ${on?'on':''}" ${attr}>${ic('check')}</span>`;
 const iact=(icon,label,attr='')=>`<button class="ck-iact" ${attr}>${ic(icon)}<span>${label}</span></button>`;
 const tabs=(arr,cur,attr)=>`<div class="ck-tabs">${arr.map((t,i)=>`<button class="ck-tab ${i===cur?'on':''}" ${attr}="${i}">${t}</button>`).join('')}</div>`;
-const opt=(on,icon,t,s,attr)=>`<button class="ck-opt ${on?'on':''}" ${attr}>${icon?ic(icon):''}<span class="t"><b>${t}</b><span>${s}</span></span></button>`;
+const opt=(on,icon,t,s,attr,x='')=>`<button class="ck-opt ${on?'on':''}" ${attr}>${icon?ic(icon):''}<span class="t"><b>${t}</b><span>${s}</span>${x}</span></button>`;
 function Line(x,m){ const {k,q,c}=x, p=N(c[3]), o=N(c[4]); const price=`<div class="ck-price"><b>${F(p*q)}</b>${o?`<s>${F(o*q)}</s>`:''}</div>`;
   const bon=`<div class="bonus"><i></i>+${String(N(c[6])*q).replace(/\B(?=(\d{3})+(?!\d))/g,' ')} ${pl(N(c[6])*q,'бонус','бонуса','бонусов')}</div>`;
   const step=`<div class="stepper ck-step"><button data-dec="${esc(k)}">${ic('minus')}</button><span class="v">${q}</span><button data-inc="${esc(k)}">${ic('plus')}</button></div>`;
@@ -1408,7 +1409,7 @@ function Cart(m){ seed(); const L=lines(); const all=L.length&&L.every(x=>isSel(
    <div class="ck-bar"><label class="ck-all" data-ckall>${cbx(all,'')}<span>Выбрать все</span></label><button class="ck-iact muted" data-ckdelsel>${ic('trash')}<span>Удалить выбранные</span></button></div>
    <div class="ck-lines">${L.map(x=>Line(x,m)).join('')}</div>
    <section><h2>Получатель</h2>${tabs(['Физическое лицо','Юридическое лицо'],S.buyer,'data-buyer')}${rec}<button class="ck-add" data-ckaddrcp>Добавить получателя</button></section>
-   <section><h2>Доставка</h2><div class="ck-opts">${opt(S.dmode==='pick','store','Пункт выдачи','Астана, просп. Акжол, 65 · пн–пт 9:00–18:00','data-dmode="0"')}${opt(S.dmode!=='pick','truck','Курьер','Алматы, ул. Толе би, 216Б, кв. 14 · с 10:00 до 22:00','data-dmode="1"')}</div><h4>Как отправить</h4>${ship}<div class="ck-grps">${grp}</div></section>
+   <section><h2>Доставка</h2><div class="ck-opts">${opt(S.dmode==='pick','store','Пункт выдачи','Астана, просп. Акжол, 65 · пн–пт 9:00–18:00','data-dmode="0"',`<span class="ck-oa" data-toast="Карта пунктов выдачи — в следующей версии">${ic('map-pin')}На карте</span>`)}${opt(S.dmode!=='pick','truck','Курьер','Алматы, ул. Толе би, 216Б, кв. 14 · с 10:00 до 22:00','data-dmode="1"',`<span class="ck-oa" data-toast="Редактирование адреса — в следующей версии">${ic('edit')}Изменить</span>`)}</div><h4>Как отправить</h4>${ship}<div class="ck-grps">${grp}</div></section>
    <section><h2>Оплата</h2><div class="ck-opts three">${pays.map((p,i)=>opt(S.pay===i,null,p[0],p[1],`data-pay="${i}"`)).join('')}</div><textarea class="ck-comment" placeholder="Комментарий к заказу" readonly tabindex="-1"></textarea></section>
    ${m?Summary(true):''}</div>`;
   return `<div class="ck ${m?'mob':''}"><div class="ck-head"><h1>Корзина</h1><span>${cnt} ${pl(cnt,'товар','товара','товаров')}</span></div><div class="ck-grid">${left}${m?'':`<aside>${Summary(false)}</aside>`}</div></div>
