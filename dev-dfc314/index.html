@@ -784,7 +784,8 @@ html,body{overflow-x:clip}
 .gallery .main:hover .zbtn{opacity:1}
 .gallery .main.zoomed{cursor:zoom-out}
 .gallery .main .strip img{transition:transform .25s ease}
-.gallery .main.zoomed .strip img{transform:scale(2.5)}
+.gallery .main .slot{flex:none;width:100%;height:100%;overflow:hidden}
+.gallery .main.zoomed .slot.on img{transform:scale(2.5)}
 .gallery .main.zoomed .nav{opacity:0;pointer-events:none}
 .gallery .main.zoomed .zbtn{opacity:1}
 </style>
@@ -1048,7 +1049,7 @@ function Product(){
    <nav class="crumbs" style="margin-bottom:32px"><button data-home>главная</button><span>/</span>${CAT_ORDER.map(x=>`<button data-cat="${x}">${esc(C.categories[x].title.toLowerCase())}</button><span>/</span>`).join('')}</nav>
    <div class="prod"><div>
     <div class="gallery"><div class="thumbs">${imgs.map((s,i)=>`<button class="tb ${i===S.gal?'on':''}" data-galto="${i}" aria-label="Фото ${i+1}"><img src="${s}" alt=""></button>`).join('')}</div>
-     <div class="main" id="galMain"><div class="strip" style="transform:translateX(-${S.gal*100}%)">${imgs.map(s=>`<img src="${s}" alt="${esc(p.brand+' '+p.title)}" draggable="false">`).join('')}</div><div class="badges"><span class="badge l">${esc(p.badge)}</span></div><button class="iconbtn zbtn" data-zoom aria-label="Увеличить фото">${ic('zoom-in')}</button>
+     <div class="main" id="galMain"><div class="strip" style="transform:translateX(-${S.gal*100}%)">${imgs.map((s,j)=>`<div class="slot ${j===S.gal?'on':''}"><img src="${s}" alt="${esc(p.brand+' '+p.title)}" draggable="false"></div>`).join('')}</div><div class="badges"><span class="badge l">${esc(p.badge)}</span></div><button class="iconbtn zbtn" data-zoom aria-label="Увеличить фото">${ic('zoom-in')}</button>
       <button class="iconbtn nav l" data-gal="-1" aria-label="Предыдущее фото" ${S.gal===0?'disabled':''}>${ic('chevron-left')}</button><button class="iconbtn nav r" data-gal="1" aria-label="Следующее фото" ${S.gal===imgs.length-1?'disabled':''}>${ic('chevron-right')}</button></div></div>
     <div class="content">
      <section class="sect">${SectionHeader('О товаре')}<p class="t-body-text" style="margin:0">${esc(p.about)}</p><div class="t-caption" style="display:flex;gap:24px"><span><span class="muted">Артикул:</span> <b>${p.sku}</b></span><span><span class="muted">Код товара:</span> <b>${p.code}</b></span></div></section>
