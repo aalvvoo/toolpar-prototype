@@ -773,7 +773,7 @@ html,body{overflow-x:clip}
 
 .incart-row{display:flex;gap:12px}.incart-row .stepper{width:168px;flex:none}.incart-row .btn{flex:1}
 .m-acts .incart-row{gap:8px}.m-acts .incart-row .stepper{width:128px}.m-acts .incart-row .m-btn{flex:1;padding:0 12px}
-.m-bp .pr{display:flex;align-items:baseline;gap:6px}
+.m-bp .pr{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:6px;row-gap:0}
 .m-bp .dl{display:flex;align-items:center;gap:4px;font-size:12px;font-weight:500;color:var(--text-secondary);margin-top:3px;white-space:nowrap}.m-bp .dl .ico{width:14px;height:14px;color:var(--text-secondary)}
 .m-bp s{white-space:nowrap}
 .m-bbar .m-bmain{width:168px;flex:none;padding:0 12px;white-space:nowrap}
@@ -1068,7 +1068,7 @@ function Product(){
      <div style="display:flex;flex-direction:column;gap:8px"><div class="bonus"><i></i>${esc(p.bonus)}</div><div class="price"><span class="t-price-xl">${esc(p.price)}</span><span class="t-price-old-l">${esc(p.old)}</span></div></div>
      ${variants}<div class="divider"></div>
      <div style="display:flex;flex-direction:column;gap:16px"><span class="t-body-l-strong city">Ваш город: <u>Алматы</u></span>${p.delivery.map(([a,b,i])=>`<div class="dopt">${ic(i)}<div class="t"><span class="t-body-l-strong">${esc(a)}</span><span class="t-body-m muted">${esc(b).replace('магазина','<u>магазина</u>')}</span></div></div>`).join('')}</div>
-     <div style="display:flex;flex-direction:column;gap:12px">${inCart?`<div class="incart-row">${Stepper(k,true)}<button class="btn btn-primary" data-gocart>Перейти в корзину${ic('arrow-right')}</button></div>`:`<button class="btn btn-primary" data-add="${k}">${ic('shopping-cart')}В корзину</button>`}<button class="btn btn-installment" id="instBtn">${ic('bank')}${inst}</button></div>
+     <div style="display:flex;flex-direction:column;gap:12px">${inCart?`<div class="incart-row">${Stepper(k,true)}<button class="btn btn-primary" data-gocart>Перейти в корзину</button></div>`:`<button class="btn btn-primary" data-add="${k}">${ic('shopping-cart')}В корзину</button>`}<button class="btn btn-installment" id="instBtn">${ic('bank')}${inst}</button></div>
     </aside></div>
    <section class="sect" style="margin-top:96px">${SectionHeader('Сопутствующие товары',{arrows:1,id:'related'})}${Carousel('related',p.related)}</section></div>`}
 
@@ -1304,7 +1304,7 @@ function MProduct(){const p=C.product,k=p.id,inCart=S.cart[k]>0, imgs=[0,1,2].ma
     <div class="m-pb"><div class="bonus"><i></i>${esc(p.bonus)}</div><div class="m-price"><b>${esc(p.price)}</b><s>${esc(p.old)}</s></div></div>
     <div class="m-mods">${variants}</div>
     <div class="m-dlv"><span class="m-cityl">Ваш город: <u>Алматы</u></span>${p.delivery.map(([a,b,i])=>`<div class="m-do">${ic(i)}<div><b>${esc(a)}</b><span>${esc(b).replace('магазина','<u>магазина</u>')}</span></div></div>`).join('')}</div>
-    <div class="m-acts" id="mActs">${inCart?`<div class="incart-row">${Stepper(k,true)}<button class="m-btn y wide" data-gocart>Перейти в корзину${ic('arrow-right')}</button></div>`:`<button class="m-btn y wide" data-add="${k}">${ic('shopping-cart')}В корзину</button>`}<button class="m-btn r wide" data-m="sheet" data-s="inst">${ic('bank')}В рассрочку</button></div></div>
+    <div class="m-acts" id="mActs">${inCart?`<div class="incart-row">${Stepper(k,true)}<button class="m-btn y wide" data-gocart>Перейти в корзину</button></div>`:`<button class="m-btn y wide" data-add="${k}">${ic('shopping-cart')}В корзину</button>`}<button class="m-btn r wide" data-m="sheet" data-s="inst">${ic('bank')}В рассрочку</button></div></div>
    <section class="m-sec"><h2>О товаре</h2><p class="m-txt">${esc(p.about)}</p><span class="m-cap">Артикул: <b>${p.sku}</b> · Код товара: <b>${p.code}</b></span></section>
    <section class="m-sec"><h2>Назначение</h2><div class="tags">${p.purpose.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div></section>
    <section class="m-sec"><h2>Характеристики</h2><div>${(S.specsAll?p.specs.concat(p.specsMore.slice(0,2)):p.specs).map(([a,b])=>`<div class="m-spec"><span>${esc(a)}</span><b>${esc(b)}</b></div>`).join('')}</div><button class="m-link" id="specsBtn">${S.specsAll?'Свернуть':'Все характеристики'}${ic(S.specsAll?'chevron-up':'chevron-down')}</button></section>
