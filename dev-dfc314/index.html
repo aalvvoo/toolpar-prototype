@@ -788,6 +788,73 @@ html,body{overflow-x:clip}
 .gallery .main.zoomed .slot.on img{transform:scale(2.5)}
 .gallery .main.zoomed .nav{opacity:0;pointer-events:none}
 .gallery .main.zoomed .zbtn{opacity:1}
+
+/* Покупателям (веб) */
+.ulink,.flink{cursor:pointer}.ulink:hover,.flink:hover{color:var(--text-secondary)}.ulink.on{font-weight:600}
+.help{padding-top:40px;padding-bottom:96px}
+.help h1,.help h2,.help h3,.help h4,.help p{margin:0}
+.h-hero{display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px;padding:40px 0 24px}
+.h-sec{margin-top:96px}
+.h-topics{display:grid;grid-template-columns:1fr 1fr;gap:30px}
+.h-topic{border:1px solid var(--border-default);padding:32px;display:flex;flex-direction:column;gap:24px;cursor:pointer;transition:border-color .15s}
+.h-topic:hover{border-color:var(--border-strong)}
+.h-topic .hd{display:flex;gap:16px;align-items:flex-start}.h-topic .hd>.ico{width:32px;height:32px}.h-topic .hd p{margin-top:4px}
+.h-topic .ln{display:flex;flex-direction:column}
+.h-topic .ln button{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;padding:12px 0;border-top:1px solid var(--border-default);font-size:15px;font-weight:600;text-align:left;transition:color .15s}
+.h-topic .ln button:hover{color:var(--text-secondary)}.h-topic .ln .ico{width:16px;height:16px}
+.h-more{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
+.h-tl{display:flex;align-items:center;gap:16px;padding:20px 24px;border:1px solid var(--border-default);text-align:left;transition:border-color .15s}.h-tl:hover{border-color:var(--border-strong)}
+.h-tl .tx{flex:1;display:flex;flex-direction:column;gap:2px}.h-tl b{font-size:15px;font-weight:600}.h-tl .tx span{font-size:13px;font-weight:500;color:var(--text-secondary)}.h-tl>.ico:last-child{width:20px;height:20px}
+.h-row{display:flex;gap:30px;align-items:flex-start}.h-faqw{width:915px;flex:none}
+.h-faq{display:flex;flex-direction:column}
+.h-fq{border-bottom:1px solid var(--border-default);padding:20px 0}
+.h-fq .q{display:flex;justify-content:space-between;align-items:center;gap:16px;width:100%;text-align:left}.h-fq .q .ico{width:20px;height:20px}
+.h-fq .q:hover .t-h4{color:var(--text-secondary)}
+.h-fq .a{padding:12px 135px 0 0;display:flex;flex-direction:column;gap:12px}
+.h-fq .more,.h-contact .hl{display:inline-flex;align-items:center;gap:4px;font-size:14px;font-weight:600;align-self:flex-start;cursor:pointer}.h-fq .more .ico,.h-contact .hl .ico{width:16px;height:16px}
+.h-fq .more:hover,.h-contact .hl:hover{color:var(--text-secondary)}
+.h-contact{width:375px;flex:none;background:var(--bg-secondary);padding:32px;display:flex;flex-direction:column;gap:16px}
+.h-contact>.ico{width:32px;height:32px}.h-contact .btn{height:48px;margin-top:8px}
+/* поиск */
+.hs{position:relative;width:780px;max-width:100%;text-align:left}.hs.hs-m{width:100%}
+.hs-field{display:flex;align-items:center;gap:12px;height:64px;padding:0 16px 0 24px;border:1px solid var(--border-default);background:var(--bg-primary);cursor:text;transition:border-color .15s}
+.hs.hs-m .hs-field{height:48px;padding:0 12px 0 16px;gap:10px}.hs.hs-m .hs-field>.ico{width:20px;height:20px}
+.hs-field:focus-within{border-color:var(--border-strong)}
+.hs-field input{flex:1;min-width:0;border:0;outline:0;font:inherit;font-size:15px;font-weight:500;color:var(--text-primary);background:transparent;padding:0}.hs.hs-m input{font-size:14px}
+.hs-field input::placeholder{color:var(--text-placeholder)}
+.hs-x{display:none;place-items:center;width:28px;height:28px}.hs.has .hs-x{display:grid}.hs-x .ico{width:20px;height:20px}
+.hs-res{position:absolute;left:0;top:calc(100% - 1px);width:100%;z-index:30;background:var(--bg-primary);border:1px solid var(--border-default);display:none;max-height:min(560px,calc(100vh - 260px));overflow:auto}
+.hs.hs-m .hs-res{width:560px}.hs.open .hs-res{display:block}
+.hs-item{display:flex;flex-direction:column;gap:4px;width:100%;padding:16px 24px;border-bottom:1px solid var(--border-default);text-align:left}
+.hs-item .c{font-size:12px;color:var(--text-secondary)}.hs-item .t{font-size:15px;font-weight:600}.hs-item .s{font-size:14px;color:var(--text-secondary);line-height:1.4}.hs-item .s b{color:var(--text-primary);font-weight:600}
+.hs-item:hover,.hs-item.act{background:var(--bg-secondary)}
+.hs-foot,.hs-empty{padding:16px 24px;font-size:14px;color:var(--text-secondary)}.hs-empty{border-bottom:1px solid var(--border-default)}.hs-foot b{color:var(--text-primary);font-weight:600}.hs-foot .u{text-decoration:underline;text-underline-offset:2px;cursor:pointer;color:var(--text-primary)}
+/* статья */
+.h-art{display:grid;grid-template-columns:240px 780px 240px;gap:30px;align-items:start}
+.h-side,.h-toc{position:sticky;top:116px}
+.h-side{display:flex;flex-direction:column;gap:24px}
+.h-nav{display:flex;flex-direction:column}.h-nav button{text-align:left;padding:12px 0;font-size:15px;font-weight:500;color:var(--text-secondary);transition:color .15s}
+.h-nav button:hover{color:var(--text-primary)}.h-nav button.on{color:var(--text-primary);font-weight:600}.h-nav hr{border:0;border-top:1px solid var(--border-default);margin:0;width:100%}
+.h-content{display:flex;flex-direction:column;gap:16px;min-width:0}
+.h-content header{display:flex;flex-direction:column;gap:16px;padding-bottom:24px}
+.h-s{display:flex;flex-direction:column;gap:16px;padding-top:32px}
+.h-h3{padding-top:16px}
+.help [id]{scroll-margin-top:130px}
+.h-content .bullets{gap:8px}.h-content .bullets li{font-size:15px;line-height:1.5}.h-content .bullets li::before{margin-top:10px}
+.h-content b{font-weight:600}
+.h-table{width:100%}.h-table .spec{font-size:14px}
+.h-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;padding:32px;background:var(--bg-secondary)}.h-facts div{display:flex;flex-direction:column;gap:8px}
+.h-note{background:var(--bg-tertiary);padding:20px 24px;display:flex;flex-direction:column;gap:4px}.h-note b{font-size:14px;font-weight:600}.h-note p{font-size:15px;font-weight:500;line-height:1.5}
+.h-steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:32px}.h-steps.compact{gap:20px;padding-top:4px}
+.h-steps .row{display:flex;gap:20px}.h-steps .num{width:40px;height:40px;flex:none;background:var(--action-primary-default);display:grid;place-items:center;font-size:16px;font-weight:700}
+.h-steps .row>div{display:flex;flex-direction:column;gap:8px;padding-top:8px}
+.h-steps .scr{margin:16px 0 0 60px;background:var(--bg-tertiary);padding:32px;display:flex;justify-content:center}.h-steps .scr img{display:block;max-width:100%;height:auto;border:1px solid var(--border-default);background:#fff}
+.h-pager{display:flex;justify-content:space-between;padding-top:48px}.h-pager button{display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:600;transition:color .15s}.h-pager button:hover{color:var(--text-secondary)}.h-pager .ico{width:20px;height:20px}
+.h-content .h-contact{width:auto;margin-top:16px}
+.h-toc{display:flex;flex-direction:column;max-height:calc(100vh - 140px);overflow:auto}.h-toc>b{font-size:12px;font-weight:600;margin-bottom:12px}
+.h-toc button{text-align:left;padding:6px 0 6px 14px;border-left:2px solid var(--border-default);font-size:13px;font-weight:500;line-height:1.3;color:var(--text-secondary);transition:color .15s,border-color .15s}
+.h-toc.nested button.lvl1{padding-left:26px}.h-toc button.grp{font-weight:600}
+.h-toc button:hover{color:var(--text-primary)}.h-toc button.on{border-left-color:var(--text-primary);color:var(--text-primary);font-weight:600}
 </style>
 
 <div id="app"></div>
@@ -795,6 +862,14 @@ html,body{overflow-x:clip}
 
 <script>
 const ICONS={
+"credit-card":'<rect width="20" height="14" x="2" y="5" rx="2" stroke="black" stroke-width="2"/><path d="M2 10H22" stroke="black" stroke-width="2"/>',
+"rotate-ccw":'<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 3v5h5" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+"wrench":'<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+"cog":'<path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z M12 2v2 M12 22v-2 M17 20.66l-1-1.73 M11 10.27 7 3.34 M20.66 17l-1.73-1 M3.34 7l1.73 1 M14 12h8 M2 12h2 M20.66 7l-1.73 1 M3.34 17l1.73-1 M17 3.34l-1 1.73 M11 13.73l-4 6.93" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+"phone":'<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+"gift":'<rect x="3" y="8" width="18" height="4" rx="1" stroke="black" stroke-width="2"/><path d="M12 8v13 M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7 M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+"circle-help":'<circle cx="12" cy="12" r="10" stroke="black" stroke-width="2"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3 M12 17h.01" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+
 "chevron-right":'<path d="M9 18L15 12L9 6" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
 "chevron-left":'<path d="M15 18L9 12L15 6" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
 "chevron-down":'<path d="M6 9L12 15L18 9" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
@@ -967,7 +1042,7 @@ function Reel(name){return `<div class="reel" data-reel="${name}" role="button" 
 
 /* ---------- Хедер ---------- */
 function Header(){
-  return `<div class="wrap"><div class="utility"><div class="left"><span class="city">${ic('map-pin')}Алматы${ic('chevron-down','chev')}</span><span class="phone">+7 778 021 01 65</span><span class="callback">Заказать звонок</span></div><div class="right"><span>Контакты</span><span>Адреса магазинов</span><span>О компании</span><span>Покупателям</span><span>Сотрудничество</span></div></div></div>
+  return `<div class="wrap"><div class="utility"><div class="left"><span class="city">${ic('map-pin')}Алматы${ic('chevron-down','chev')}</span><span class="phone">+7 778 021 01 65</span><span class="callback">Заказать звонок</span></div><div class="right"><span>Контакты</span><span>Адреса магазинов</span><span>О компании</span><span class="ulink ${S.view==='help'?'on':''}" data-gohelp="">Покупателям</span><span>Сотрудничество</span></div></div></div>
   <div class="shopping" id="shopping"><div class="wrap" style="position:relative"><div class="row">
     <button class="logo" data-home aria-label="На главную">${LOGO}</button>
     <button class="btn-catalog" id="btnCatalog" aria-expanded="${S.menuOpen}">${ic(S.menuOpen?'x':'layout-grid')}Каталог</button>
@@ -987,7 +1062,7 @@ function Footer(){
   const L=(t,a)=>`<div><h6>${t}</h6><ul>${a.map(x=>`<li>${x}</li>`).join('')}</ul></div>`;
   return `<footer class="footer"><div class="wrap"><div class="cols">
    <div style="display:flex;flex-direction:column;gap:16px"><span class="city t-caption-strong" style="display:flex;gap:6px;align-items:center">${ic('map-pin')}Алматы${ic('chevron-down','chev')}</span><span style="font-size:20px;font-weight:700">+7 778 021 01 65</span><span style="display:flex;gap:24px">${ic('instagram')}${ic('youtube')}</span></div>
-   ${L('О компании',['О нас','СМИ о нас','Реквизиты','Вакансии','Контакты','Адреса магазинов'])}${L('Покупателям',['Как сделать заказ','Доставка','Оплата','Обмен, возврат, гарантия','Система привилегий'])}
+   ${L('О компании',['О нас','СМИ о нас','Реквизиты','Вакансии','Контакты','Адреса магазинов'])}<div><h6 class="flink" data-gohelp="">Покупателям</h6><ul>${[['Как сделать заказ','order'],['Доставка','delivery'],['Оплата','pay'],['Обмен, возврат, гарантия','returns'],['Система привилегий','']].map(([t,k])=>`<li class="flink" ${k?`data-gohelp="${k}"`:'data-toast="Раздел «Система привилегий» в работе"'}>${t}</li>`).join('')}</ul></div>
    <div style="display:flex;flex-direction:column;gap:32px">${L('Сотрудничество',['Дилерам','Поставщикам','Арендодателям'])}${L('Поддержка',['Сервисный центр'])}</div></div>
    <div class="bottom"><span class="logo" style="width:240px;height:75px">${LOGO}</span><div class="legal"><span>Сеть магазинов «TSSP» © 2003 – 2026</span><span class="muted">Публичная оферта</span><span class="muted">Политика конфиденциальности</span><span style="display:flex;gap:16px;align-items:center">${VISA}${MC}</span></div></div></div></footer>`}
 
@@ -1073,13 +1148,98 @@ function Product(){
     </aside></div>
    <section class="sect" style="margin-top:96px">${SectionHeader('Сопутствующие товары',{arrows:1,id:'related'})}${Carousel('related',p.related)}</section></div>`}
 
+/* ---------- Покупателям: раздел помощи (только веб) ---------- */
+let HELP=null, HIDX=null;
+S.hq='';S.hfaq=0;
+function hSlug(pid,t){return 'h-'+pid+'-'+String(t).toLowerCase().replace(/[^a-zа-яё0-9]+/gi,'-').replace(/^-+|-+$/g,'').slice(0,60)}
+function hInline(s){return esc(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')}
+function hSections(pid){const P=HELP.pages[pid],out=[];let cur=null,n=0;
+  for(const b of P.blocks){const k=b[0];
+    if(k==='h2'){cur={id:hSlug(pid,b[1]),t:b[1],lvl:0,text:''};out.push(cur)}
+    else if(k==='h3'){cur={id:hSlug(pid,b[1]),t:b[1],lvl:1,text:''};out.push(cur)}
+    else if(k==='steps'){for(const st of b[1]){n++;if(b[2]!=='compact'){cur={id:hSlug(pid,n+'. '+st.t),t:n+'. '+st.t,lvl:1,text:st.b};out.push(cur)}else if(cur)cur.text+=' '+st.t+'. '+st.b}}
+    else{const txt=k==='ul'?b[1].join(' '):k==='table'?b[1].map(r=>r.join(' — ')).join('. '):k==='facts'?b[1].map(r=>r.join(' ')).join('. '):k==='note'?b[1]+': '+b[2]:b[1];
+      if(!cur){cur={id:'h-'+pid+'-top',t:P.title,lvl:-1,text:''};out.push(cur)}cur.text+=' '+txt}}
+  return out.map(x=>({...x,text:x.text.replace(/\*\*/g,'').trim()}))}
+function hIndex(){if(HIDX)return HIDX;HIDX=[];
+  for(const pid of HELP.order){const P=HELP.pages[pid];for(const x of hSections(pid))HIDX.push({pid,crumb:P.nav,title:x.lvl<0?P.title:x.t,id:x.id,text:x.text})}
+  HELP.hub.faq.forEach(f=>HIDX.push({pid:f[2],crumb:'Популярные вопросы',title:f[0],id:f[3]?hSlug(f[2],f[3]):null,text:f[1]}));return HIDX}
+const hNorm=s=>String(s).toLowerCase().replace(/ё/g,'е');
+const hRe=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+function hSearch(q){const words=hNorm(q).split(/[^a-zа-я0-9]+/i).filter(w=>w.length>1);if(!words.length)return[];
+  const stems=words.map(w=>w.length>5?w.slice(0,w.length-2):w.length>3?w.slice(0,w.length-1):w);const res=[];
+  for(const it of hIndex()){const T=hNorm(it.title),X=hNorm(it.text);let ok=true,sc=0;for(const st of stems){const a=T.includes(st),b=X.includes(st);if(!a&&!b){ok=false;break}sc+=a?3:1}if(ok)res.push({...it,sc})}
+  res.sort((a,b)=>b.sc-a.sc);return res.slice(0,6).map(r=>({...r,snip:hSnip(r.text,stems)}))}
+function hSnip(text,stems){const X=hNorm(text);let i=-1;for(const st of stems){const k=X.indexOf(st);if(k>=0&&(i<0||k<i))i=k}
+  const a=Math.max(0,i-60);let s=text.slice(a,a+170);if(a>0)s='…'+s.slice(s.indexOf(' ')+1);if(a+170<text.length)s=s.slice(0,s.lastIndexOf(' '))+'…';
+  let h=esc(s);for(const st of stems){h=h.replace(new RegExp('('+hRe(st).replace(/е/g,'[её]')+'[а-яёa-z0-9]*)','gi'),'<b>$1</b>')}return h}
+function HSearch(size,ph){return `<div class="hs hs-${size} ${S.hq?'has':''}"><label class="hs-field">${ic('search')}<input id="hsInput" type="text" value="${esc(S.hq||'')}" placeholder="${esc(ph)}" autocomplete="off" aria-label="Поиск по разделу «Покупателям»"><button class="hs-x" data-hsclear aria-label="Очистить" tabindex="-1">${ic('x')}</button></label><div class="hs-res" id="hsRes" role="listbox"></div></div>`}
+function hsUpdate(){const box=document.querySelector('.hs'),res=document.getElementById('hsRes');if(!box||!res)return;const q=(S.hq||'').trim();box.classList.toggle('has',!!S.hq);
+  if(!q){box.classList.remove('open');res.innerHTML='';return}
+  const r=hSearch(q);const foot=`<div class="hs-foot">Не нашли ответ? Позвоните <b>+7 778 021 01 65</b> или <span class="u" data-toast="Менеджер перезвонит в течение 15 минут">закажите звонок</span></div>`;
+  res.innerHTML=(r.length?r.map((x,i)=>`<button class="hs-item ${i===0?'act':''}" role="option" data-hgo="${x.pid}" ${x.id?`data-hanchor="${x.id}"`:''}><span class="c">${esc(x.crumb)}</span><span class="t">${esc(x.title)}</span><span class="s">${x.snip}</span></button>`).join(''):`<div class="hs-empty">Ничего не нашли по запросу «${esc(q)}». Попробуйте другое слово.</div>`)+foot;
+  box.classList.add('open')}
+function HContact(){return `<aside class="h-contact">${ic('circle-help')}<h3 class="t-h3">Не нашли ответ?</h3><p class="t-body-m muted">Позвоните или закажите звонок — менеджер поможет с заказом, доставкой и гарантией.</p><b class="t-h3">+7 778 021 01 65</b><button class="btn btn-primary" data-toast="Менеджер перезвонит в течение 15 минут">${ic('phone')}Заказать звонок</button><span class="hl" data-toast="Адреса магазинов — страница в работе">Адреса магазинов${ic('chevron-right')}</span></aside>`}
+function HelpHub(){const H=HELP.hub;
+  return `<div class="wrap help">
+   <section class="h-hero"><h1 class="t-display">${esc(H.title)}</h1><p class="t-body-l muted">${esc(H.subtitle)}</p>${HSearch('l',H.placeholder)}</section>
+   <section class="sect h-sec">${SectionHeader('Темы')}<div class="h-topics">${H.topics.map(t=>`<div class="h-topic" data-hgo="${t.page}" role="link" tabindex="0"><div class="hd">${ic(t.icon)}<div><h3 class="t-h3">${esc(t.t)}</h3><p class="t-body-m muted">${esc(t.d)}</p></div></div><div class="ln">${t.links.map(([l,a])=>`<button data-hgo="${t.page}" ${a?`data-hanchor="${hSlug(t.page,a)}"`:''}>${esc(l)}${ic('chevron-right')}</button>`).join('')}</div></div>`).join('')}</div></section>
+   <section class="sect h-sec">${SectionHeader('Ещё для покупателей')}<div class="h-more">${H.more.map(([t,d,i])=>`<button class="h-tl" data-toast="Раздел «${esc(t)}» в работе">${ic(i)}<span class="tx"><b>${esc(t)}</b><span>${esc(d)}</span></span>${ic('chevron-right')}</button>`).join('')}</div></section>
+   <div class="h-row h-sec"><section class="sect h-faqw">${SectionHeader('Популярные вопросы')}<div class="h-faq">${H.faq.map((f,i)=>{const o=S.hfaq===i;return `<div class="h-fq ${o?'open':''}"><button class="q" data-hfaq="${i}" aria-expanded="${o}"><span class="t-h4">${esc(f[0])}</span>${ic(o?'chevron-up':'chevron-down')}</button>${o?`<div class="a"><p class="t-body-text">${esc(f[1])}</p><button class="more" data-hgo="${f[2]}" ${f[3]?`data-hanchor="${hSlug(f[2],f[3])}"`:''}>${esc(HELP.pages[f[2]].nav)}${ic('chevron-right')}</button></div>`:''}</div>`}).join('')}</div></section>${HContact()}</div>
+  </div>`}
+function hBlocks(pid){const P=HELP.pages[pid];let h='',open=false;const close=()=>{const r=open?'</section>':'';open=false;return r};
+  for(const b of P.blocks){const k=b[0];
+    if(k==='h2'){h+=close()+`<section class="h-s"><h2 class="t-h2" id="${hSlug(pid,b[1])}">${esc(b[1])}</h2>`;open=true}
+    else if(k==='h3')h+=`<h3 class="t-h3 h-h3" id="${hSlug(pid,b[1])}">${esc(b[1])}</h3>`;
+    else if(k==='h4')h+=`<h4 class="t-h4">${esc(b[1])}</h4>`;
+    else if(k==='p')h+=`<p class="t-body-text">${hInline(b[1])}</p>`;
+    else if(k==='lead')h+=`<p class="t-h4 h-lead">${hInline(b[1])}</p>`;
+    else if(k==='ul')h+=`<ul class="bullets">${b[1].map(x=>`<li><span>${hInline(x)}</span></li>`).join('')}</ul>`;
+    else if(k==='table')h+=`<div class="specs h-table">${b[1].map(([a,c])=>`<div class="spec"><span>${esc(a)}</span><span>${esc(c)}</span></div>`).join('')}</div>`;
+    else if(k==='facts')h+=`<div class="h-facts">${b[1].map(([v,c])=>`<div><b class="t-display">${esc(v)}</b><span class="t-body-m-strong">${esc(c)}</span></div>`).join('')}</div>`;
+    else if(k==='note')h+=`<div class="h-note"><b>${esc(b[1])}</b><p>${hInline(b[2])}</p></div>`;
+    else if(k==='steps'){const cp=b[2]==='compact';h+=`<ol class="h-steps ${cp?'compact':''}">${b[1].map((st,i)=>`<li ${cp?'':`id="${hSlug(pid,(i+1)+'. '+st.t)}"`}><div class="row"><span class="num">${i+1}</span><div><h3 class="t-h3">${esc(st.t)}</h3><p class="t-body-text">${hInline(st.b)}</p></div></div>${st.img?`<div class="scr"><img src="${st.img}" alt="Шаг ${i+1}: ${esc(st.t)}" style="width:${st.w>400?st.w:Math.round(st.w*0.8)}px" loading="lazy"></div>`:''}</li>`).join('')}</ol>`}}
+  return h+close()}
+function HelpPage(pid){const P=HELP.pages[pid];if(!P)return HelpHub();const secs=hSections(pid);const nested=pid==='pay';
+  const toc=secs.filter(x=>x.lvl===0||(x.lvl===1&&(nested||!secs.some(y=>y.lvl===0))));
+  const i=HELP.order.indexOf(pid),prev=HELP.order[i-1],next=HELP.order[i+1];
+  return `<div class="wrap help art"><nav class="crumbs" style="margin-bottom:32px"><button data-hgo="">покупателям</button><span>/</span><span>${esc(P.nav.toLowerCase())}</span></nav>
+   <div class="h-art"><aside class="h-side">${HSearch('m','Поиск по разделу')}<nav class="h-nav"><button data-hgo="">Все темы</button>${HELP.order.map(k=>`<button data-hgo="${k}" class="${k===pid?'on':''}">${esc(HELP.pages[k].nav)}</button>`).join('')}<hr>${HELP.hub.more.map(m=>`<button data-toast="Раздел «${esc(m[0])}» в работе">${esc(m[0])}</button>`).join('')}</nav></aside>
+   <article class="h-content"><header><h1 class="t-h1">${esc(P.title)}</h1>${P.lead?`<p class="t-body-l muted">${esc(P.lead)}</p>`:''}</header>${hBlocks(pid)}
+    <div class="h-pager">${prev?`<button data-hgo="${prev}">${ic('chevron-left')}${esc(HELP.pages[prev].nav)}</button>`:'<span></span>'}${next?`<button data-hgo="${next}">${esc(HELP.pages[next].nav)}${ic('chevron-right')}</button>`:'<span></span>'}</div>${HContact()}</article>
+   <aside class="h-toc ${nested?'nested':''}"><b>На этой странице</b>${toc.map((x,j)=>`<button class="lvl${x.lvl} ${nested&&x.lvl===0?'grp':''} ${j===0?'on':''}" data-hanchor="${x.id}">${esc(x.t)}</button>`).join('')}</aside></div></div>`}
+function hScrollTo(id,smooth){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:smooth?'smooth':'auto',block:'start'})}
+function hGo(pid,anchor){S.hq='';if(S.view==='help'&&(S.cat||'')===pid&&anchor){hScrollTo(anchor,true);return}go('help',pid||null);if(anchor)requestAnimationFrame(()=>hScrollTo(anchor,false))}
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.hs')){const b=document.querySelector('.hs.open');if(b)b.classList.remove('open')}
+  const t=e.target.closest('[data-gohelp],[data-hgo],[data-hanchor],[data-hfaq],[data-hsclear]');if(!t)return;
+  e.stopPropagation();e.preventDefault();const d=t.dataset;
+  if('gohelp' in d)return hGo(d.gohelp,null);
+  if('hsclear' in d){S.hq='';const i=document.getElementById('hsInput');if(i){i.value='';i.focus()}return hsUpdate()}
+  if('hfaq' in d){const n=+d.hfaq;S.hfaq=S.hfaq===n?-1:n;return render(true)}
+  if('hgo' in d)return hGo(d.hgo,d.hanchor||null);
+  if(d.hanchor)return hScrollTo(d.hanchor,true);
+},true);
+document.addEventListener('input',e=>{if(e.target.id!=='hsInput')return;S.hq=e.target.value;hsUpdate()});
+document.addEventListener('focusin',e=>{if(e.target.id==='hsInput'&&S.hq.trim())hsUpdate()});
+document.addEventListener('keydown',e=>{if(e.target.id!=='hsInput')return;const box=document.querySelector('.hs');const items=[...document.querySelectorAll('.hs-item')];let i=items.findIndex(x=>x.classList.contains('act'));
+  if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();if(!items.length)return;i=(i+(e.key==='ArrowDown'?1:-1)+items.length)%items.length;items.forEach((x,j)=>x.classList.toggle('act',j===i));items[i].scrollIntoView({block:'nearest'})}
+  else if(e.key==='Enter'){e.preventDefault();const it=items[i<0?0:i];if(it)hGo(it.dataset.hgo,it.dataset.hanchor||null)}
+  else if(e.key==='Escape'){box&&box.classList.remove('open');e.target.blur()}});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches&&e.target.matches('.h-topic'))e.target.click()});
+function hSpy(){if(S.view!=='help'||!S.cat)return;const btns=[...document.querySelectorAll('.h-toc button')];if(!btns.length)return;let cur=btns[0];
+  for(const b of btns){const el=document.getElementById(b.dataset.hanchor);if(el&&el.getBoundingClientRect().top<180)cur=b}
+  if(window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-4)cur=btns[btns.length-1];
+  btns.forEach(b=>b.classList.toggle('on',b===cur))}
+window.addEventListener('scroll',hSpy,{passive:true});
+
 /* ---------- Рендер ---------- */
 const app=document.getElementById('app');
 function render(keepScroll){
   ensureImgs();
   if(window.matchMedia('(max-width: 767px)').matches) return mRender(keepScroll);
   const y=window.scrollY; const rows={}; app.querySelectorAll('.row-scroll').forEach(el=>rows[el.id]=el.scrollLeft);
-  let body=S.view==='home'?Home():S.view==='cat'?Category(S.cat):S.view==='cart'?`<div class="wrap">${Cart(false)}</div>`:S.view==='order'?`<div class="wrap">${Order(false)}</div>`:Product();
+  let body=S.view==='help'&&HELP?(S.cat?HelpPage(S.cat):HelpHub()):S.view==='home'?Home():S.view==='cat'?Category(S.cat):S.view==='cart'?`<div class="wrap">${Cart(false)}</div>`:S.view==='order'?`<div class="wrap">${Order(false)}</div>`:Product();
   app.innerHTML=`<div class="page-scale">${Header()}<main>${body}</main>${Footer()}</div>${S.menuOpen?'<div class="scrim" id="scrim"></div>':''}${S.viewer?Viewer():''}`;
   Object.entries(rows).forEach(([id,x])=>{const el=document.getElementById(id); if(el) {el.style.scrollBehavior='auto'; el.scrollLeft=x; el.style.scrollBehavior='';}});
   if(keepScroll) window.scrollTo(0,y);
@@ -1224,7 +1384,7 @@ function startViewer(){const v=document.getElementById('vvid'); if(!v) return; v
 function fit(){app.style.zoom=window.matchMedia('(max-width: 767px)').matches?1:Math.min(1,window.innerWidth/1440)}
 window.addEventListener('resize',fit);fit();
 /* ---------- Старт ---------- */
-Promise.all([fetch('content.json').then(r=>r.json()),fetch('idmap.json').then(r=>r.json()).catch(()=>({}))]).then(([c,m])=>{C=c;IDMAP=m;render()}).catch(()=>{app.innerHTML='<p style="padding:40px">Не удалось загрузить данные прототипа.</p>'});
+Promise.all([fetch('content.json').then(r=>r.json()),fetch('idmap.json').then(r=>r.json()).catch(()=>({})),fetch('help.json').then(r=>r.json()).catch(()=>null)]).then(([c,m,h])=>{C=c;IDMAP=m;HELP=h;render()}).catch(()=>{app.innerHTML='<p style="padding:40px">Не удалось загрузить данные прототипа.</p>'});
 </script>
 <script>
 /* ================= Мобильная версия (≤767px) ================= */
@@ -1336,7 +1496,7 @@ function mRender(keepScroll){
   const y=window.scrollY, xs={}; app.querySelectorAll('.snap[id]').forEach(e=>xs[e.id]=e.scrollLeft);
   const shb=app.querySelector('.m-shb'), sy=shb?shb.scrollTop:0, wasSheet=!!shb;
   S._anim=!wasSheet; const barOn=!!app.querySelector('.m.bar-on');
-  const v=S.view, body=v==='home'?MHome():v==='mcat'?MCatalog():v==='cat'?MCategory(S.cat):v==='cart'?Cart(true):v==='order'?Order(true):MProduct();
+  const v=S.view, body=v==='home'||v==='help'?MHome():v==='mcat'?MCatalog():v==='cat'?MCategory(S.cat):v==='cart'?Cart(true):v==='order'?Order(true):MProduct();
   app.innerHTML=`<div class="m ${v==='prod'&&barOn?'bar-on':''} ${v==='cart'&&lines_n()?'cart-on':''}">${MHeader()}${body}${v==='mcat'||v==='cart'?'':MFooter()}${MTab()}${v==='prod'?MBuyBar():''}${MSheet()}${S.viewer?MViewer():''}</div>`;
   Object.entries(xs).forEach(([id,x])=>{const e=document.getElementById(id);if(e)e.scrollLeft=x});
   const nb=app.querySelector('.m-shb'); if(nb&&wasSheet) nb.scrollTop=sy;
