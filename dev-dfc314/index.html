@@ -855,6 +855,38 @@ html,body{overflow-x:clip}
 .h-toc button{text-align:left;padding:6px 0 6px 14px;border-left:2px solid var(--border-default);font-size:13px;font-weight:500;line-height:1.3;color:var(--text-secondary);transition:color .15s,border-color .15s}
 .h-toc.nested button.lvl1{padding-left:26px}.h-toc button.grp{font-weight:600}
 .h-toc button:hover{color:var(--text-primary)}.h-toc button.on{border-left-color:var(--text-primary);color:var(--text-primary);font-weight:600}
+
+/* Акции, Бренды, Спасибо */
+.pg{padding-top:40px;padding-bottom:96px}.pg h1,.pg h2,.pg h3,.pg p{margin:0}
+.pg-head{display:flex;align-items:baseline;gap:16px;padding:32px 0}
+.pp-tabs{padding-bottom:32px}
+.pp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:48px 30px}
+.pp-grid .promo{width:auto;cursor:pointer}.pp-grid .promo .media img{transition:transform .3s ease}.pp-grid .promo:hover .media img{transform:scale(1.03)}
+.bp-head{justify-content:space-between;align-items:center}.bp-head>div:first-child{display:flex;align-items:baseline;gap:16px}
+.hs.bp-search{width:375px;flex:none}.bp-head>div:first-child{white-space:nowrap}.bp-search .hs-field{cursor:pointer}.bp-search input{cursor:pointer}
+.bp-pop{display:grid;grid-template-columns:repeat(5,1fr);gap:30px}.bp-pop .brand-tile{width:auto}
+.bp-all{margin-top:96px}
+.bp-abc{display:flex;flex-direction:column;gap:8px;margin-bottom:8px}.bp-abc>div{display:flex;gap:4px;flex-wrap:wrap}
+.bp-abc button,.bp-abc span{min-width:32px;height:32px;padding:0 6px;display:grid;place-items:center;font-size:14px;font-weight:600}
+.bp-abc span{color:var(--text-tertiary)}.bp-abc button:hover{background:var(--bg-tertiary)}.bp-abc button.on{background:var(--text-primary);color:var(--text-inverse)}
+.bp-g{display:flex;gap:30px;padding:24px 0;border-top:1px solid var(--border-default);scroll-margin-top:120px}.bp-g>b{width:60px;flex:none;line-height:1.25}
+.bp-g .names{flex:1;display:grid;grid-template-columns:repeat(5,1fr);gap:4px 20px}
+.bp-g .names button{display:flex;align-items:baseline;gap:6px;padding:6px 0;text-align:left;font-size:15px;font-weight:500;transition:color .15s}.bp-g .names button:hover{color:var(--text-secondary)}
+.bp-g .names span{font-size:12px;color:var(--text-secondary)}
+.thx-row{display:flex;gap:30px;align-items:flex-start}
+.thx-card{width:915px;flex:none;border:1px solid var(--border-default)}
+.thx-ok{display:flex;align-items:center;gap:16px;padding:20px 32px;background:var(--action-primary-default)}.thx-ok>.ico{width:32px;height:32px}.thx-ok p{margin-top:4px}
+.thx-body{padding:32px;display:flex;flex-direction:column;gap:24px}
+.thx-head{display:flex;justify-content:space-between;align-items:center;gap:16px}.thx-head p{margin-top:4px}
+.thx-st{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600}
+.thx-thumbs{display:flex;gap:12px}.thx-thumbs .th{position:relative;width:72px;height:72px;background:var(--bg-tertiary);display:grid;place-items:center}
+.thx-thumbs img{width:60px;height:60px;object-fit:contain}.thx-thumbs b{position:absolute;right:0;bottom:0;background:var(--action-primary-default);font-size:10px;font-weight:700;padding:1px 4px}
+.thx-info{width:100%}.thx-info .spec{font-size:14px}
+.thx-sum{width:375px;flex:none;border:1px solid var(--border-default);padding:32px;display:flex;flex-direction:column;gap:16px}
+.thx-sum .rows{display:flex;flex-direction:column;gap:8px;font-size:14px}.thx-sum .rows div{display:flex;justify-content:space-between}.thx-sum .rows span:first-child{color:var(--text-secondary)}
+.thx-sum .tot{display:flex;justify-content:space-between;align-items:baseline;font-size:16px}.thx-sum .tot b:last-child{font-size:21px}
+.thx-sum .bonus{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600}.thx-sum .bonus i{width:12px;height:12px;border-radius:50%;background:var(--action-primary-default)}
+.thx-sum .btns{display:flex;flex-direction:column;gap:8px;padding-top:8px}.thx-sum .btn{height:48px}
 </style>
 
 <div id="app"></div>
@@ -1076,11 +1108,11 @@ function Home(){
   <section class="sect"><div class="sect-head"><div class="left"><h2 class="t-h1" style="margin:0">Готовимся к зиме</h2><button class="link" data-cat="k10">Смотреть все${ic('chevron-right')}</button></div><div class="arrows"><button class="iconbtn" data-scroll="winter" data-dir="-1" aria-label="Назад">${ic('chevron-left')}</button><button class="iconbtn" data-scroll="winter" data-dir="1" aria-label="Вперёд">${ic('chevron-right')}</button></div></div>${Carousel('winter',h.winter)}</section>
   <section class="about"><div class="txt"><h2 class="t-h1" style="margin:0">Рядом<br>с мастером</h2><p class="t-body-text" style="margin:0">Мы гордимся тем, что являемся частью ваших амбициозных проектов</p></div>
    <div class="stats"><div class="row">${[['4.9','оценка от наших клиентов'],['20+','лет в индустрии'],['178','магазинов в Казахстане'],['>100 000','инструментов мировых брендов']].map(([a,b],i)=>`<div class="stat" style="width:${i<3?165:214}px"><b>${a}</b><span>${b}</span></div>`).join('')}</div><span class="link">Подробнее о нас${ic('chevron-right')}</span></div></section>
-  <section class="sect"><div class="sect-head"><div class="left"><h2 class="t-h1" style="margin:0">Акции</h2><span class="link">Все предложения${ic('chevron-right')}</span></div><div class="arrows"><button class="iconbtn" data-scroll="promoRow" data-dir="-1" aria-label="Назад">${ic('chevron-left')}</button><button class="iconbtn" data-scroll="promoRow" data-dir="1" aria-label="Вперёд">${ic('chevron-right')}</button></div></div>
+  <section class="sect"><div class="sect-head"><div class="left"><h2 class="t-h1" style="margin:0">Акции</h2><span class="link" data-gopromos style="cursor:pointer">Все предложения${ic('chevron-right')}</span></div><div class="arrows"><button class="iconbtn" data-scroll="promoRow" data-dir="-1" aria-label="Назад">${ic('chevron-left')}</button><button class="iconbtn" data-scroll="promoRow" data-dir="1" aria-label="Вперёд">${ic('chevron-right')}</button></div></div>
    <div class="row-scroll promo-row" id="promoRow">${PROMO.map(p=>`<div class="promo"><div class="media"><img src="${p.img}" alt="" onerror="this.remove()"></div><div class="txt"><span class="pdate">${esc(p.e)}</span><span class="t-h3">${esc(p.t)}</span><span class="t-body-m muted">${esc(p.s)}</span></div></div>`).join('')}</div></section>
   <section class="sect">${SectionHeader('Рассказываем об инструментах и не только')}<div class="reels">${REELS_HOME.map(Reel).join('')}<a class="cta" href="${INSTAGRAM}" target="_blank" rel="noopener"><span class="t-h1">Мы<br>в Instagram</span><span class="t-body-text" style="margin-top:12px">Больше 40 000 человек уже следят за нашей лентой</span>${ic('instagram','ig')}</a></div></section>
   <section class="sect">${SectionHeader('Ещё в каталоге')}<div class="grid5">${moreCards(10).map(ProductCard).join('')}</div>${S.moreN<2?'<button class="btn btn-secondary more-btn" data-moreitems>Показать ещё</button>':''}</section>
-  <section class="sect" style="gap:40px"><div class="br-head"><h2 class="t-h1" style="margin:0">50+ мировых брендов</h2><span class="link">Полный каталог${ic('chevron-right')}</span></div>
+  <section class="sect" style="gap:40px"><div class="br-head"><h2 class="t-h1" style="margin:0">50+ мировых брендов</h2><span class="link" data-gobrands style="cursor:pointer">Все бренды${ic('chevron-right')}</span></div>
    <div class="brands">${BRANDS.map((b,i)=>`<div class="brand-tile"><img src="img/brands/${i+1}.png" alt="${esc(b)}" onerror="this.replaceWith(document.createTextNode(this.alt))"></div>`).join('')}</div></section>
   </div>`}
 
@@ -1239,7 +1271,7 @@ function render(keepScroll){
   ensureImgs();
   if(window.matchMedia('(max-width: 767px)').matches) return mRender(keepScroll);
   const y=window.scrollY; const rows={}; app.querySelectorAll('.row-scroll').forEach(el=>rows[el.id]=el.scrollLeft);
-  let body=S.view==='help'&&HELP?(S.cat?HelpPage(S.cat):HelpHub()):S.view==='home'?Home():S.view==='cat'?Category(S.cat):S.view==='cart'?`<div class="wrap">${Cart(false)}</div>`:S.view==='order'?`<div class="wrap">${Order(false)}</div>`:Product();
+  let body=S.view==='promos'?PromosPage():S.view==='brands'?BrandsPage():S.view==='thanks'?Thanks():S.view==='help'&&HELP?(S.cat?HelpPage(S.cat):HelpHub()):S.view==='home'?Home():S.view==='cat'?Category(S.cat):S.view==='cart'?`<div class="wrap">${Cart(false)}</div>`:S.view==='order'?`<div class="wrap">${Order(false)}</div>`:Product();
   app.innerHTML=`<div class="page-scale">${Header()}<main>${body}</main>${Footer()}</div>${S.menuOpen?'<div class="scrim" id="scrim"></div>':''}${S.viewer?Viewer():''}`;
   Object.entries(rows).forEach(([id,x])=>{const el=document.getElementById(id); if(el) {el.style.scrollBehavior='auto'; el.scrollLeft=x; el.style.scrollBehavior='';}});
   if(keepScroll) window.scrollTo(0,y);
@@ -1496,7 +1528,7 @@ function mRender(keepScroll){
   const y=window.scrollY, xs={}; app.querySelectorAll('.snap[id]').forEach(e=>xs[e.id]=e.scrollLeft);
   const shb=app.querySelector('.m-shb'), sy=shb?shb.scrollTop:0, wasSheet=!!shb;
   S._anim=!wasSheet; const barOn=!!app.querySelector('.m.bar-on');
-  const v=S.view, body=v==='home'||v==='help'?MHome():v==='mcat'?MCatalog():v==='cat'?MCategory(S.cat):v==='cart'?Cart(true):v==='order'?Order(true):MProduct();
+  const v=S.view, body=['home','help','promos','brands','thanks'].includes(v)?MHome():v==='mcat'?MCatalog():v==='cat'?MCategory(S.cat):v==='cart'?Cart(true):v==='order'?Order(true):MProduct();
   app.innerHTML=`<div class="m ${v==='prod'&&barOn?'bar-on':''} ${v==='cart'&&lines_n()?'cart-on':''}">${MHeader()}${body}${v==='mcat'||v==='cart'?'':MFooter()}${MTab()}${v==='prod'?MBuyBar():''}${MSheet()}${S.viewer?MViewer():''}</div>`;
   Object.entries(xs).forEach(([id,x])=>{const e=document.getElementById(id);if(e)e.scrollLeft=x});
   const nb=app.querySelector('.m-shb'); if(nb&&wasSheet) nb.scrollTop=sy;
@@ -1617,6 +1649,54 @@ function Order(m){ const L=orderItems(); let sum=0,old=0,bon=0; L.forEach(({c,q}
   if(m){const cur=steps.find(x=>x[2]==='cur');const mst=`<div class="lk-mst ${S.stOpen?'open':''}"><button class="lk-mst-h" data-stopen><i class="pulse"></i><span class="t"><b>${cur[0]}</b><em>${cur[1]}</em></span>${ic('chevron-down')}</button>${S.stOpen?`<div class="steps">${steps.map(([t,d,s])=>`<div class="st ${s}"><i></i><span><b>${t}</b><em>${d}</em></span></div>`).join('')}</div>`:''}</div>`;return `<div class="lk mob">${head}<div class="lk-status">${mst}</div>${comp}${info}${btns}${help}</div>`}
   const nav=`<nav class="lk-nav"><div class="who"><b>Максим</b><span>+7 705 453 97 56</span><u>Изменить профиль</u></div><hr>${[['Личный кабинет',''],['Мои заказы','3',1],['Корзина',String(cartCount()),0,'data-gocart'],['Избранное',String(Object.values(S.fav).filter(Boolean).length||12)],['Бонусы','4 250']].map(([a,b,on,at])=>`<button class="${on?'on':''}" ${at||''}><span>${a}</span><span>${b}</span></button>`).join('')}<hr><button><span>Контакты</span></button><button><span>Адреса магазинов</span></button><hr><button><span>Выйти из аккаунта</span></button></nav>`;
   return `<div class="lk">${nav}<div class="lk-mid">${head}${btns}${comp}${info}</div><aside>${st}<hr>${help}</aside></div>` }
+/* ---------- Акции, Бренды, Спасибо за покупку (только веб) ---------- */
+S.ptab=0;
+const PROMOS_ALL=[
+ {img:'img/banners/promo1.jpg',k:'Скидки',e:'До 30 ноября',t:'−15% на бензопилы STIHL',s:'Готовим участок к зиме: пилы, цепи и масло для двухтактных двигателей по сниженным ценам'},
+ {img:'img/banners/hero2.jpg',k:'Бонусы',e:'До 10 декабря',t:'Bosch Professional: 5% бонусами',s:'Аккумуляторный инструмент серии 18V — вернём 5% от покупки бонусами на следующий заказ'},
+ {img:'img/banners/promo2.jpg',k:'Подарки',e:'До 15 декабря',t:'Аккумулятор в подарок к дрели Makita',s:'Покупаете дрель-шуруповёрт серии LXT — аккумулятор 18V 3 Ач добавим бесплатно'},
+ {img:'img/banners/hero1.jpg',k:'Скидки',e:'До 20 ноября',t:'−20% на лобзики и пилы Black+Decker',s:'Электролобзики, циркулярные и сабельные пилы для ровного реза без лишних усилий'},
+ {img:'img/banners/promo3.jpg',k:'Подарки',e:'Весь ноябрь',t:'Средства Kärcher: 2 по цене 1',s:'Шампуни и очистители для моек высокого давления и моющих пылесосов'},
+ {img:'img/banners/hero3.jpg',k:'Скидки',e:'До 31 декабря',t:'Мойки Kärcher со скидкой до 25%',s:'Минимойки и пылесосы для дома и гаража — чистый двор за одно утро'}];
+const PTABS=['Все акции','Скидки','Подарки','Бонусы'];
+function PromosPage(){const f=S.ptab||0;const list=PROMOS_ALL.filter(p=>!f||p.k===PTABS[f]);
+  return `<div class="wrap pg"><nav class="crumbs"><button data-home>главная</button><span>/</span><span>акции</span></nav>
+   <div class="pg-head"><h1 class="t-h1">Акции</h1><span class="t-body-l muted">${list.length} ${pl(list.length,'акция','акции','акций')}</span></div>
+   <div class="pp-tabs">${tabs(PTABS,f,'data-ptab')}</div>
+   <div class="pp-grid">${list.map(p=>`<div class="promo" data-toast="Страница акции — в работе" role="link" tabindex="0"><div class="media"><img src="${p.img}" alt=""></div><div class="txt"><span class="pdate">${esc(p.e)}</span><span class="t-h3">${esc(p.t)}</span><span class="t-body-m muted">${esc(p.s)}</span></div></div>`).join('')}</div></div>`}
+const BRAND_GROUPS=[["A",[["A-IPOWER",1],["ABAC",4],["AE&T",34],["AFACAN",9],["AFFIX",2],["ALTECO",775],["AMO",5],["Atlas Copco",3],["Aurora-Pro",41],["AutoMeister",88]]],["B",[["Ballu",157],["BATYR",3],["BestWeld",1],["BIG RED",22],["BIHUI",61],["Black & Decker",60],["BLEISPITZ",132],["Bosch",295]]],["C",[["CONDTROL",78],["Cutop",43]]],["D",[["DENZEL",125],["DeWALT",175],["DIMA",4],["Dremel",1]]],["E",[["ECO",10],["Einhell",121],["ESAB",3],["ESQ",10],["Eurolux",14]]],["F",[["Fiorentini",1],["FIT",2],["FLY-SPEED",26],["FORCE",170],["Forsage",1],["Fortisflex",19],["FUBAG",4]]],["G",[["GEPARD",9],["Greatflex",13],["Grinda",7],["GROSS",45],["Grundfos",19]]],["H",[["Hobbi",21],["HONSBERG",6],["HOZELOCK",198],["HPMM",26],["HPX",18],["Husqvarna",16],["Huter",61]]],["J",[["JET",22],["JOKARI",12]]],["K",[["KARCHER",29],["KING TONY",120],["Knipex",67],["Kraftool",27],["Krass",84],["Krause",76],["Krino",1],["KWALT",2],["KWB",78]]],["L",[["Leica",32],["Leo",10],["LOSSEW",59]]],["M",[["Makita",280],["MARK",31],["MARKAL",2],["MATRIX",359],["MS TW",1],["MTX",1]]],["N",[["NILFISK",15],["NORDBERG",13]]],["O",[["ORIENT",27]]],["P",[["PALISAD",8],["Patriot",4],["Petropump",230],["PIUSI",1],["PUFF",9]]],["Q",[["QBRICK",1]]],["R",[["Remeza",41],["RemoColor",1],["RGK",20],["ROCK FORCE",1],["RODEX",55]]],["S",[["SAMOA",13],["SIMING",33],["SIVIK",7],["Skil",7],["SOLA",3],["Solaris",43],["SPARTA",36],["STABILA",23],["Stalker",34],["STARTUL",29],["STAYER",48],["STEHER",2],["STELS",139],["STIHL",96],["STURM",3],["Sumake",1]]],["T",[["TOLSEN",563],["TOR",226],["TORIN",3],["TOTALTOOLS",47],["TSSP",38],["TULEX",24],["Turan Makina",4],["TYTAN",8]]],["V",[["VIPER",3]]],["W",[["Wagner",2],["WILPU",9],["WITTE",68],["wolfcraft",60],["WORTEX",1]]],["X",[["XILIN",6]]],["Z",[["ZHONGXING",5]]],["А",[["АО «ПТМЗ»",1],["АРСЕНАЛ",3]]],["Б",[["БАРС",9],["БЕЛМАШ",103],["БИМАРК",1]]],["В",[["Вихрь",151],["ВОЛАТ",44]]],["Е",[["ЕВРОПАРТНЕР",6]]],["З",[["ЗУБР",51]]],["К",[["Кавик",13],["КВТ",110],["Красный Маяк",6]]],["Л",[["ЛУГА",22]]],["М",[["МАСТАК",1],["ММК",3],["МОБИЛСЕРВИС",26],["Монолит",4],["МЭТЗ",1]]],["Н",[["НИКА",6]]],["П",[["ПОБЕДА",1],["Практик",3]]],["Р",[["Ресанта",200],["Россия Мир Инструмента",16],["Россия Ормис",2]]],["С",[["СВАРОГ",4],["СИБРТЕХ",165],["СИРИУС",2],["Сплитстоун",28],["Стройбат",506],["СТРОЙМАШ",12],["СЭЛМА",7]]],["Т",[["Теплотех",60]]],["У",[["УЗХ",12]]],["Ф",[["ФЛАГМАН",3]]],["Э",[["ЭЛКОМ",7],["ЭСВА",5]]],["Ю",[["ЮПИТЕР",12]]],["0–9",[["3D KRESTIKI",7]]]];
+const BRAND_POP=['KÄRCHER','STALKER','BOSCH','makita','STIHL','BIHUI','BLACK+DECKER','DeWALT','UNI-T','QBRICK'].map(b=>[b,BRANDS.indexOf(b)+1]);
+function BrandsPage(){const total=BRAND_GROUPS.reduce((s,g)=>s+g[1].length,0);const have=new Set(BRAND_GROUPS.map(g=>g[0]));
+  const L=(arr)=>arr.map(x=>have.has(x)?`<button data-bpl="${x}">${x}</button>`:`<span>${x}</span>`).join('');
+  return `<div class="wrap pg"><nav class="crumbs"><button data-home>главная</button><span>/</span><span>бренды</span></nav>
+   <div class="pg-head bp-head"><div><h1 class="t-h1">Бренды</h1><span class="t-body-l muted">${total} ${pl(total,'бренд','бренда','брендов')}</span></div>
+    <div class="hs hs-m bp-search"><label class="hs-field" data-toast="Поиск по брендам скоро заработает">${ic('search')}<input placeholder="Найти бренд" readonly tabindex="-1"></label></div></div>
+   <section class="sect">${SectionHeader('Популярные бренды')}<div class="bp-pop">${BRAND_POP.map(([b,i])=>`<button class="brand-tile" data-toast="Страница бренда — в работе"><img src="img/brands/${i}.png" alt="${esc(b)}"></button>`).join('')}</div></section>
+   <section class="sect bp-all">${SectionHeader('Все бренды')}
+    <div class="bp-abc"><div>${L([...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'])}</div><div>${L([...'АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЭЮЯ','0–9'])}</div></div>
+    <div class="bp-groups">${BRAND_GROUPS.map(([g,arr])=>`<div class="bp-g" id="bp-${g}"><b class="t-h2">${g}</b><div class="names">${arr.map(([n,c])=>`<button data-toast="Страница бренда — в работе">${esc(n)}<span>${c}</span></button>`).join('')}</div></div>`).join('')}</div></section></div>`}
+function Thanks(){const o=ORDER;if(!o.t)return Home();const t=o.t;
+  const rows=[['Получение',o.dmode==='pick'?'Самовывоз · Астана, просп. Акжол, 65':'Курьером · Алматы, ул. Толе би, 216Б, кв. 14'],
+   ['Когда',o.ship>1?`По мере готовности: ${o.ship} ${pl(o.ship,'отправление','отправления','отправлений')}, первое — ${o.first}, последнее — ${o.last}`:`Одним отправлением — ${o.last}`],
+   ['Получатель','Максим, +7 705 453 97 56'],['Оплата',o.pay===0?'Kaspi.kz — счёт придёт в приложение Kaspi':o.pay===1?'Картой онлайн — оплачено':'В рассрочку — банк пришлёт решение по SMS']];
+  const sp=n=>String(n).replace(/\B(?=(\d{3})+(?!\d))/g,' ');
+  return `<div class="wrap pg thx"><div class="thx-row">
+   <section class="thx-card"><div class="thx-ok">${ic('check')}<div><h1 class="t-h2">Спасибо за покупку!</h1><p class="t-body-l">Заказ № ${o.no} оформлен. Подтверждение отправили по SMS на +7 705 453 97 56</p></div></div>
+    <div class="thx-body"><div class="thx-head"><div><h2 class="t-h2">Заказ № ${o.no}</h2><p class="t-body-m muted">от ${o.date} · ${t.qty} ${pl(t.qty,'товар','товара','товаров')} · ${o.ship} ${pl(o.ship,'отправление','отправления','отправлений')}</p></div><span class="thx-st"><i class="pulse"></i>Собираем заказ</span></div>
+     <div class="thx-thumbs">${o.items.map(x=>`<span class="th"><img src="${img(x.c)}" alt="${esc(x.c[1]+' '+x.c[2])}">${x.q>1?`<b>${x.q} шт</b>`:''}</span>`).join('')}</div>
+     <div class="specs thx-info">${rows.map(([a,b])=>`<div class="spec"><span>${a}</span><span>${b}</span></div>`).join('')}</div>
+     <p class="t-body-m muted">Когда заказ будет готов к выдаче, пришлём SMS. Статус и состав заказа — в разделе «Мои заказы».</p></div></section>
+   <aside class="thx-sum"><h3 class="t-h3">Сумма заказа</h3><div class="rows"><div><span>Товары, ${t.qty} шт.</span><span>${F(t.old)}</span></div>${t.disc?`<div><span>Скидка</span><span>−${F(t.disc)}</span></div>`:''}<div><span>Доставка</span><span>${o.dmode==='pick'?'Бесплатно':F(t.del)}</span></div></div>
+    <div class="tot"><b>Итого</b><b>${F(t.total)}</b></div><div class="bonus"><i></i>+${sp(t.bon)} ${pl(t.bon,'бонус','бонуса','бонусов')} начислим после получения</div>
+    <div class="btns"><button class="btn btn-primary" data-goorder>Следить за заказом</button><button class="btn btn-secondary" data-home>Продолжить покупки</button></div></aside></div></div>`}
+function thxDate(){const d=new Date();const M=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];return `${d.getDate()} ${M[d.getMonth()]} ${d.getFullYear()}, ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-gopromos],[data-gobrands],[data-ptab],[data-bpl]');if(!t)return;e.stopPropagation();const d=t.dataset;
+  if('gopromos' in d)return go('promos');if('gobrands' in d)return go('brands');
+  if('ptab' in d){S.ptab=+d.ptab;return render(true)}
+  if(d.bpl){const el=document.getElementById('bp-'+d.bpl);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});document.querySelectorAll('.bp-abc button').forEach(b=>b.classList.toggle('on',b===t))}},true);
+
+
+window.PromosPage=PromosPage; window.BrandsPage=BrandsPage; window.Thanks=Thanks;
 window.Cart=Cart; window.Order=Order; window.lines_n=()=>lines().length;
 /* ---- События ---- */
 document.addEventListener('click',e=>{const t=e.target.closest('[data-cksel],[data-ckall],[data-ckdelsel],[data-ckdel],[data-fav],[data-buyer],[data-dmode],[data-smode],[data-pay],[data-ckpromo],[data-ckgo],[data-ckrcp],[data-ckaddrcp],[data-toast],[data-gocart],[data-goorder],[data-lkrepeat],[data-stopen]');if(!t)return;const d=t.dataset;
@@ -1634,7 +1714,7 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-cksel],[da
  else if('ckpromo' in d){return}
  else if('ckrcp' in d){S.rcp=false;toast('Получатель удалён')}
  else if('ckaddrcp' in d){S.rcp=true}
- else if('ckgo' in d){ORDER.items=lines().filter(x=>isSel(x.k)).map(x=>({c:x.c,q:x.q}));ORDER.no=String(33040+Math.floor(Math.random()*900));ORDER.date='сегодня';lines().filter(x=>isSel(x.k)).forEach(x=>delete S.cart[x.k]);go('order');toast('Заказ оформлен');return}
+ else if('ckgo' in d){const _g=groups();ORDER.t=totals();ORDER.dmode=S.dmode;ORDER.pay=S.pay;ORDER.ship=_g.length;ORDER.first=_g[0]?_g[0].d.split(',')[0].toLowerCase():'';ORDER.last=_g.length?_g[_g.length-1].d.split(',')[0].toLowerCase():'';ORDER.items=lines().filter(x=>isSel(x.k)).map(x=>({c:x.c,q:x.q}));ORDER.no=String(33040+Math.floor(Math.random()*900));ORDER.date=thxDate();if(!window.matchMedia('(max-width: 767px)').matches){lines().filter(x=>isSel(x.k)).forEach(x=>delete S.cart[x.k]);return go('thanks')}lines().filter(x=>isSel(x.k)).forEach(x=>delete S.cart[x.k]);go('order');toast('Заказ оформлен');return}
  else if('gocart' in d){return go('cart')}
  else if('goorder' in d){return go('order')}
  else if('stopen' in d){S.stOpen=!S.stOpen}
