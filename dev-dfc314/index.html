@@ -776,22 +776,17 @@ html,body{overflow-x:clip}
 .m-bp .pr{display:flex;align-items:baseline;gap:6px}
 .m-bp .dl{display:flex;align-items:center;gap:4px;font-size:12px;font-weight:500;color:var(--text-secondary);margin-top:3px;white-space:nowrap}.m-bp .dl .ico{width:14px;height:14px;color:var(--text-secondary)}
 .m-bp s{white-space:nowrap}
-.m-bbar .m-btn{width:auto;flex:none;padding:0 16px}
-.m-bbar.in .m-bstep{width:108px}.m-bbar.in .m-bp s{display:none}
+.m-bbar .m-bmain{width:168px;flex:none;padding:0 12px;white-space:nowrap}
+.m-bmain .sm{display:none}
+@media (max-width:359px){.m-bbar .m-bmain{width:auto;flex:1;min-width:0}.m-bbar .m-bp{flex:none}.m-bmain .lg{display:none}.m-bmain .sm{display:inline}.m-bbar .m-bmain .ico{display:none}}
 .gallery .main{cursor:zoom-in}
 .gallery .zbtn{position:absolute;right:8px;bottom:8px;opacity:0;transition:opacity .2s}
 .gallery .main:hover .zbtn{opacity:1}
-.zoomv{position:fixed;inset:0;z-index:100;background:#F2F2F2;display:flex}
-.zthumbs{width:120px;flex:none;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px}
-.zthumbs .tb{width:72px;height:72px;border:1px solid var(--border-default);padding:4px;background:#fff}
-.zthumbs .tb.on{border:2px solid var(--border-strong)}.zthumbs .tb img{width:100%;height:100%;object-fit:contain}
-.zstage{flex:1;overflow:hidden;cursor:zoom-in;display:grid;place-items:center;margin:48px 120px 48px 0}
-.zstage img{max-width:100%;max-height:100%;object-fit:contain;transition:transform .25s ease;user-select:none}
-.zstage.on{cursor:zoom-out}.zstage.on img{transform:scale(2.5)}
-.zoomv .znav{position:absolute;top:50%;transform:translateY(-50%)}
-.zoomv .znav.l{left:136px}.zoomv .znav.r{right:32px}
-.zoomv .zclose{position:absolute;top:16px;right:24px}.zoomv .zclose .ico,.zoomv .znav .ico{width:28px;height:28px}
-.zoomv .zhint{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);font-size:13px;color:var(--text-secondary)}
+.gallery .main.zoomed{cursor:zoom-out}
+.gallery .main .strip img{transition:transform .25s ease}
+.gallery .main.zoomed .strip img{transform:scale(2.5)}
+.gallery .main.zoomed .nav{opacity:0;pointer-events:none}
+.gallery .main.zoomed .zbtn{opacity:1}
 </style>
 
 <div id="app"></div>
@@ -1084,7 +1079,7 @@ function render(keepScroll){
   if(window.matchMedia('(max-width: 767px)').matches) return mRender(keepScroll);
   const y=window.scrollY; const rows={}; app.querySelectorAll('.row-scroll').forEach(el=>rows[el.id]=el.scrollLeft);
   let body=S.view==='home'?Home():S.view==='cat'?Category(S.cat):S.view==='cart'?`<div class="wrap">${Cart(false)}</div>`:S.view==='order'?`<div class="wrap">${Order(false)}</div>`:Product();
-  app.innerHTML=`<div class="page-scale">${Header()}<main>${body}</main>${Footer()}</div>${S.menuOpen?'<div class="scrim" id="scrim"></div>':''}${S.viewer?Viewer():''}${S.zoom&&S.view==='prod'?Zoom():''}`;
+  app.innerHTML=`<div class="page-scale">${Header()}<main>${body}</main>${Footer()}</div>${S.menuOpen?'<div class="scrim" id="scrim"></div>':''}${S.viewer?Viewer():''}`;
   Object.entries(rows).forEach(([id,x])=>{const el=document.getElementById(id); if(el) {el.style.scrollBehavior='auto'; el.scrollLeft=x; el.style.scrollBehavior='';}});
   if(keepScroll) window.scrollTo(0,y);
   bindDrag(); updateArrows(); onScroll(); setupHero(); fitBuy();
@@ -1201,29 +1196,13 @@ document.addEventListener('pointerdown',e=>{const rail=e.target.closest('.range 
 document.addEventListener('keydown',e=>{const t=e.target; if(!t.matches||!t.matches('.range .thumb')) return; if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight') return; e.preventDefault(); const r=t.closest('.range'); const k=+t.dataset.th; const cur=S.price[r.dataset.range]||[0,1]; rangeSet(r,k,cur[k]+(e.key==='ArrowRight'?.02:-.02));});
 /* Галерея: свайп мышью по главному фото */
 document.addEventListener('pointerdown',e=>{const m=e.target.closest('#galMain'); if(!m||e.target.closest('button')) return; const x0=e.clientX;
-  const up=ev=>{document.removeEventListener('pointerup',up); const dx=ev.clientX-x0; if(Math.abs(dx)>40){S.gal=Math.max(0,Math.min(2,S.gal+(dx<0?1:-1)));render(true)} else if(Math.abs(dx)<6) openZoom()}; document.addEventListener('pointerup',up)});
-/* Зум фото (десктоп) */
-const GAL_IMGS=[0,1,2].map(i=>`img/p/33794_big${i}.webp`);
-function openZoom(){S.zoom={on:false};render(true)}
-function Zoom(){const i=S.gal,L=GAL_IMGS;
-  return `<div class="zoomv" role="dialog" aria-label="Просмотр фото"><div class="zthumbs">${L.map((s,j)=>`<button class="tb ${j===i?'on':''}" data-zto="${j}" aria-label="Фото ${j+1}"><img src="${s}" alt=""></button>`).join('')}</div>
-   <div class="zstage ${S.zoom.on?'on':''}" id="zStage"><img id="zImg" src="${L[i]}" alt="${esc(C.product.brand+' '+C.product.title)}" draggable="false"></div>
-   <button class="iconbtn znav l" data-znav="-1" ${i===0?'disabled':''} aria-label="Предыдущее фото">${ic('chevron-left')}</button><button class="iconbtn znav r" data-znav="1" ${i===L.length-1?'disabled':''} aria-label="Следующее фото">${ic('chevron-right')}</button>
-   <span class="zhint">${S.zoom.on?'Нажмите, чтобы уменьшить':'Нажмите на фото, чтобы приблизить'}</span>
-   <button class="iconbtn zclose" data-zclose aria-label="Закрыть">${ic('x')}</button></div>`}
-function zGo(n){const L=GAL_IMGS;S.gal=Math.max(0,Math.min(L.length-1,n));S.zoom.on=false;render(true)}
-document.addEventListener('click',e=>{
-  if(e.target.closest('[data-zoom]')){e.stopPropagation();openZoom();return}
-  if(!S.zoom) return;
-  const t=e.target.closest('[data-zclose],[data-zto],[data-znav],#zStage'); if(!t) return; e.stopPropagation();
-  if(t.matches('[data-zclose]')){S.zoom=null;render(true)}
-  else if(t.matches('[data-zto]')) zGo(+t.dataset.zto);
-  else if(t.matches('[data-znav]')) zGo(S.gal+(+t.dataset.znav));
-  else {S.zoom.on=!S.zoom.on; t.classList.toggle('on',S.zoom.on); zOrigin(e); const h=document.querySelector('.zhint'); if(h) h.textContent=S.zoom.on?'Нажмите, чтобы уменьшить':'Нажмите на фото, чтобы приблизить'}
-},true);
-function zOrigin(e){const st=document.getElementById('zStage'),im=document.getElementById('zImg'); if(!st||!im) return; const r=st.getBoundingClientRect(); im.style.transformOrigin=`${(e.clientX-r.left)/r.width*100}% ${(e.clientY-r.top)/r.height*100}%`}
-document.addEventListener('mousemove',e=>{if(S.zoom&&S.zoom.on&&e.target.closest('#zStage')) zOrigin(e)});
-document.addEventListener('keydown',e=>{if(!S.zoom) return; if(e.key==='Escape'){S.zoom=null;render(true)} else if(e.key==='ArrowRight') zGo(S.gal+1); else if(e.key==='ArrowLeft') zGo(S.gal-1)});
+  const up=ev=>{document.removeEventListener('pointerup',up); const dx=ev.clientX-x0; const zoomed=m.classList.contains('zoomed'); if(!zoomed&&Math.abs(dx)>40){S.gal=Math.max(0,Math.min(2,S.gal+(dx<0?1:-1)));render(true)} else if(Math.abs(dx)<6) galZoom(m,!zoomed,ev)}; document.addEventListener('pointerup',up)});
+/* Зум фото внутри бокса (десктоп): клик — приблизить, движение мыши — осмотр, клик или уход курсора — отдалить */
+function galZoom(m,on,ev){m.classList.toggle('zoomed',on);const b=m.querySelector('[data-zoom]');if(b)b.setAttribute('aria-label',on?'Уменьшить фото':'Увеличить фото');if(on&&ev)galOrigin(m,ev)}
+function galOrigin(m,e){const r=m.getBoundingClientRect();const o=`${Math.max(0,Math.min(100,(e.clientX-r.left)/r.width*100))}% ${Math.max(0,Math.min(100,(e.clientY-r.top)/r.height*100))}%`;m.querySelectorAll('.strip img').forEach(i=>i.style.transformOrigin=o)}
+document.addEventListener('click',e=>{const z=e.target.closest('[data-zoom]');if(!z)return;e.stopPropagation();const m=z.closest('#galMain');if(m)galZoom(m,!m.classList.contains('zoomed'),null)},true);
+document.addEventListener('mousemove',e=>{const m=e.target.closest&&e.target.closest('#galMain.zoomed');if(m)galOrigin(m,e)});
+document.addEventListener('mouseout',e=>{const m=e.target.closest&&e.target.closest('#galMain.zoomed');if(m&&!m.contains(e.relatedTarget))galZoom(m,false)});
 
 /* ---------- ReelViewer ---------- */
 function Viewer(){const v=S.viewer, L=v.list, i=L.indexOf(v.name);
@@ -1340,8 +1319,7 @@ function MProduct(){const p=C.product,k=p.id,inCart=S.cart[k]>0, imgs=[0,1,2].ma
     <div>${p.reviews.slice(0,2).map(([n,r,d,t])=>`<div class="review"><div class="h"><span class="t-h4">${esc(n)}</span>${stars(r)}</div><span class="m-cap">${esc(d)}</span><p class="m-txt">${esc(t)}</p></div>`).join('')}</div><div class="rev-foot mob"><span class="m-btn y wide" style="cursor:default">Написать отзыв</span><span class="m-link" style="cursor:default;align-self:center">Ещё отзывы${ic('chevron-down')}</span></div></section>
    <section class="m-sec flush"><div class="m-sh"><h2>Сопутствующие товары</h2><span class="m-link">Смотреть все${ic('chevron-right')}</span></div>${MRow('mRel',p.related)}</section></main>`}
 function MBuyBar(){const p=C.product,k=p.id,inCart=S.cart[k]>0,dl=p.delivery[0][0].split(',')[0].replace(/^До/,'до');
-  return `<div class="m-bbar ${inCart?'in':''}"><div class="m-bp"><span class="pr"><b>${esc(p.price)}</b><s>${esc(p.old)}</s></span><span class="dl">${ic('truck')}${esc(dl)}</span></div>
-   ${inCart?`<div class="m-bstep">${Stepper(k,true)}</div><button class="m-btn y" data-gocart>Оформить</button>`:`<button class="m-sq r" data-m="sheet" data-s="inst" aria-label="В рассрочку">${ic('bank')}</button><button class="m-btn y" data-add="${k}">${ic('shopping-cart')}В корзину</button>`}</div>`}
+  return `<div class="m-bbar"><div class="m-bp"><span class="pr"><b>${esc(p.price)}</b>${p.old?`<s>${esc(p.old)}</s>`:''}</span><span class="dl">${ic('truck')}${esc(dl)}</span></div><button class="m-sq r" data-m="sheet" data-s="inst" aria-label="В рассрочку">${ic('bank')}</button>${inCart?`<button class="m-btn y m-bmain" data-gocart><span class="lg">Перейти в корзину</span><span class="sm">Оформить</span></button>`:`<button class="m-btn y m-bmain" data-add="${k}">${ic('shopping-cart')}В корзину</button>`}</div>`}
 function MFooter(){const acc=['О компании','Покупателям','Сотрудничество','Поддержка'];
   return `<footer class="m-foot"><div class="m-fc"><span class="m-city">${ic('map-pin')}Алматы${ic('chevron-down','chev')}</span><b>+7 778 021 01 65</b><span class="m-soc">${ic('instagram')}${ic('youtube')}</span></div>
    ${acc.map(a=>`<div class="m-acc">${a}${ic('chevron-down')}</div>`).join('')}
