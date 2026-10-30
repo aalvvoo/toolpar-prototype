@@ -794,7 +794,7 @@ html,body{overflow-x:clip}
 .help{padding-top:40px;padding-bottom:96px}
 .help h1,.help h2,.help h3,.help h4,.help p{margin:0}
 .h-hero{display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px;padding:40px 0 24px}
-.h-sec{margin-top:96px}
+.h-sec{margin-top:96px}.h-sec.h-sec-top{margin-top:40px}
 .h-topics{display:grid;grid-template-columns:1fr 1fr;gap:30px}
 .h-topic{border:1px solid var(--border-default);padding:32px;display:flex;flex-direction:column;gap:24px;cursor:pointer;transition:border-color .15s}
 .h-topic:hover{border-color:var(--border-strong)}
@@ -884,7 +884,7 @@ html,body{overflow-x:clip}
 .thx-thumbs{display:flex;gap:12px}.thx-thumbs .th{position:relative;width:72px;height:72px;background:var(--bg-tertiary);display:grid;place-items:center}
 .thx-thumbs img{width:60px;height:60px;object-fit:contain}.thx-thumbs b{position:absolute;right:0;bottom:0;background:var(--action-primary-default);font-size:10px;font-weight:700;padding:1px 4px}
 .thx-info{width:100%}.thx-info .spec{font-size:14px}
-.thx-sum{width:375px;flex:none;padding:calc(var(--thx-ok,96px) + 32px) 0 0;display:flex;flex-direction:column;gap:16px}
+.thx-sum{width:375px;flex:none;padding:0;display:flex;flex-direction:column;gap:16px}
 .thx-sum .rows{display:flex;flex-direction:column;gap:8px;font-size:14px}.thx-sum .rows div{display:flex;justify-content:space-between}.thx-sum .rows span:first-child{color:var(--text-secondary)}
 .thx-sum .tot{display:flex;justify-content:space-between;align-items:baseline;font-size:16px}.thx-sum .tot b:last-child{font-size:21px}
 .thx-sum .bonus{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600}.thx-sum .bonus i{width:12px;height:12px;border-radius:50%;background:var(--action-primary-default)}
@@ -1213,11 +1213,11 @@ function hsUpdate(){const box=document.querySelector('.hs'),res=document.getElem
   const r=hSearch(q);const foot=`<div class="hs-foot">Не нашли ответ? Позвоните <b>+7 778 021 01 65</b> или <span class="u" data-toast="Менеджер перезвонит в течение 15 минут">закажите звонок</span></div>`;
   res.innerHTML=(r.length?r.map((x,i)=>`<button class="hs-item ${i===0?'act':''}" role="option" data-hgo="${x.pid}" ${x.id?`data-hanchor="${x.id}"`:''}><span class="c">${esc(x.crumb)}</span><span class="t">${esc(x.title)}</span><span class="s">${x.snip}</span></button>`).join(''):`<div class="hs-empty">Ничего не нашли по запросу «${esc(q)}». Попробуйте другое слово.</div>`)+foot;
   box.classList.add('open')}
-function HContact(){return `<aside class="h-contact">${ic('circle-help')}<h3 class="t-h3">Не нашли ответ?</h3><p class="t-body-m muted">Позвоните или закажите звонок — менеджер поможет с заказом, доставкой и гарантией.</p><b class="t-h3">+7 778 021 01 65</b><button class="btn btn-primary" data-toast="Менеджер перезвонит в течение 15 минут">${ic('phone')}Заказать звонок</button><span class="hl" data-toast="Адреса магазинов — страница в работе">Адреса магазинов${ic('chevron-right')}</span></aside>`}
+function HContact(){return `<aside class="h-contact">${ic('circle-help')}<h3 class="t-h3">Не нашли ответ?</h3><p class="t-body-m muted">Позвоните или закажите звонок — менеджер поможет с заказом, доставкой и гарантией.</p><b class="t-h3">+7 778 021 01 65</b><button class="btn btn-primary" data-toast="Менеджер перезвонит в течение 15 минут">${ic('phone')}Заказать звонок</button></aside>`}
 function HelpHub(){const H=HELP.hub;
   return `<div class="wrap help">
    <section class="h-hero"><h1 class="t-display">${esc(H.title)}</h1><p class="t-body-l muted">${esc(H.subtitle)}</p>${HSearch('l',H.placeholder)}</section>
-   <section class="sect h-sec">${SectionHeader('Темы')}<div class="h-topics">${H.topics.map(t=>`<div class="h-topic" data-hgo="${t.page}" role="link" tabindex="0"><div class="hd">${ic(t.icon)}<div><h3 class="t-h3">${esc(t.t)}</h3><p class="t-body-m muted">${esc(t.d)}</p></div></div><div class="ln">${t.links.map(([l,a])=>`<button data-hgo="${t.page}" ${a?`data-hanchor="${hSlug(t.page,a)}"`:''}>${esc(l)}${ic('chevron-right')}</button>`).join('')}</div></div>`).join('')}</div></section>
+   <section class="sect h-sec h-sec-top"><div class="h-topics">${H.topics.map(t=>`<div class="h-topic" data-hgo="${t.page}" role="link" tabindex="0"><div class="hd">${ic(t.icon)}<div><h3 class="t-h3">${esc(t.t)}</h3><p class="t-body-m muted">${esc(t.d)}</p></div></div><div class="ln">${t.links.map(([l,a])=>`<button data-hgo="${t.page}" ${a?`data-hanchor="${hSlug(t.page,a)}"`:''}>${esc(l)}${ic('chevron-right')}</button>`).join('')}</div></div>`).join('')}</div></section>
    <section class="sect h-sec">${SectionHeader('Ещё для покупателей')}<div class="h-more">${H.more.map(([t,d,i])=>`<button class="h-tl" data-toast="Раздел «${esc(t)}» в работе">${ic(i)}<span class="tx"><b>${esc(t)}</b><span>${esc(d)}</span></span>${ic('chevron-right')}</button>`).join('')}</div></section>
    <div class="h-row h-sec"><section class="sect h-faqw">${SectionHeader('Популярные вопросы')}<div class="h-faq">${H.faq.map((f,i)=>{const o=S.hfaq===i;return `<div class="h-fq ${o?'open':''}"><button class="q" data-hfaq="${i}" aria-expanded="${o}"><span class="t-h4">${esc(f[0])}</span>${ic(o?'chevron-up':'chevron-down')}</button>${o?`<div class="a"><p class="t-body-text">${esc(f[1])}</p><button class="more" data-hgo="${f[2]}" ${f[3]?`data-hanchor="${hSlug(f[2],f[3])}"`:''}>${esc(HELP.pages[f[2]].nav)}${ic('chevron-right')}</button></div>`:''}</div>`}).join('')}</div></section>${HContact()}</div>
   </div>`}
