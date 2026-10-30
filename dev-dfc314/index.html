@@ -863,26 +863,28 @@ html,body{overflow-x:clip}
 .pp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:48px 30px}
 .pp-grid .promo{width:auto;cursor:pointer}.pp-grid .promo .media img{transition:transform .3s ease}.pp-grid .promo:hover .media img{transform:scale(1.03)}
 .bp-head{justify-content:space-between;align-items:center}.bp-head>div:first-child{display:flex;align-items:baseline;gap:16px}
-.hs.bp-search{width:375px;flex:none}.bp-head>div:first-child{white-space:nowrap}.bp-search .hs-field{cursor:pointer}.bp-search input{cursor:pointer}
-.bp-pop{display:grid;grid-template-columns:repeat(5,1fr);gap:30px}.bp-pop .brand-tile{width:auto}
+.bp-row{display:flex;gap:30px;align-items:flex-start}.bp-side{width:240px;flex:none;display:flex;flex-direction:column;gap:24px;position:sticky;top:116px}.hs.bp-search{width:100%}.bp-main{flex:1;min-width:0}
+.bp-nav{display:flex;flex-direction:column}.bp-nav button{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:12px 0;font-size:15px;font-weight:500;color:var(--text-secondary);text-align:left;transition:color .15s}.bp-nav button:hover{color:var(--text-primary)}.bp-nav button.on{color:var(--text-primary);font-weight:600}.bp-nav button span{font-size:13px}
+.bp-empty{padding:24px 0;color:var(--text-secondary)}.bp-search .hs-field{cursor:pointer}.bp-search input{cursor:pointer}
+.bp-pop{display:grid;grid-template-columns:repeat(4,1fr);gap:30px}.bp-pop .brand-tile{width:auto}
 .bp-all{margin-top:96px}
 .bp-abc{display:flex;flex-direction:column;gap:8px;margin-bottom:8px}.bp-abc>div{display:flex;gap:4px;flex-wrap:wrap}
 .bp-abc button,.bp-abc span{min-width:32px;height:32px;padding:0 6px;display:grid;place-items:center;font-size:14px;font-weight:600}
 .bp-abc span{color:var(--text-tertiary)}.bp-abc button:hover{background:var(--bg-tertiary)}.bp-abc button.on{background:var(--text-primary);color:var(--text-inverse)}
 .bp-g{display:flex;gap:30px;padding:24px 0;border-top:1px solid var(--border-default);scroll-margin-top:120px}.bp-g>b{width:60px;flex:none;line-height:1.25}
-.bp-g .names{flex:1;display:grid;grid-template-columns:repeat(5,1fr);gap:4px 20px}
+.bp-g .names{flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:4px 20px}
 .bp-g .names button{display:flex;align-items:baseline;gap:6px;padding:6px 0;text-align:left;font-size:15px;font-weight:500;transition:color .15s}.bp-g .names button:hover{color:var(--text-secondary)}
 .bp-g .names span{font-size:12px;color:var(--text-secondary)}
 .thx-row{display:flex;gap:30px;align-items:flex-start}
-.thx-card{width:915px;flex:none;border:1px solid var(--border-default)}
+.thx-card{width:915px;flex:none}
 .thx-ok{display:flex;align-items:center;gap:16px;padding:20px 32px;background:var(--action-primary-default)}.thx-ok>.ico{width:32px;height:32px}.thx-ok p{margin-top:4px}
-.thx-body{padding:32px;display:flex;flex-direction:column;gap:24px}
+.thx-body{border:1px solid var(--border-default);border-top:0;padding:32px;display:flex;flex-direction:column;gap:24px}
 .thx-head{display:flex;justify-content:space-between;align-items:center;gap:16px}.thx-head p{margin-top:4px}
 .thx-st{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600}
 .thx-thumbs{display:flex;gap:12px}.thx-thumbs .th{position:relative;width:72px;height:72px;background:var(--bg-tertiary);display:grid;place-items:center}
 .thx-thumbs img{width:60px;height:60px;object-fit:contain}.thx-thumbs b{position:absolute;right:0;bottom:0;background:var(--action-primary-default);font-size:10px;font-weight:700;padding:1px 4px}
 .thx-info{width:100%}.thx-info .spec{font-size:14px}
-.thx-sum{width:375px;flex:none;border:1px solid var(--border-default);padding:32px;display:flex;flex-direction:column;gap:16px}
+.thx-sum{width:375px;flex:none;padding:calc(var(--thx-ok,96px) + 32px) 0 0;display:flex;flex-direction:column;gap:16px}
 .thx-sum .rows{display:flex;flex-direction:column;gap:8px;font-size:14px}.thx-sum .rows div{display:flex;justify-content:space-between}.thx-sum .rows span:first-child{color:var(--text-secondary)}
 .thx-sum .tot{display:flex;justify-content:space-between;align-items:baseline;font-size:16px}.thx-sum .tot b:last-child{font-size:21px}
 .thx-sum .bonus{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600}.thx-sum .bonus i{width:12px;height:12px;border-radius:50%;background:var(--action-primary-default)}
@@ -1666,33 +1668,47 @@ function PromosPage(){const f=S.ptab||0;const list=PROMOS_ALL.filter(p=>!f||p.k=
    <div class="pp-grid">${list.map(p=>`<div class="promo" data-toast="Страница акции — в работе" role="link" tabindex="0"><div class="media"><img src="${p.img}" alt=""></div><div class="txt"><span class="pdate">${esc(p.e)}</span><span class="t-h3">${esc(p.t)}</span><span class="t-body-m muted">${esc(p.s)}</span></div></div>`).join('')}</div></div>`}
 const BRAND_GROUPS=[["A",[["A-IPOWER",1],["ABAC",4],["AE&T",34],["AFACAN",9],["AFFIX",2],["ALTECO",775],["AMO",5],["Atlas Copco",3],["Aurora-Pro",41],["AutoMeister",88]]],["B",[["Ballu",157],["BATYR",3],["BestWeld",1],["BIG RED",22],["BIHUI",61],["Black & Decker",60],["BLEISPITZ",132],["Bosch",295]]],["C",[["CONDTROL",78],["Cutop",43]]],["D",[["DENZEL",125],["DeWALT",175],["DIMA",4],["Dremel",1]]],["E",[["ECO",10],["Einhell",121],["ESAB",3],["ESQ",10],["Eurolux",14]]],["F",[["Fiorentini",1],["FIT",2],["FLY-SPEED",26],["FORCE",170],["Forsage",1],["Fortisflex",19],["FUBAG",4]]],["G",[["GEPARD",9],["Greatflex",13],["Grinda",7],["GROSS",45],["Grundfos",19]]],["H",[["Hobbi",21],["HONSBERG",6],["HOZELOCK",198],["HPMM",26],["HPX",18],["Husqvarna",16],["Huter",61]]],["J",[["JET",22],["JOKARI",12]]],["K",[["KARCHER",29],["KING TONY",120],["Knipex",67],["Kraftool",27],["Krass",84],["Krause",76],["Krino",1],["KWALT",2],["KWB",78]]],["L",[["Leica",32],["Leo",10],["LOSSEW",59]]],["M",[["Makita",280],["MARK",31],["MARKAL",2],["MATRIX",359],["MS TW",1],["MTX",1]]],["N",[["NILFISK",15],["NORDBERG",13]]],["O",[["ORIENT",27]]],["P",[["PALISAD",8],["Patriot",4],["Petropump",230],["PIUSI",1],["PUFF",9]]],["Q",[["QBRICK",1]]],["R",[["Remeza",41],["RemoColor",1],["RGK",20],["ROCK FORCE",1],["RODEX",55]]],["S",[["SAMOA",13],["SIMING",33],["SIVIK",7],["Skil",7],["SOLA",3],["Solaris",43],["SPARTA",36],["STABILA",23],["Stalker",34],["STARTUL",29],["STAYER",48],["STEHER",2],["STELS",139],["STIHL",96],["STURM",3],["Sumake",1]]],["T",[["TOLSEN",563],["TOR",226],["TORIN",3],["TOTALTOOLS",47],["TSSP",38],["TULEX",24],["Turan Makina",4],["TYTAN",8]]],["V",[["VIPER",3]]],["W",[["Wagner",2],["WILPU",9],["WITTE",68],["wolfcraft",60],["WORTEX",1]]],["X",[["XILIN",6]]],["Z",[["ZHONGXING",5]]],["А",[["АО «ПТМЗ»",1],["АРСЕНАЛ",3]]],["Б",[["БАРС",9],["БЕЛМАШ",103],["БИМАРК",1]]],["В",[["Вихрь",151],["ВОЛАТ",44]]],["Е",[["ЕВРОПАРТНЕР",6]]],["З",[["ЗУБР",51]]],["К",[["Кавик",13],["КВТ",110],["Красный Маяк",6]]],["Л",[["ЛУГА",22]]],["М",[["МАСТАК",1],["ММК",3],["МОБИЛСЕРВИС",26],["Монолит",4],["МЭТЗ",1]]],["Н",[["НИКА",6]]],["П",[["ПОБЕДА",1],["Практик",3]]],["Р",[["Ресанта",200],["Россия Мир Инструмента",16],["Россия Ормис",2]]],["С",[["СВАРОГ",4],["СИБРТЕХ",165],["СИРИУС",2],["Сплитстоун",28],["Стройбат",506],["СТРОЙМАШ",12],["СЭЛМА",7]]],["Т",[["Теплотех",60]]],["У",[["УЗХ",12]]],["Ф",[["ФЛАГМАН",3]]],["Э",[["ЭЛКОМ",7],["ЭСВА",5]]],["Ю",[["ЮПИТЕР",12]]],["0–9",[["3D KRESTIKI",7]]]];
 const BRAND_POP=['KÄRCHER','STALKER','BOSCH','makita','STIHL','BIHUI','BLACK+DECKER','DeWALT','UNI-T','QBRICK'].map(b=>[b,BRANDS.indexOf(b)+1]);
-function BrandsPage(){const total=BRAND_GROUPS.reduce((s,g)=>s+g[1].length,0);const have=new Set(BRAND_GROUPS.map(g=>g[0]));
+const BRAND_CATS=[['Электроинструмент',['Bosch','Makita','DeWALT','Black & Decker','Dremel','Einhell','Skil','STURM','ЗУБР','Вихрь','Ресанта','Patriot','FIT','WORTEX','БЕЛМАШ','Kraftool','STAYER']],
+ ['Генераторы',['A-IPOWER','ALTECO','DENZEL','FUBAG','Huter','Patriot','Ресанта','Вихрь','Stalker','TSSP','ECO','Solaris','Einhell']],
+ ['Компрессоры',['ABAC','Atlas Copco','Remeza','FUBAG','AE&T','Patriot','DENZEL','ECO','Forsage','Sumake','Stalker','MATRIX','Einhell']],
+ ['Сварочное оборудование',['ESAB','BestWeld','СВАРОГ','Ресанта','FUBAG','Aurora-Pro','СЭЛМА','АО «ПТМЗ»','Huter','Patriot','Вихрь','ALTECO','Stalker','TSSP','DENZEL','GROSS','СИБРТЕХ','ЭСВА','Кавик','БАРС','TOR','MTX']],
+ ['Строительное оборудование и техника',['TSSP','Stalker','ZHONGXING','Turan Makina','Fiorentini','Сплитстоун','Стройбат','СТРОЙМАШ','Монолит','Красный Маяк','Теплотех','ЛУГА','ВОЛАТ','ЕВРОПАРТНЕР','ROCK FORCE','SIMING','XILIN','Husqvarna','STIHL','Wagner','HONSBERG','GEPARD','BIG RED','TOR','ПОБЕДА','DIMA','ALTECO','Krino','БЕЛМАШ']]];
+const bnorm=x=>x.toLowerCase().replace(/ä/g,'a').replace(/[^a-zа-яё0-9]/g,'');
+S.bcat=0;
+function BrandsPage(){const all=BRAND_GROUPS.reduce((s,g)=>s+g[1].length,0);const f=S.bcat||0;const cs=f?new Set(BRAND_CATS[f-1][1].map(bnorm)):null;
+  const groups=BRAND_GROUPS.map(([g,arr])=>[g,cs?arr.filter(([n])=>cs.has(bnorm(n))):arr]).filter(g=>g[1].length);
+  const total=groups.reduce((s,g)=>s+g[1].length,0);const have=new Set(groups.map(g=>g[0]));
+  const pop=BRAND_POP.filter(([b])=>!cs||cs.has(bnorm(b))).slice(0,8);
   const L=(arr)=>arr.map(x=>have.has(x)?`<button data-bpl="${x}">${x}</button>`:`<span>${x}</span>`).join('');
+  const cnt=n=>BRAND_GROUPS.reduce((s,g)=>s+g[1].filter(([x])=>n.has(bnorm(x))).length,0);
+  const cats=[['Все бренды',all],...BRAND_CATS.map(([t,l])=>[t,cnt(new Set(l.map(bnorm)))])];
   return `<div class="wrap pg"><nav class="crumbs"><button data-home>главная</button><span>/</span><span>бренды</span></nav>
-   <div class="pg-head bp-head"><div><h1 class="t-h1">Бренды</h1><span class="t-body-l muted">${total} ${pl(total,'бренд','бренда','брендов')}</span></div>
-    <div class="hs hs-m bp-search"><label class="hs-field" data-toast="Поиск по брендам скоро заработает">${ic('search')}<input placeholder="Найти бренд" readonly tabindex="-1"></label></div></div>
-   <section class="sect">${SectionHeader('Популярные бренды')}<div class="bp-pop">${BRAND_POP.map(([b,i])=>`<button class="brand-tile" data-toast="Страница бренда — в работе"><img src="img/brands/${i}.png" alt="${esc(b)}"></button>`).join('')}</div></section>
-   <section class="sect bp-all">${SectionHeader('Все бренды')}
+   <div class="pg-head bp-head"><div><h1 class="t-h1">Бренды</h1><span class="t-body-l muted">${total} ${pl(total,'бренд','бренда','брендов')}</span></div></div>
+   <div class="bp-row"><aside class="bp-side"><div class="hs hs-m bp-search"><label class="hs-field" data-toast="Поиск по брендам скоро заработает">${ic('search')}<input placeholder="Найти бренд" readonly tabindex="-1"></label></div>
+     <nav class="bp-nav">${cats.map(([t,n],i)=>`<button data-bcat="${i}" class="${i===f?'on':''}">${t}<span>${n}</span></button>`).join('')}</nav></aside>
+   <div class="bp-main">${pop.length?`<section class="sect" style="margin-top:0">${SectionHeader('Популярные бренды')}<div class="bp-pop">${pop.map(([b,i])=>`<button class="brand-tile" data-toast="Страница бренда — в работе"><img src="img/brands/${i}.png" alt="${esc(b)}"></button>`).join('')}</div></section>`:''}
+   <section class="sect ${pop.length?'bp-all':''}" ${pop.length?'':'style="margin-top:0"'}>${SectionHeader(f?BRAND_CATS[f-1][0]:'Все бренды')}
     <div class="bp-abc"><div>${L([...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'])}</div><div>${L([...'АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЭЮЯ','0–9'])}</div></div>
-    <div class="bp-groups">${BRAND_GROUPS.map(([g,arr])=>`<div class="bp-g" id="bp-${g}"><b class="t-h2">${g}</b><div class="names">${arr.map(([n,c])=>`<button data-toast="Страница бренда — в работе">${esc(n)}<span>${c}</span></button>`).join('')}</div></div>`).join('')}</div></section></div>`}
+    <div class="bp-groups">${groups.map(([g,arr])=>`<div class="bp-g" id="bp-${g}"><b class="t-h2">${g}</b><div class="names">${arr.map(([n,c])=>`<button data-toast="Страница бренда — в работе">${esc(n)}<span>${c}</span></button>`).join('')}</div></div>`).join('')}</div></section></div></div></div>`}
 function Thanks(){const o=ORDER;if(!o.t)return Home();const t=o.t;
   const rows=[['Получение',o.dmode==='pick'?'Самовывоз · Астана, просп. Акжол, 65':'Курьером · Алматы, ул. Толе би, 216Б, кв. 14'],
    ['Когда',o.ship>1?`По мере готовности: ${o.ship} ${pl(o.ship,'отправление','отправления','отправлений')}, первое — ${o.first}, последнее — ${o.last}`:`Одним отправлением — ${o.last}`],
    ['Получатель','Максим, +7 705 453 97 56'],['Оплата',o.pay===0?'Kaspi.kz — счёт придёт в приложение Kaspi':o.pay===1?'Картой онлайн — оплачено':'В рассрочку — банк пришлёт решение по SMS']];
   const sp=n=>String(n).replace(/\B(?=(\d{3})+(?!\d))/g,' ');
   return `<div class="wrap pg thx"><div class="thx-row">
-   <section class="thx-card"><div class="thx-ok">${ic('check')}<div><h1 class="t-h2">Спасибо за покупку!</h1><p class="t-body-l">Заказ № ${o.no} оформлен. Подтверждение отправили по SMS на +7 705 453 97 56</p></div></div>
+   <section class="thx-card"><div class="thx-ok">${ic('check')}<div><h1 class="t-h2">Спасибо за покупку!</h1><p class="t-body-l">Подтверждение отправили по SMS на +7 705 453 97 56</p></div></div>
     <div class="thx-body"><div class="thx-head"><div><h2 class="t-h2">Заказ № ${o.no}</h2><p class="t-body-m muted">от ${o.date} · ${t.qty} ${pl(t.qty,'товар','товара','товаров')} · ${o.ship} ${pl(o.ship,'отправление','отправления','отправлений')}</p></div><span class="thx-st"><i class="pulse"></i>Собираем заказ</span></div>
      <div class="thx-thumbs">${o.items.map(x=>`<span class="th"><img src="${img(x.c)}" alt="${esc(x.c[1]+' '+x.c[2])}">${x.q>1?`<b>${x.q} шт</b>`:''}</span>`).join('')}</div>
      <div class="specs thx-info">${rows.map(([a,b])=>`<div class="spec"><span>${a}</span><span>${b}</span></div>`).join('')}</div>
      <p class="t-body-m muted">Когда заказ будет готов к выдаче, пришлём SMS. Статус и состав заказа — в разделе «Мои заказы».</p></div></section>
    <aside class="thx-sum"><h3 class="t-h3">Сумма заказа</h3><div class="rows"><div><span>Товары, ${t.qty} шт.</span><span>${F(t.old)}</span></div>${t.disc?`<div><span>Скидка</span><span>−${F(t.disc)}</span></div>`:''}<div><span>Доставка</span><span>${o.dmode==='pick'?'Бесплатно':F(t.del)}</span></div></div>
     <div class="tot"><b>Итого</b><b>${F(t.total)}</b></div><div class="bonus"><i></i>+${sp(t.bon)} ${pl(t.bon,'бонус','бонуса','бонусов')} начислим после получения</div>
-    <div class="btns"><button class="btn btn-primary" data-goorder>Следить за заказом</button><button class="btn btn-secondary" data-home>Продолжить покупки</button></div></aside></div></div>`}
+    <div class="btns"><button class="btn btn-primary" data-home>Продолжить покупки</button><button class="btn btn-secondary" data-goorder>Следить за заказом</button></div></aside></div></div>`}
 function thxDate(){const d=new Date();const M=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];return `${d.getDate()} ${M[d.getMonth()]} ${d.getFullYear()}, ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`}
-document.addEventListener('click',e=>{const t=e.target.closest('[data-gopromos],[data-gobrands],[data-ptab],[data-bpl]');if(!t)return;e.stopPropagation();const d=t.dataset;
+document.addEventListener('click',e=>{const t=e.target.closest('[data-gopromos],[data-gobrands],[data-ptab],[data-bpl],[data-bcat]');if(!t)return;e.stopPropagation();const d=t.dataset;
   if('gopromos' in d)return go('promos');if('gobrands' in d)return go('brands');
   if('ptab' in d){S.ptab=+d.ptab;return render(true)}
+  if('bcat' in d){S.bcat=+d.bcat;render(true);const h=document.querySelector('.bp-head');if(h&&h.getBoundingClientRect().top<0)h.scrollIntoView({block:'start'});return}
   if(d.bpl){const el=document.getElementById('bp-'+d.bpl);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});document.querySelectorAll('.bp-abc button').forEach(b=>b.classList.toggle('on',b===t))}},true);
 
 
